@@ -16,12 +16,13 @@ protocol TimerDetailViewModelProtocol {
     func popVC()
     func sentTimerStatistics(days: TimerStatisticsEnum, tableView: UITableView)
     var statisticsTime: Int? { get set }
+    var dataStore: DataStoreProtocol? { get set }
     init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, index: Int, predicate: NSPredicate, timerStatistics: TimerStatistics?)
 }
 
 final class TimerDetailViewModel: TimerDetailViewModelProtocol {
     private let mainRouter: MainRouterProtocol?
-    private let dataStore: DataStoreProtocol?
+    var dataStore: DataStoreProtocol?
     private let timerStatistics: TimerStatistics?
     var model: Results<TimerModelData>?
     var index: Int?
@@ -35,11 +36,12 @@ final class TimerDetailViewModel: TimerDetailViewModelProtocol {
         self.timerStatistics = timerStatistics
         self.predicate = predicate
         model = dataStore?.timerArray
+        self.dataStore?.timerArray = realm.objects(TimerModelData.self).filter(predicate)
     }
    
     func sendAction(startPauseBool: Bool?) {
-        self.dataStore?.timerStart(index: self.index!, startPauseBool: startPauseBool, completion: { booll in
-        })
+//        self.dataStore?.timerStart(index: self.index!, startPauseBool: startPauseBool, completion: { booll in
+//        })
     }
     
     func popVC() {
@@ -47,7 +49,7 @@ final class TimerDetailViewModel: TimerDetailViewModelProtocol {
     }
     
     func sentTimerStatistics(days: TimerStatisticsEnum, tableView: UITableView) {
-        statisticsTime = timerStatistics?.addStatistic(days: days, index: index, predicate: predicate)
+        statisticsTime = dataStore?.addStatistic(days: days, index: index, predicate: predicate)
         DispatchQueue.main.async {
             tableView.reloadData()
         }

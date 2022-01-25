@@ -11,6 +11,7 @@ let realm = try! Realm()
 
 protocol DataStoreProtocol {
     var timerArray: Results<TimerModelData>? { get set }
+    var lastUseTimerIndex: Results<LastUseTimerIndex>? { get set }
     var userStaticsArray: Results<UserStatisticsData>? { get set }
     func startStop()
     var startPauseBool: Bool? { get set }
@@ -24,10 +25,13 @@ protocol DataStoreProtocol {
     var timerBoolUserDefolts: UserDefaults? { get set }
     var timerBool: Bool? { get set }
     func predicateFilter(predicate: NSPredicate?)
+    func saveTimerStatistics(key: String, value: Int, index: Int?)
+    func addStatistic(days: TimerStatisticsEnum, index: Int?, predicate: NSPredicate) -> Int
 }
 
 class DataStore: DataStoreProtocol {
     var timerArray: Results<TimerModelData>?
+    var lastUseTimerIndex: Results<LastUseTimerIndex>?
     var userStaticsArray: Results<UserStatisticsData>?
     private var timer = Timer()
     var startPauseBool: Bool?
@@ -37,8 +41,12 @@ class DataStore: DataStoreProtocol {
     var timerNonStart: Bool? = false
     var indexUserDefolts: UserDefaults?
     private var predecate: NSPredicate!
+    var test: Results<TimerModelData>?
     init() {
         timerArray = realm.objects(TimerModelData.self)
+        test = realm.objects(TimerModelData.self)
+//        print("TESTss Model 111 == \(test)")
+//        print("timerArray Model 111 == \(timerArray)")
         userStaticsArray = realm.objects(UserStatisticsData.self)
         indexUserDefolts = UserDefaults.standard
         timerBoolUserDefolts = UserDefaults.standard
@@ -48,14 +56,47 @@ class DataStore: DataStoreProtocol {
     
     func predicateFilter(predicate: NSPredicate?) {
         predecate = predicate
+       
         if predicate != nil {
             timerArray = realm.objects(TimerModelData.self).filter(predicate!)
 //            print("AAA == \(timerArray)")
-        }else {
-//            timerArray = realm.objects(TimerModelData.self)
         }
-//        timerArray = realm.objects(TimerModelData.self).filter(predicate)
     }
+    
+    //MARK: - SaveTimerStatistics
+    func saveTimerStatistics(key: String, value: Int, index: Int?) {
+        try! realm.write{
+            timerArray?[index!].timerStatistics[key] = value
+        }
+//        print("keyyy == \(key) value == \(value)")
+    }
+    
+    //MARK: - AdStatistic
+    func addStatistic(days: TimerStatisticsEnum, index: Int?, predicate: NSPredicate) -> Int {
+//        timerArray = realm.objects(TimerModelData.self).filter(predicate)
+        var time = 0
+        if let index = index {
+            var dateArray = [String]()
+            var startDate = Calendar.current.date(byAdding: .day, value: days.rawValue, to: Date())! // first date
+            let endDate = Date() // last date
+
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+
+            while startDate <= endDate {
+                dateArray.append(formatter.string(from: startDate))
+    //            print(formatter.string(from: startDate))
+                startDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
+            }
+            
+            for days in dateArray {
+                time += (timerArray?[index].timerStatistics[days]) ?? 0
+            }
+        }
+        return time
+    }
+    
+    
     
     
     func timerStart(index: Int, startPauseBool: Bool?, completion: @escaping (Bool) -> Void) {

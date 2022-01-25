@@ -35,6 +35,20 @@ extension Date {
         let date = Calendar.current.date(byAdding: components, to: self.startOfDay)
         return (date?.addingTimeInterval(-1))!
     }
+    
+    var yesterdayEndOfDay : Date {
+        var components = DateComponents()
+        components.day = 0
+        let date = Calendar.current.date(byAdding: components, to: self.startOfDay)
+        return (date?.addingTimeInterval(0))!
+    }
+    
+    var yesterdayEndOfDayNeedFormat : Date {
+        var components = DateComponents()
+        components.day = -1
+        let date = Calendar.current.date(byAdding: components, to: self.startOfDay)
+        return (date?.addingTimeInterval(0))!
+    }
 }
 
 extension UIPickerView {

@@ -30,6 +30,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
     private var startTime: Date?
     private var stopTime: Date?
     private lazy var timerCounting:Bool = false
+    private lazy var timerDoneSelected: Bool = false
     
     private var isPomodoroTimerOnOff: Bool?
     private lazy var pomodoroTime: Int? = 0
@@ -171,6 +172,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         stopTime = model.stopTimer
         self.timerCounting = model.timerCounting
         self.index = index
+        timerDoneSelected = model.timerDone
         isPomodoroTimerOnOff = model.pomodoroTimerOnOff
         if model.pomodoroTimerOnOff == true {
             pomodoroStartTime = model.pomdoroStartTime
@@ -214,6 +216,11 @@ class MainCollectionViewCelll: UICollectionViewCell {
         }else {
             setTimerCounting(false)
             stopTimer()
+            if timerDoneSelected == true && toDay == weekDay {
+                timerDone()
+            }else {
+                stopTimer()
+            }
             if toDay == weekDay {
                 setTimeLabel(timerUpdateTime)
             }else {
@@ -278,8 +285,8 @@ class MainCollectionViewCelll: UICollectionViewCell {
             startButton.setTitleColor(.black, for: .normal)
         }else {
             startButton.setTitle("Start", for: .normal)
-            startButton.backgroundColor = #colorLiteral(red: 0.9215686275, green: 0.9215686275, blue: 0.9254901961, alpha: 1)
-            startButton.setTitleColor(#colorLiteral(red: 0.6392156863, green: 0.6392156863, blue: 0.6431372549, alpha: 1), for: .normal)
+            startButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)
+            startButton.setTitleColor(.white, for: .normal)
         }
         
         
@@ -312,9 +319,15 @@ class MainCollectionViewCelll: UICollectionViewCell {
             startButton.setTitleColor(.white, for: .normal)
         }else {
             startButton.setTitle("Start", for: .normal)
-            startButton.backgroundColor = #colorLiteral(red: 0.9215686275, green: 0.9215686275, blue: 0.9254901961, alpha: 1)
-            startButton.setTitleColor(#colorLiteral(red: 0.6392156863, green: 0.6392156863, blue: 0.6431372549, alpha: 1), for: .normal)
+            startButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)
+            startButton.setTitleColor(.white, for: .normal)
         }
+    }
+    
+    private func timerDone() {
+        startButton.setTitle("Done", for: .normal)
+        startButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)
+        startButton.setTitleColor(.black, for: .normal)
     }
     
     //MARK: MisTimer
@@ -348,6 +361,9 @@ class MainCollectionViewCelll: UICollectionViewCell {
             setTimerUpdateTimeDeleagte?.setTimerNewTime(newTime: Int(diff), index: index!)
             if Int(diff) <= 0 {
                 stopTimer()
+                if toDay == weekDay {
+                    timerDone()
+                }
                 setTimerCounting(false)
                 setTimeLabel(self.timerTime!)
                 setStartTime(date: nil)
