@@ -256,6 +256,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
             misStopTime = stopTime
             misStartTime = startTime
             if let stop = stopTime {
+//                guard let startTime = startTime else { return }
                 let restartTime = calcRestartTime(start: startTime!, stop: stop)
                 setStopTime(date: nil)
                 setStartTime(date: restartTime)
@@ -354,6 +355,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         if let start = startTime, let timerTime = timerTime {
             let diff = start.timeIntervalSince(Date(timeIntervalSinceNow: TimeInterval(-timerTime)))
             //            let diff = Date().timeIntervalSince(start)
+            
             if toDay == weekDay {
                 setTimeLabel(Int(diff))
             }else {

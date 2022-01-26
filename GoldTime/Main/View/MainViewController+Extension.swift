@@ -171,7 +171,7 @@ extension MainViewController: UICollectionViewDataSource {
             cell?.pomodoroTimerStartStopDelegate = self
             cell?.addModelIndexDelegate = self
             cell?.sentAlertActionDelegate = self
-            if let item = viewModell?.dataStore?.timerArray?[indexPath.item] {
+            if let item = viewModell?.model?[indexPath.item] {
                 cell?.update(model: item, timerCounting: true, index: indexPath.row, checkDay: (viewModell?.checkDay)!)
                 cell?.timerRemoveIndex = item
             }

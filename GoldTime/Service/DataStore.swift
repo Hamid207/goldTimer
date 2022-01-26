@@ -11,6 +11,7 @@ let realm = try! Realm()
 
 protocol DataStoreProtocol {
     var timerArray: Results<TimerModelData>? { get set }
+    var timerArrayHelper: Results<TimerModelData>? { get set }
     var lastUseTimerIndex: Results<LastUseTimerIndex>? { get set }
     var userStaticsArray: Results<UserStatisticsData>? { get set }
     func startStop()
@@ -31,6 +32,7 @@ protocol DataStoreProtocol {
 
 class DataStore: DataStoreProtocol {
     var timerArray: Results<TimerModelData>?
+    var timerArrayHelper: Results<TimerModelData>?
     var lastUseTimerIndex: Results<LastUseTimerIndex>?
     var userStaticsArray: Results<UserStatisticsData>?
     private var timer = Timer()
@@ -44,6 +46,7 @@ class DataStore: DataStoreProtocol {
     var test: Results<TimerModelData>?
     init() {
         timerArray = realm.objects(TimerModelData.self)
+        timerArrayHelper = realm.objects(TimerModelData.self)
 //        print("TESTss Model 111 == \(test)")
 //        print("timerArray Model 111 == \(timerArray)")
         userStaticsArray = realm.objects(UserStatisticsData.self)

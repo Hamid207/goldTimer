@@ -255,9 +255,9 @@ final class MainViewModel: MainViewModelProtocol {
     
     func setTimeLabel(_ val: Int)
     {
-        let time = secondsToHoursMinutesSeconds(val)
+//        let time = secondsToHoursMinutesSeconds(val)
 //        print("time = \(time)")
-        let timeString = makeTimeString(hour: time.0, min: time.1, sec: time.2)
+//        let timeString = makeTimeString(hour: time.0, min: time.1, sec: time.2)
 //        print("viewMODWll -=-=- -=-=-=-timeString = \(timeString)")
     }
     

@@ -52,15 +52,16 @@ final class MainViewModell: MainViewModellProtocol {
     var toDay: Int?
     var checkDay: Int?
     var endOFTheDayTimer: Timer?
+    var newDay: Bool = false
     
     init(mainRouter: MainRouterProtocol?, timerTimerArray: TimerTimeArrayProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?) {
         self.mainRouter = mainRouter
         self.timerTimerArray = timerTimerArray
         self.dataStore = dataStore
         self.timerStatistics = timerStatistics
+        ifTimerOnNextday()
         weekDay()
         model = dataStore?.timerArray
-        ifTimerOnNextday()
         endOFTheDayViewUpdate()
     }
     
@@ -91,7 +92,7 @@ final class MainViewModell: MainViewModellProtocol {
     }
     
     //MARK: - weekDay
-    func weekDay() { //+
+    func weekDay() {
         let datee = cal.date(byAdding: .day, value: -1, to: Date())!
         let weekday = Calendar.current.component(.weekday, from: datee)
         toDay = weekday
@@ -101,14 +102,21 @@ final class MainViewModell: MainViewModellProtocol {
         }
         tapWeekDayArray?[weekday] = true
         let day = weekDayArray?[weekday - 1]
+        
         predicateRepeat = NSPredicate(format: "\(day!) = true")
         sentPredicate(predicate: predicateRepeat!)
     }
     
     //MARK: - Timer Remove
     func timerRemove(modelIndex: TimerModelData, removeBool: Bool, index: Int, view: UIViewController, collectionView: UICollectionView) {
+        print("INDEXXX == \(index)")
         let alert = UIAlertController(title: "100% ?", message: nil, preferredStyle: .alert)
         let actionDelete = UIAlertAction(title: "Delete", style: .destructive) { action in
+            if let selfIndex = self.index {
+                if let cell = collectionView.cellForItem(at: [0,selfIndex]) as? MainCollectionViewCelll {
+                    cell.stopTimer()
+                }
+            }
             if let cell = self.collectionView?.cellForItem(at: [0, index]) as? MainCollectionViewCelll {
                 cell.timerIsRemove()
             }
@@ -124,6 +132,7 @@ final class MainViewModell: MainViewModellProtocol {
                 self.dataStore?.deleteObject(modelIndex)
                 self.index = nil
             }
+        
             DispatchQueue.main.async {
                 collectionView.reloadData()
             }
@@ -136,11 +145,13 @@ final class MainViewModell: MainViewModellProtocol {
     
     //MARK: - Timer Time Update
     func timerTimeUpdate(timerTimeUpdate: Int, index: Int?) {
+//        print("indexx updatee ==\(index)")
         guard let index = index else { return }
-        //        let donee = dataStore?.timerArray?[index].timerDone
+//                let donee = dataStore?.timerArray?[index].timerDone
         try! realm.write {
             dataStore?.timerArray?[index].timerUpdateTime = timerTimeUpdate
         }
+        timerCounting = true
         if timerTimeUpdate <= 0{
             timerReset(index: index)
             timerCounting = false
@@ -280,20 +291,23 @@ final class MainViewModell: MainViewModellProtocol {
             try! realm.write {
                 dataStore?.timerArray?[index].todayDate = Date().getFormattedDate()
             }
+            newDay = true
+            timerReset(index: index)
+            
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.collectionView?.reloadData()
                 self.weekDayCollectionView?.reloadData()
             }
-            timerReset(index: index)
+//            timerReset(index: index)
         }
     }
     
     //MARK: - End OF The Day View update
     //Eger app aciqdisa ve timer qoshulu deyilse onda her 5 saniyeden bir bu kod isdeyir
-    private func endOFTheDayViewUpdate() {
+    private func `endOFTheDayViewUpdate`() {
         print("TIMER COUNTING === \(timerCounting)")
-        if !timerCounting! {
+        if timerCounting == false {
             let timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(refreshValue), userInfo: nil, repeats: true)
             endOFTheDayTimer = timer
         }
@@ -301,21 +315,25 @@ final class MainViewModell: MainViewModellProtocol {
     
     @objc private func refreshValue() {
         print("20 sec reload")
-        dataStore?.timerArray = realm.objects(TimerModelData.self)
-        var modelIndex = dataStore?.timerArray?.count
-        if modelIndex != 0 {
-            modelIndex! -= 1
-            for i in 0...modelIndex! {
-                timerDayOff(index: i)
-            }
-        }
-        weekDay()
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.collectionView?.reloadData()
-            self.weekDayCollectionView?.reloadData()
-        }
+       
         
+//        var modelIndex = dataStore?.timerArrayHelper?.count
+//        if modelIndex != 0 {
+//            modelIndex! -= 1
+//            for i in 0...modelIndex! {
+//                timerDayOff(index: i)
+//            }
+//        }
+//        if newDay {
+//            weekDay()
+//            DispatchQueue.main.async { [weak self] in
+//                guard let self = self else { return }
+//                self.collectionView?.reloadData()
+//                self.weekDayCollectionView?.reloadData()
+//            }
+//            newDay = false
+//        }
+//
         
 //        if dataStore?.timerArray?[index].todayDate != Date().getFormattedDate() {
 //
