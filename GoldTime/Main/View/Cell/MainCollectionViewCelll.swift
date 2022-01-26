@@ -216,11 +216,12 @@ class MainCollectionViewCelll: UICollectionViewCell {
         }else {
             setTimerCounting(false)
             stopTimer()
-            if timerDoneSelected == true && toDay == weekDay {
-                timerDone()
-            }else {
-                stopTimer()
-            }
+//            if timerDoneSelected == true && toDay == weekDay {
+//                timerDone()
+//            }else {
+//                stopTimer()
+//            }
+
             if toDay == weekDay {
                 setTimeLabel(timerUpdateTime)
             }else {
@@ -361,9 +362,9 @@ class MainCollectionViewCelll: UICollectionViewCell {
             setTimerUpdateTimeDeleagte?.setTimerNewTime(newTime: Int(diff), index: index!)
             if Int(diff) <= 0 {
                 stopTimer()
-                if toDay == weekDay {
-                    timerDone()
-                }
+//                if toDay == weekDay {
+//                    timerDone()
+//                }
                 setTimerCounting(false)
                 setTimeLabel(self.timerTime!)
                 setStartTime(date: nil)

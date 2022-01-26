@@ -152,10 +152,9 @@ extension MainViewController: UICollectionViewDataSource {
             let weekDayCell = collectionView.dequeueReusableCell(withReuseIdentifier: "weekDayCell", for: indexPath) as? WeekDayCollectionViewCell
             let item = viewModell?.weekDayArray?[indexPath.item]
             let item2 = viewModell?.tapWeekDayArray?[indexPath.item + 1]
-//            print("AAAAA \(indexPath.row + 1) == \(item2)")
             let datee = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
             let weekday = Calendar.current.component(.weekday, from: datee)
-            let index = indexPath.row + 1 == weekday // bu if else di
+            let index = indexPath.row + 1 == weekday // bu if else di bool qaytarir
             weekDayCell?.update(name: item!, isSelected: index, isBlackSelected: item2 ?? false)
             return weekDayCell!
         }
@@ -163,6 +162,7 @@ extension MainViewController: UICollectionViewDataSource {
         if collectionView == mainCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? MainCollectionViewCelll
             //        cell.pushhDelegate = self
+            print("CELLL INDEX == \(indexPath.item)")
             cell?.timerStartStopDelegate = self
             cell?.removeTimerDelegate = self
             cell?.setIndexDeleagte = self

@@ -46,13 +46,13 @@ final class MainViewModell: MainViewModellProtocol {
     var timerTimeUpdate: Int?
     var timerStatisticSaveTime: Int? = 0
     private let cal = Calendar.current
-    private let date = Date()
     var predicateRepeat: NSPredicate?
     var weekDayArray: [String]? = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     var tapWeekDayArray: [Int : Bool]? = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
     var toDay: Int?
     var checkDay: Int?
     var endOFTheDayTimer: Timer?
+    
     init(mainRouter: MainRouterProtocol?, timerTimerArray: TimerTimeArrayProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?) {
         self.mainRouter = mainRouter
         self.timerTimerArray = timerTimerArray
@@ -87,20 +87,22 @@ final class MainViewModell: MainViewModellProtocol {
         predicateRepeat = predicate
         dataStore?.predicateFilter(predicate: predicate)
         model = dataStore?.timerArray
-
+        
     }
     
     //MARK: - weekDay
-    func weekDay() {
+    func weekDay() { //+
         let datee = cal.date(byAdding: .day, value: -1, to: Date())!
         let weekday = Calendar.current.component(.weekday, from: datee)
         toDay = weekday
         checkDay = weekday
+        for i in 1...7 {
+            tapWeekDayArray?[i] = false
+        }
         tapWeekDayArray?[weekday] = true
         let day = weekDayArray?[weekday - 1]
         predicateRepeat = NSPredicate(format: "\(day!) = true")
-        dataStore?.predicateFilter(predicate: predicateRepeat)
-//        self.dataStore?.timerArray = realm.objects(TimerModelData.self)
+        sentPredicate(predicate: predicateRepeat!)
     }
     
     //MARK: - Timer Remove
@@ -116,7 +118,7 @@ final class MainViewModell: MainViewModellProtocol {
             }
             if removeBool == true {
                 self.dataStore?.deleteObject(modelIndex)
-                self.timerCounting = true
+                self.timerCounting = true//bu sef ola biler
                 self.index = nil
             }else {
                 self.dataStore?.deleteObject(modelIndex)
@@ -135,14 +137,16 @@ final class MainViewModell: MainViewModellProtocol {
     //MARK: - Timer Time Update
     func timerTimeUpdate(timerTimeUpdate: Int, index: Int?) {
         guard let index = index else { return }
-        let donee = dataStore?.timerArray?[index].timerDone
+        //        let donee = dataStore?.timerArray?[index].timerDone
         try! realm.write {
             dataStore?.timerArray?[index].timerUpdateTime = timerTimeUpdate
         }
         if timerTimeUpdate <= 0{
             timerReset(index: index)
+            timerCounting = false
+            //            endOFTheDayViewUpdate()  bu stop olmayan timerler ucundu burda ise vaxt 0 catdigindan stop olub
             try! realm.write {
-                if dataStore?.timerArray?[index].todayDate == date.getFormattedDate() {
+                if dataStore?.timerArray?[index].todayDate == Date().getFormattedDate() {
                     dataStore?.timerArray?[index].timerDone = true
                     dataStore?.timerArray?[index].theTimerIsFinishedHowManyTimes += 1
                     dataStore?.timerArray?[index].timerDoneDate = Date().getFormattedDate()
@@ -152,53 +156,28 @@ final class MainViewModell: MainViewModellProtocol {
         //timer statistics add
         let timerTimeeee = (dataStore?.timerArray?[index].timerTime)! - timerTimeUpdate
         dataStore?.saveTimerStatistics(key: Date().getFormattedDate(), value: timerTimeeee, index: index)
-
         
         
-//        print("--------111 === \(dataStore?.timerArray?[index].todayDate)")
-//        print("---------222 === \(date.getFormattedDate() )")
-
-//        let datee = cal.date(byAdding: .day, value: 3, to: Date())!
-
         //Timer ishdiye ishdiye eger saat 00:00 olursa onda bu funcciya ishe dushur
-        if dataStore?.timerArray?[index].todayDate != date.getFormattedDate() {
+        if dataStore?.timerArray?[index].todayDate != Date().getFormattedDate() {
             ifTimerOnNextday()
-//            print("111 === \(dataStore?.timerArray?[index].todayDate)")
-            dataStore?.timerArray = realm.objects(TimerModelData.self).filter(predicateRepeat!)
-//            print("222 === \(dataStore?.timerArray?[index].todayDate)")
-            var modelIndex = dataStore?.timerArray?.count
-            if modelIndex != 0 {
-                modelIndex! -= 1
-                print("COUNTT MODEl ===-=-=-=-=-=-=- \(modelIndex)")
-                for i in 0...modelIndex! {
-                    timerDayOff(index: i)
-                }
+            weekDay()
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.collectionView?.reloadData()
+                self.weekDayCollectionView?.reloadData()
             }
-        }
-        
-        
-        //============================
-        if dataStore?.timerArray?[index].timer24houresResetOnOff == true {
-//            timer24hourse(index: index)
-        }else {
-
-        }
-//        if date.getFormattedDateTime() == date.endOfDay.getFormattedDateTime() {
-//            print("END OFF DAY -=-=-=-=-=-++++_+_+_+_+_+_+_ timee1 == \(date.getFormattedDateTime()), endOfDay == \(date.endOfDay.getFormattedDateTime())")
-//        }
-        if dataStore?.timerArray?[index].todayDate == Date().getFormattedDate() {
-            
         }
     }
     
     //MARK: - Timer Start Stop
     func timerStartStop(timerCounting: Bool, index: Int?, startTime: Date?, stopTime: Date?) {
+        print("TIMERRRCCC === \(timerCounting)")
         guard let index = index else { return }
         if timerCounting == true && self.index == nil && dataStore?.timerArray?[index].timerDone == false {
+            endOFTheDayTimer?.invalidate()
             self.timerCounting = timerCounting
             self.index = index
-            
-            
             try! realm.write {
                 dataStore?.timerArray?[index].bugFixBool = timerCounting
                 dataStore?.timerArray?[index].timerCounting = timerCounting
@@ -209,7 +188,6 @@ final class MainViewModell: MainViewModellProtocol {
                 cell.startTimer()
             }
             print("STARTT")
-            //            timer24hourse()
         }else if timerCounting == false && self.index == index {
             self.timerCounting = timerCounting
             self.index = nil
@@ -253,35 +231,22 @@ final class MainViewModell: MainViewModellProtocol {
         if let cell = collectionView?.cellForItem(at: [0,index]) as? MainCollectionViewCelll {
             cell.stopTimer()
         }
-        
-    }
-    
-    //MARK: - Timer 24 Hourse On
-    private func timer24hourseOn() {
-        var modelIndex = dataStore?.timerArray?.count
-        if modelIndex != 0 {
-            modelIndex! -= 1
-            for i in 0...modelIndex! {
-              timerDayOff(index: i)
-            }
-        }
-        dataStore?.timerArray = realm.objects(TimerModelData.self).filter(predicateRepeat!)
     }
     
     //MARK: - IfTimerOnNextday
     //Gun sona catandan sora timere girende eger isdeyen timer qalibsa onun bugunku vaxdi sifirlanir, dunenki saat 00:00 qeder isleyen vaxt dunenin statistikasina elave olnur
     func ifTimerOnNextday() {
         dataStore?.timerArray = realm.objects(TimerModelData.self)
-//        let datee = cal.date(byAdding: .day, value: 2, to: Date())!
+        //        let datee = cal.date(byAdding: .day, value: 2, to: Date())!
         var modelIndex = dataStore?.timerArray?.count
         if modelIndex != 0 {
             modelIndex! -= 1
             for i in 0...modelIndex! {
                 let addTimeStatistic: Int?
-                if  dataStore?.timerArray?[i].timerCounting == true && dataStore?.timerArray?[i].todayDate != date.getFormattedDate() {
+                if  dataStore?.timerArray?[i].timerCounting == true && dataStore?.timerArray?[i].todayDate != Date().getFormattedDate() {
                     guard let startTime = dataStore?.timerArray?[i].startTimer else { return }
-                    let time = calcRestartTime(start: startTime, stop: date.yesterdayEndOfDay)
-                    let diff = date.timeIntervalSince(time)
+                    let time = calcRestartTime(start: startTime, stop: Date().yesterdayEndOfDay)
+                    let diff = Date().timeIntervalSince(time)//startdan gunun sonuna olan vaxt
                     if (dataStore?.timerArray?[i].timerTime)! < Int(diff) {
                         addTimeStatistic = dataStore?.timerArray?[i].timerTime
                     }else {
@@ -289,8 +254,8 @@ final class MainViewModell: MainViewModellProtocol {
                     }
                     try! realm.write {
                         dataStore?.timerArray?[i].timerDone = false
-                        dataStore?.timerArray?[i].timerStatistics[date.yesterdayEndOfDayNeedFormat.getFormattedDate()]! += addTimeStatistic!
-                        dataStore?.timerArray?[i].timerStatistics[date.getFormattedDate()] = 0
+                        dataStore?.timerArray?[i].timerStatistics[Date().yesterdayEndOfDayNeedFormat.getFormattedDate()]! += addTimeStatistic!
+                        dataStore?.timerArray?[i].timerStatistics[Date().getFormattedDate()] = 0
                     }
                 }
             }
@@ -298,39 +263,72 @@ final class MainViewModell: MainViewModellProtocol {
         }
     }
     
-    private func timerDayOff(index: Int) {
-//        let datee = cal.date(byAdding: .day, value: 1, to: Date())!
-
-        if dataStore?.timerArray?[index].todayDate != date.getFormattedDate() {
-            try! realm.write {
-                dataStore?.timerArray?[index].todayDate = date.getFormattedDate()
+    //MARK: - Timer 24 Hourse On
+    private func timer24hourseOn() { //+
+        var modelIndex = dataStore?.timerArray?.count
+        if modelIndex != 0 {
+            modelIndex! -= 1
+            for i in 0...modelIndex! {
+                timerDayOff(index: i)
             }
-            weekDayCollectionView?.reloadData()
-            collectionView?.reloadData()
+        }
+//                dataStore?.timerArray = realm.objects(TimerModelData.self).filter(predicateRepeat!)
+    }
+    
+    private func timerDayOff(index: Int) {
+        if dataStore?.timerArray?[index].todayDate != Date().getFormattedDate() {
+            try! realm.write {
+                dataStore?.timerArray?[index].todayDate = Date().getFormattedDate()
+            }
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.collectionView?.reloadData()
+                self.weekDayCollectionView?.reloadData()
+            }
             timerReset(index: index)
-            print("INDEXXX === \(index)")
         }
     }
     
     //MARK: - End OF The Day View update
-    //Eger app aciqdisa ve timer qoshulu deyilse onda her 10 saniyeden bir bu kod isdeyir
+    //Eger app aciqdisa ve timer qoshulu deyilse onda her 5 saniyeden bir bu kod isdeyir
     private func endOFTheDayViewUpdate() {
+        print("TIMER COUNTING === \(timerCounting)")
         if !timerCounting! {
-            let timer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(refreshValue), userInfo: nil, repeats: true)
+            let timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(refreshValue), userInfo: nil, repeats: true)
             endOFTheDayTimer = timer
         }
     }
     
     @objc private func refreshValue() {
-            timer24hourseOn() //bug olsa burdan olabiler birde updatede var bundan
+        print("20 sec reload")
+        dataStore?.timerArray = realm.objects(TimerModelData.self)
+        var modelIndex = dataStore?.timerArray?.count
+        if modelIndex != 0 {
+            modelIndex! -= 1
+            for i in 0...modelIndex! {
+                timerDayOff(index: i)
+            }
+        }
+        weekDay()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.collectionView?.reloadData()
+            self.weekDayCollectionView?.reloadData()
+        }
+        
+        
+//        if dataStore?.timerArray?[index].todayDate != Date().getFormattedDate() {
+//
+//        }3
+        //        ifTimerOnNextday()
+        //            timer24hourseOn() //bug olsa burdan olabiler birde updatede var bundan
     }
-    
     
     private func calcRestartTime(start: Date, stop: Date) -> Date {
         let diff = start.timeIntervalSince(stop)
         return Date().addingTimeInterval(diff)
     }
-
+    
     private func secondsToHoursMinutesSeconds(_ ms: Int) -> (Int, Int, Int) {
         let hour = ms / 3600
         let min = (ms % 3600) / 60

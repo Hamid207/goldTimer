@@ -44,7 +44,6 @@ class DataStore: DataStoreProtocol {
     var test: Results<TimerModelData>?
     init() {
         timerArray = realm.objects(TimerModelData.self)
-        test = realm.objects(TimerModelData.self)
 //        print("TESTss Model 111 == \(test)")
 //        print("timerArray Model 111 == \(timerArray)")
         userStaticsArray = realm.objects(UserStatisticsData.self)
@@ -56,10 +55,11 @@ class DataStore: DataStoreProtocol {
     
     func predicateFilter(predicate: NSPredicate?) {
         predecate = predicate
-       
         if predicate != nil {
             timerArray = realm.objects(TimerModelData.self).filter(predicate!)
 //            print("AAA == \(timerArray)")
+        }else {
+            timerArray = realm.objects(TimerModelData.self)
         }
     }
     
