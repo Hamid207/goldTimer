@@ -332,18 +332,20 @@ class MainCollectionViewCelll: UICollectionViewCell {
         startButton.setTitleColor(.black, for: .normal)
     }
     
-    //MARK: MisTimer
+    //MARK: MisTimer - start basanda eger basqa timerde start olubsa onda bu isdeyecey yoxsa startTime, stopTimeda vaxtlar sef olacaq
     func missTimer() {
         setStopTime(date: misStopTime)
         setStartTime(date: misStartTime)
         setTimerCounting(false)
     }
     
+    //MARK: - Timer Remove
     @objc private func timerRemove() {
         guard let modelIndex = timerRemoveIndex else { return }
         removeTimerDelegate?.removeIndex(modelIndex: modelIndex, deleteBool: removeBool, cellIndex: index!)
     }
     
+    //MARK: - Timer Is Remove
     func timerIsRemove() {
         setStartTime(date: nil)
         setStopTime(date: nil)
@@ -483,7 +485,8 @@ class MainCollectionViewCelll: UICollectionViewCell {
         startButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15).isActive = true
         startButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         startButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        startButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+//        startButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        startButton.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1/6).isActive = true
         startButton.addTarget(self, action: #selector(startStopButtonAction), for: .touchUpInside)
         
         contentView.addSubview(pomodoroTimerLabel)

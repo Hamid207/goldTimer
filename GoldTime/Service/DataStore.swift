@@ -27,7 +27,7 @@ protocol DataStoreProtocol {
     var timerBool: Bool? { get set }
     func predicateFilter(predicate: NSPredicate?)
     func saveTimerStatistics(key: String, value: Int, index: Int?)
-    func addStatistic(days: TimerStatisticsEnum, index: Int?, predicate: NSPredicate) -> Int
+    func findOutStatistics(days: TimerStatisticsEnum, index: Int?, predicate: NSPredicate) -> Int
 }
 
 class DataStore: DataStoreProtocol {
@@ -62,7 +62,7 @@ class DataStore: DataStoreProtocol {
             timerArray = realm.objects(TimerModelData.self).filter(predicate!)
 //            print("AAA == \(timerArray)")
         }else {
-            timerArray = realm.objects(TimerModelData.self)
+//            timerArray = realm.objects(TimerModelData.self)
         }
     }
     
@@ -74,8 +74,8 @@ class DataStore: DataStoreProtocol {
 //        print("keyyy == \(key) value == \(value)")
     }
     
-    //MARK: - AdStatistic
-    func addStatistic(days: TimerStatisticsEnum, index: Int?, predicate: NSPredicate) -> Int {
+    //MARK: - Ad Statistic
+    func findOutStatistics(days: TimerStatisticsEnum, index: Int?, predicate: NSPredicate) -> Int {
 //        timerArray = realm.objects(TimerModelData.self).filter(predicate)
         var time = 0
         if let index = index {

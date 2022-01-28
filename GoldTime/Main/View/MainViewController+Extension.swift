@@ -157,12 +157,10 @@ extension MainViewController: UICollectionViewDataSource {
             let index = indexPath.row + 1 == weekday // bu if else di bool qaytarir
             weekDayCell?.update(name: item!, isSelected: index, isBlackSelected: item2 ?? false)
             return weekDayCell!
-        }
-        
-        if collectionView == mainCollectionView {
+        }else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? MainCollectionViewCelll
             //        cell.pushhDelegate = self
-            print("CELLL INDEX == \(indexPath.item)")
+//            print("CELLL INDEX == \(indexPath.item)")
             cell?.timerStartStopDelegate = self
             cell?.removeTimerDelegate = self
             cell?.setIndexDeleagte = self
@@ -171,14 +169,12 @@ extension MainViewController: UICollectionViewDataSource {
             cell?.pomodoroTimerStartStopDelegate = self
             cell?.addModelIndexDelegate = self
             cell?.sentAlertActionDelegate = self
-            if let item = viewModell?.model?[indexPath.item] {
+            if let item = viewModell?.dataStore?.timerArray?[indexPath.item] {
                 cell?.update(model: item, timerCounting: true, index: indexPath.row, checkDay: (viewModell?.checkDay)!)
                 cell?.timerRemoveIndex = item
             }
             return cell!
         }
-        
-        return UICollectionViewCell()
     }
 }
 

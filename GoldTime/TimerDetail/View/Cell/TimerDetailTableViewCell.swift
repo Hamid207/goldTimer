@@ -77,6 +77,7 @@ class TimerDetailTableView: UITableViewCell {
     private let statisticsSegmetControll: UISegmentedControl = {
         var segmentControllArray = ["7 day", "30 day", "3 month", "6 month"]
         let segment = UISegmentedControl(items: segmentControllArray)
+        segment.selectedSegmentIndex = 0
         segment.translatesAutoresizingMaskIntoConstraints = false
         return segment
     }()
@@ -88,12 +89,13 @@ class TimerDetailTableView: UITableViewCell {
         label.textColor = .black
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 40, weight: .heavy)
-        label.text = "12h 25m 30s"
+//        label.text = "12h 25m 30s"
         return label
     }()
     
     
     func update(statisticsTime: Int?){
+        timerStatisticsDelegate?.sentTimerStatisticDelegate(days: .week)
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             guard let time = statisticsTime else { return }
@@ -117,6 +119,7 @@ class TimerDetailTableView: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         itemSetup()
+        timerStatisticsDelegate?.sentTimerStatisticDelegate(days: .week)
         //        print("InIt dataStoreStartPause -=-=-- \(dataStoreStartPause)")
     }
     

@@ -49,7 +49,7 @@ final class TimerDetailViewModel: TimerDetailViewModelProtocol {
     }
     
     func sentTimerStatistics(days: TimerStatisticsEnum, tableView: UITableView) {
-        statisticsTime = dataStore?.addStatistic(days: days, index: index, predicate: predicate)
+        statisticsTime = dataStore?.findOutStatistics(days: days, index: index, predicate: predicate)
         DispatchQueue.main.async {
             tableView.reloadData()
         }
