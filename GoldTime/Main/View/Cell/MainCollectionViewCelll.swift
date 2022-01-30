@@ -165,7 +165,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         self.weekDay = checkDay
         weekDayAdd()
         timerTime = model.timerTime
-        timerCellColor = model.name
+        timerCellColor = model.timerColor
         timerUpdateTime = model.timerUpdateTime
         nameLabel.text = model.name
         startTime = model.startTimer
@@ -497,14 +497,21 @@ class MainCollectionViewCelll: UICollectionViewCell {
     
     private func layoutSub() {
 //        self.backgroundColor = #colorLiteral(red: 0.08406862617, green: 0.7534314394, blue: 0.5585784912, alpha: 1)
-        switch timerCellColor {
-            case "red": self.backgroundColor = UIColor.red
-            case "yellow": self.backgroundColor = .yellow
-            case "green": self.backgroundColor = .green
-            case "gray": self.backgroundColor = .gray
-            case "blue": self.backgroundColor = .blue
-            default:
-                self.backgroundColor = #colorLiteral(red: 0.08406862617, green: 0.7534314394, blue: 0.5585784912, alpha: 1)
+//        switch timerCellColor {
+//            case "red": self.backgroundColor = UIColor.red
+//            case "yellow": self.backgroundColor = .yellow
+//            case "green": self.backgroundColor = .green
+//            case "gray": self.backgroundColor = .gray
+//            case "blue": self.backgroundColor = .blue
+//            default:
+//                self.backgroundColor = #colorLiteral(red: 0.08406862617, green: 0.7534314394, blue: 0.5585784912, alpha: 1)
+//        }
+        if timerCellColor == nil {
+            print("COLOR NIL")
+            self.backgroundColor = #colorLiteral(red: 0.08235294118, green: 0.7529411765, blue: 0.5568627451, alpha: 1)
+        }else {
+            print("COLOR dont nill \(timerCellColor)")
+            self.backgroundColor = UIColor().hexStringToUIColor(hex: timerCellColor!)
         }
         
         self.layer.cornerRadius = 10

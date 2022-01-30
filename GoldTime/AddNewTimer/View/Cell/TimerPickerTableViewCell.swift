@@ -12,7 +12,7 @@ class TimerPickerTableViewCell: UITableViewCell {
     weak var sentTimerTimeDelegate: SentTimerTimeDelegate?
     
     private lazy var hourse: Int = 0
-    private lazy var minute: Int = 1
+    private lazy var minute: Int = 15
 //    private lazy var seconds: Int = 0
     
     private lazy var hourseArray = [Int](0...10)

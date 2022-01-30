@@ -41,15 +41,6 @@ extension AddNewTimerViewController {
     }
 }
 
-
-extension AddNewTimerViewController: TimerItemAddDelegate {
-    func timerAdd(timer: TimerModelData) {
-//        viewModel?.saveTimer(timer: timer)
-        viewModel?.popVC()
-    }
-}
-
-
 extension AddNewTimerViewController: SentTimerNameDelegate, SaveWeekDayDelegate, SentColorDelegate, SentTimerTimeDelegate, SaveButtonDelegate {
     func sentTimerName(name: String?) {
         viewModel?.saveTimerName(name: name)
@@ -63,7 +54,7 @@ extension AddNewTimerViewController: SentTimerNameDelegate, SaveWeekDayDelegate,
         viewModel?.saveTimerWeekDay(mon: mon, tue: tue, wed: wed, thu: thu, fri: fri, sat: sat, sun: sun)
     }
     
-    func setColorDelegate(color: UIColor?) {
+    func setColorDelegate(color: String?) {
         viewModel?.saveTimerColor(color: color)
     }
     

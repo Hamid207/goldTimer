@@ -14,7 +14,7 @@ protocol AddNewTimerViewModelProtocol {
     func saveTimerName(name: String?)
     func saveTimerTime(hourse: Int?, minute: Int?)
     func saveTimerWeekDay(mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool, sun: Bool)
-    func saveTimerColor(color: UIColor?)
+    func saveTimerColor(color: String?)
     func saveTimerButton()
     var saveButtonIsSelected: Bool! { get set }
     init(mainRouter: MainRouterProtocol?, timerTimerArray: TimerTimeArrayProtocol?, dataStore: DataStoreProtocol?)
@@ -35,7 +35,7 @@ final class AddNewTimerViewModel: AddNewTimerViewModelProtocol {
     private lazy var sun = false
     private var timerName: String?
     private var timerTime: Int?
-    private var timerColor: UIColor?
+    private var timerColor: String?
     private var timerAllWeekDayFalse = false
     var saveButtonIsSelected: Bool! = false
     init(mainRouter: MainRouterProtocol?, timerTimerArray: TimerTimeArrayProtocol?, dataStore: DataStoreProtocol?) {
@@ -86,7 +86,7 @@ final class AddNewTimerViewModel: AddNewTimerViewModelProtocol {
         }
     }
     
-    func saveTimerColor(color: UIColor?){
+    func saveTimerColor(color: String?){
         if color != nil {
             timerColor = color
         }else {
@@ -95,10 +95,12 @@ final class AddNewTimerViewModel: AddNewTimerViewModelProtocol {
     }
     
     func saveTimerButton() {
-        let date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
-        let weekday = Calendar.current.component(.weekday, from: date)
-        let model = TimerModelData(name: timerName, timerTime: timerTime, timerColor: timerColor, hourse: <#T##Int#>, minute: <#T##Int#>, seconds: <#T##Int#>, statick: <#T##Int#>, pomodoroTime: <#T##Int?#>, pomodoroTimerOnOff: <#T##Bool?#>, pomodorTimerWorkOrBreak: <#T##Bool?#>, startFix: <#T##Bool#>, bugFixBool: <#T##Bool?#>, userTimerstatistics: <#T##Int?#>, startTimer: <#T##Date?#>, stopTimer: <#T##Date?#>, timerCounting: <#T##Bool#>, timerUpdateTime: <#T##Int#>, pomodoroTimerUpdateTime: <#T##Int#>, pomdoroStartTime: <#T##Date?#>, pomdoroStopTime: <#T##Date?#>, todayDate: <#T##String?#>, weekDay: <#T##Int?#>, timer24houresResetOnOff: <#T##Bool#>, mon: <#T##Bool#>, tue: <#T##Bool#>, wed: <#T##Bool#>, thu: <#T##Bool#>, fri: <#T##Bool#>, sat: <#T##Bool#>, sun: <#T##Bool#>, timerDone: <#T##Bool#>)
-        print("SAVEE")
+                let date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+                let weekday = Calendar.current.component(.weekday, from: date)
+                guard let time = timerTime else { return }
+        let model = TimerModelData(name: timerName, timerTime: time, timerColor: timerColor, hourse: 0, minute: 0, seconds: 0, statick: time, pomodoroTime: nil, pomodoroTimerOnOff: nil, pomodorTimerWorkOrBreak: nil, startFix: false, bugFixBool: false, userTimerstatistics: 0, startTimer: nil, stopTimer: nil, timerCounting: false, timerUpdateTime: time, pomodoroTimerUpdateTime: 0, pomdoroStartTime: nil, pomdoroStopTime: nil, todayDate: Date().getFormattedDate(), weekDay: weekday, timer24houresResetOnOff: false, mon: mon, tue: thu, wed: wed, thu: thu, fri: fri, sat: sat, sun: sun, timerDone: false)
+                dataStore?.saveObject(model)
+        popVC()
     }
     
     func popVC() {
