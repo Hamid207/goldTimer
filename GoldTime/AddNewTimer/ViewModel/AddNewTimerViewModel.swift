@@ -112,12 +112,12 @@ final class AddNewTimerViewModel: AddNewTimerViewModelProtocol {
             saveButtonIsSelected = true
             let indexPosition = IndexPath(row: 0, section: 4)
             tableView?.reloadRows(at: [indexPosition], with: .none)
-            print("TRUEE")
+            print("TRUEE AddNEWTIMER ViewMODEl 120")
         }else {
             saveButtonIsSelected = false
             let indexPosition = IndexPath(row: 0, section: 4)
             tableView?.reloadRows(at: [indexPosition], with: .none)
-            print("Falsee")
+            print("Falsee AddNEWTIMER ViewMODEl 120")
         }
     }
 }

@@ -1,13 +1,13 @@
 //
-//  SaveButtonTableViewCell.swift
+//  EditSaveButtonTableViewCell.swift
 //  GoldTime
 //
-//  Created by Hamid Manafov on 28.01.22.
+//  Created by Hamid Manafov on 30.01.22.
 //
 
 import UIKit
 
-class SaveButtonTableViewCell: UITableViewCell {
+class EditSaveButtonTableViewCell: UITableViewCell {
     
     weak var saveButtonDelegate: SaveButtonDelegate?
     

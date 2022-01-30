@@ -19,12 +19,13 @@ class MainCollectionViewCelll: UICollectionViewCell {
     weak var removeTimerDelegate: TimerRemoveDelegate?
     weak var pomodoroTimerStartStopDelegate: PomodoroTimerStartStopDelegate?
     weak var sentAlertActionDelegate: SentAlertActionDelegate?
+    weak var showEditVcDelegate: TapOnTheEdirVcDelegate?
     
     
     var index: Int?
     var timerRemoveIndex: TimerModelData?
     
-    private var timerCellColor: String?
+    private var timerCellColor = "#15C08E"
     
     private var timerTime: Int?
     private var startTime: Date?
@@ -72,10 +73,28 @@ class MainCollectionViewCelll: UICollectionViewCell {
     
     //===============================================
     
+    private let editsImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(systemName: "gearshape")
+        imageView.tintColor = .black
+        //        imageView.backgroundColor = .red
+        return imageView
+    }()
+    
+    private let editsTimerButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+//                button.backgroundColor = .orange
+        button.setTitleColor(.black, for: .normal)
+        return button
+    }()
+    
+    
     private let removeImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "trash.fill")
+        imageView.image = UIImage(systemName: "trash")
         imageView.tintColor = .black
         //        imageView.backgroundColor = .red
         return imageView
@@ -88,6 +107,8 @@ class MainCollectionViewCelll: UICollectionViewCell {
         button.setTitleColor(.black, for: .normal)
         return button
     }()
+    
+    
     
     private let nameLabel: UILabel = {
         let label = UILabel()
@@ -109,7 +130,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
     private let timerLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .black
+//        label.textColor = .black
         label.textAlignment = .center
         //        label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
         label.font = UIFont.monospacedDigitSystemFont(ofSize: 50, weight: .medium)
@@ -132,7 +153,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         button.setTitle("Start", for: .normal)
 //        button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .medium)
         return button
     }()
     
@@ -165,7 +186,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         self.weekDay = checkDay
         weekDayAdd()
         timerTime = model.timerTime
-        timerCellColor = model.timerColor
+        timerCellColor = model.timerColor ?? "#15C08E"
         timerUpdateTime = model.timerUpdateTime
         nameLabel.text = model.name
         startTime = model.startTimer
@@ -279,6 +300,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         RunLoop.current.add(timer, forMode: .common)
         timer.tolerance = 0.1
         self.timer = timer
+        timerLabel.textColor = .white
         //        setTimerCounting(true)
         removeBool = true
         if toDay == weekDay {
@@ -309,6 +331,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
     
     //MARK: - Stop timer
     func stopTimer() {
+        timerLabel.textColor = .black
         if timer != nil {
             timer?.invalidate()
             timer = nil
@@ -337,6 +360,11 @@ class MainCollectionViewCelll: UICollectionViewCell {
         setStopTime(date: misStopTime)
         setStartTime(date: misStartTime)
         setTimerCounting(false)
+    }
+    
+    //MARK: - Edit Timer
+    @objc private func editTimerAction() {
+        showEditVcDelegate?.showEditVc()
     }
     
     //MARK: - Timer Remove
@@ -441,7 +469,30 @@ class MainCollectionViewCelll: UICollectionViewCell {
    
     //MARK: - Setup Item
     private func setupItem() {
-        contentView.addSubview(removeImageView)
+        addSubview(editsImageView)
+        editsImageView.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
+//        editsImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+        editsImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
+        editsImageView.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        editsImageView.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        
+        contentView.addSubview(editsTimerButton)
+        editsTimerButton.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
+        editsTimerButton.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 15).isActive = true
+//        editsTimerButton.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+//        editsTimerButton.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        editsTimerButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        editsTimerButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        editsTimerButton.addTarget(self, action: #selector(editTimerAction), for: .touchDown)
+        
+        addSubview(nameLabel)
+        nameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
+//        nameLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        nameLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 35).isActive = true
+        nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -35).isActive = true
+        
+        addSubview(removeImageView)
         removeImageView.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
         removeImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
         removeImageView.heightAnchor.constraint(equalToConstant: 25).isActive = true
@@ -454,12 +505,9 @@ class MainCollectionViewCelll: UICollectionViewCell {
         removeTimer.widthAnchor.constraint(equalToConstant: 35).isActive = true
         removeTimer.addTarget(self, action: #selector(timerRemove), for: .touchDown)
         
-        contentView.addSubview(nameLabel)
-        nameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
-//        nameLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        nameLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 35).isActive = true
-        nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -35).isActive = true
+   
+        
+      
         
 //        progressBar = ProgressBar()
 //        contentView.addSubview(progressBar)
@@ -487,7 +535,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         startButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
 //        startButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         startButton.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1/6).isActive = true
-        startButton.addTarget(self, action: #selector(startStopButtonAction), for: .touchUpInside)
+        startButton.addTarget(self, action: #selector(startStopButtonAction), for: .touchDown)
         
         contentView.addSubview(pomodoroTimerLabel)
         pomodoroTimerLabel.bottomAnchor.constraint(equalTo: startButton.topAnchor, constant: -20).isActive = true
@@ -496,24 +544,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
     }
     
     private func layoutSub() {
-//        self.backgroundColor = #colorLiteral(red: 0.08406862617, green: 0.7534314394, blue: 0.5585784912, alpha: 1)
-//        switch timerCellColor {
-//            case "red": self.backgroundColor = UIColor.red
-//            case "yellow": self.backgroundColor = .yellow
-//            case "green": self.backgroundColor = .green
-//            case "gray": self.backgroundColor = .gray
-//            case "blue": self.backgroundColor = .blue
-//            default:
-//                self.backgroundColor = #colorLiteral(red: 0.08406862617, green: 0.7534314394, blue: 0.5585784912, alpha: 1)
-//        }
-        if timerCellColor == nil {
-            print("COLOR NIL")
-            self.backgroundColor = #colorLiteral(red: 0.08235294118, green: 0.7529411765, blue: 0.5568627451, alpha: 1)
-        }else {
-            print("COLOR dont nill \(timerCellColor)")
-            self.backgroundColor = UIColor().hexStringToUIColor(hex: timerCellColor!)
-        }
-        
+        self.backgroundColor = UIColor().hexStringToUIColor(hex: timerCellColor)
         self.layer.cornerRadius = 10
         startButton.layer.cornerRadius = 10
     }

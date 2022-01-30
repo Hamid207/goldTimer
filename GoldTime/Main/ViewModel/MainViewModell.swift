@@ -11,6 +11,7 @@ import RealmSwift
 protocol MainViewModellProtocol {
     func tapTHeAddNewTimerVc()
     func tapOnTheTimerDetailVc(index: Int)
+    func tapOnTheEditVc()
     var index: Int? { get set }
     var timerCounting: Bool? { get set }
     var model: Results<TimerModelData>? { get set }
@@ -51,7 +52,11 @@ final class MainViewModell: MainViewModellProtocol {
     var tapWeekDayArray: [Int : Bool]? = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
     var toDay: Int?
     var checkDay: Int?
-    var endOFTheDayTimer: Timer?
+    var endOFTheDayTimer: Timer? {
+        willSet {
+            endOFTheDayTimer?.invalidate()
+        }
+    }
     var newDay: Bool = false
     
     init(mainRouter: MainRouterProtocol?, timerTimerArray: TimerTimeArrayProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?) {
@@ -71,6 +76,10 @@ final class MainViewModell: MainViewModellProtocol {
     
     func tapOnTheTimerDetailVc(index: Int) {
         mainRouter?.showTimerDetail(index: index, predicate: predicateRepeat!)
+    }
+    
+    func tapOnTheEditVc() {
+        mainRouter?.showEditViewController()
     }
     
     func remiveTest() {

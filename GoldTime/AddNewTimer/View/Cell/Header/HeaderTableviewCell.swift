@@ -17,7 +17,7 @@ class HeaderTableviewCell: UITableViewHeaderFooterView {
         label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
-        label.text = "Header"
+//        label.text = "Header"
         return label
     }()
     

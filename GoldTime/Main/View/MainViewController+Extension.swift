@@ -108,8 +108,12 @@ extension MainViewController: TimerStartStopDelegate, SetIndexDelegate, AddModel
     }
 }
 
-//MARK: - TimerRemoveDelegate
-extension MainViewController: TimerRemoveDelegate {
+//MARK: - TimerRemoveDelegate, TapOnTheEdirVcDelegate
+extension MainViewController: TimerRemoveDelegate, TapOnTheEdirVcDelegate {
+    func showEditVc() {
+        viewModell?.tapOnTheEditVc()
+    }
+    
     func removeIndex(modelIndex: TimerModelData, deleteBool: Bool, cellIndex: Int) {
         //        viewModel?.timerRemove(modelIndex: modelIndex, deleteBool: deleteBool, cellIndex: cellIndex, view: self, collectionView: mainCollectionView)
         viewModell?.timerRemove(modelIndex: modelIndex, removeBool: deleteBool, index: cellIndex, view: self, collectionView: mainCollectionView)
@@ -169,6 +173,7 @@ extension MainViewController: UICollectionViewDataSource {
             cell?.pomodoroTimerStartStopDelegate = self
             cell?.addModelIndexDelegate = self
             cell?.sentAlertActionDelegate = self
+            cell?.showEditVcDelegate = self
             if let item = viewModell?.dataStore?.timerArray?[indexPath.item] {
                 cell?.update(model: item, timerCounting: true, index: indexPath.row, checkDay: (viewModell?.checkDay)!)
                 cell?.timerRemoveIndex = item

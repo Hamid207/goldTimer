@@ -30,14 +30,14 @@ extension AddNewTimerViewController {
         addNewTimertableView.allowsSelection = false // tableViewnu basmaq olmur
         addNewTimertableView.backgroundColor = .clear
 //        tableView.tableHeaderView = UIView()
-//        addNewTimertableView.tableFooterView = UIView()
+        addNewTimertableView.tableFooterView = UIView()
         addNewTimertableView.separatorStyle = .none
         view.addSubview(addNewTimertableView)
         addNewTimertableView.translatesAutoresizingMaskIntoConstraints = false
         addNewTimertableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         addNewTimertableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         addNewTimertableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        addNewTimertableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        addNewTimertableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 }
 
@@ -102,7 +102,7 @@ extension AddNewTimerViewController: UITableViewDataSource {
                 let saveButtonCell = tableView.dequeueReusableCell(withIdentifier: "SaveButtonTableViewCellId", for: indexPath) as! SaveButtonTableViewCell
                 saveButtonCell.saveButtonDelegate = self
                 let item = viewModel?.saveButtonIsSelected
-                saveButtonCell.update(isSelected: item!)
+                saveButtonCell.update(isSelected: item!, indexPathSection: indexPath)
                 return saveButtonCell
             default:
                 return UITableViewCell()
@@ -127,10 +127,6 @@ extension AddNewTimerViewController: UITableViewDelegate {
         header.headerConfigure(section: section)
         return header
     }
-    
-//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//
-//    }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch section {
