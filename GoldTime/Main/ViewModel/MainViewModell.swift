@@ -311,7 +311,7 @@ final class MainViewModell: MainViewModellProtocol {
     }
     
     @objc private func refreshValue() {
-        print("5 sec reload")
+//        print("5 sec reload")
         var modelIndex = dataStore?.timerArray?.count
         if modelIndex != 0 {
             modelIndex! -= 1

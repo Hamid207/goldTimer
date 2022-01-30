@@ -9,9 +9,10 @@ import UIKit
 
 class AddWeekDayTableViewCell: UITableViewCell {
     
-    private var weekDayArray: [String]? = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    private lazy var tapWeekDayArray: [Int : Bool] = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
+    weak var saveWeekDayDelegate: SaveWeekDayDelegate?
     
+    private var weekDayArray: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    private lazy var tapWeekDayArray: [Int : Bool] = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
     
     private lazy var isSeletedd = false
     
@@ -56,6 +57,7 @@ class AddWeekDayTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         itemSetum()
+        weekDayAdd()
     }
     
     required init?(coder: NSCoder) {
@@ -69,7 +71,29 @@ class AddWeekDayTableViewCell: UITableViewCell {
         collectionView.layer.cornerRadius = 10
     }
     
+    @objc private func switchOnOffAction(switchParam: UISwitch) {
+        if switchParam.isOn {
+            print("ON")
+            for i in 1...weekDayArray.count {
+                tapWeekDayArray[i] = true
+            }
+        }else {
+            print("Off")
+            for i in 1...weekDayArray.count {
+                tapWeekDayArray[i] = false
+            }
+        }
+        weekDayAdd()
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+        saveWeekDayDelegate?.saveWeekDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
+    }
+    
     private func itemSetum() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.weekDayAdd()
+        }
         contentView.addSubview(addAllWeekDayView)
         addAllWeekDayView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         addAllWeekDayView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
@@ -85,6 +109,7 @@ class AddWeekDayTableViewCell: UITableViewCell {
         addAllWeekDaySwitch.centerYAnchor.constraint(equalTo: addAllWeekDayView.centerYAnchor).isActive = true
 //        addAllWeekDaySwitch.topAnchor.constraint(equalTo: addAllWeekDayView.topAnchor, constant: 15).isActive = true
         addAllWeekDaySwitch.trailingAnchor.constraint(equalTo: addAllWeekDayView.trailingAnchor, constant: -15).isActive = true
+        addAllWeekDaySwitch.addTarget(self, action: #selector(switchOnOffAction(switchParam:)), for: .valueChanged)
         
         addSubview(weekDayView)
         weekDayView.topAnchor.constraint(equalTo: addAllWeekDayView.bottomAnchor, constant: 5).isActive = true
@@ -104,19 +129,26 @@ class AddWeekDayTableViewCell: UITableViewCell {
         collectionView.bottomAnchor.constraint(equalTo: weekDayView.bottomAnchor).isActive = true
     }
     
+    //MARK: - Week Day yeni bugun necenci gundu
+    private func weekDayAdd() {
+        let date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+        let today = Calendar.current.component(.weekday, from: date)
+        tapWeekDayArray[today] = true
+        saveWeekDayDelegate?.saveWeekDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
+    }
 }
 
 
 extension AddWeekDayTableViewCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return weekDayArray?.count ?? 0
+        return weekDayArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! IconsCell
-        let item = weekDayArray?[indexPath.item]
+        let item = weekDayArray[indexPath.item]
         let item2 = tapWeekDayArray[indexPath.item + 1]
-        cell.update(name: item!, isSelected: item2)
+        cell.update(name: item, isSelected: item2)
         return cell
     }
     
@@ -141,13 +173,30 @@ extension AddWeekDayTableViewCell: UICollectionViewDataSource, UICollectionViewD
             tapWeekDayArray[indexPath.item + 1] = true
         }else if tapWeekDayArray[indexPath.item + 1] == true {
             tapWeekDayArray[indexPath.item + 1] = false
-            isSeletedd = false
+//            isSeletedd = false
         }
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
+        
+        var intt = 0
+        for i in 1...tapWeekDayArray.count {
+            if tapWeekDayArray[i] == true {
+                intt += 1
+            }
+        }
+        
+        if intt == 7 {
+            addAllWeekDaySwitch.isOn = true
+        }else {
+            addAllWeekDaySwitch.isOn = false
+        }
+        
+        saveWeekDayDelegate?.saveWeekDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
     }
 }
+
+
 
 private class IconsCell: UICollectionViewCell  {
     

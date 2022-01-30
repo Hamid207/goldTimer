@@ -21,6 +21,8 @@ class AddNewTimerTableViewCell: UITableViewCell {
     weak var addTimerDelegate: TimerItemAddDelegate?
     weak var addColorDelegate: AddColorDelegate?
     
+    weak var sentTimerNameDelegate: SentTimerNameDelegate?
+    
     private lazy var hourse: Int = 0
     private lazy var minute: Int = 0
     private lazy var seconds: Int = 0
@@ -177,6 +179,10 @@ class AddNewTimerTableViewCell: UITableViewCell {
         saveButton.layer.cornerRadius = 10
     }
     
+    @objc private func sentNameAction() {
+        sentTimerNameDelegate?.sentTimerName(name: nameTextField.text)
+    }
+    
     private func setup() {
 //        timerPickerView.delegate = self
 //        timerPickerView.dataSource = self
@@ -186,6 +192,7 @@ class AddNewTimerTableViewCell: UITableViewCell {
         nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
         nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
         nameTextField.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        nameTextField.addTarget(self, action: #selector(sentNameAction), for: .editingChanged)
         
         //        //addColorButton
         //        contentView.addSubview(addColorButton)

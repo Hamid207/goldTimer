@@ -8,5 +8,5 @@
 import UIKit
 
 protocol SentColorDelegate: AnyObject {
-    func setColorDelegate(color: UIColor)
+    func setColorDelegate(color: UIColor?)
 }

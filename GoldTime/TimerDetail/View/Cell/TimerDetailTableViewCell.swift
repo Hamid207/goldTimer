@@ -93,16 +93,7 @@ class TimerDetailTableView: UITableViewCell {
         return label
     }()
     
-    
-    func update(statisticsTime: Int?){
-        timerStatisticsDelegate?.sentTimerStatisticDelegate(days: .week)
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            guard let time = statisticsTime else { return }
-            self.statisticTargetlabel.text = self.timeString(time: TimeInterval(time))
-        }
-    }
-    
+
     private func timeString(time: TimeInterval) -> String {
         let hour = Int(time) / 3600
         let minute = Int(time) / 60 % 60
@@ -119,8 +110,6 @@ class TimerDetailTableView: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         itemSetup()
-        timerStatisticsDelegate?.sentTimerStatisticDelegate(days: .week)
-        //        print("InIt dataStoreStartPause -=-=-- \(dataStoreStartPause)")
     }
     
     required init?(coder: NSCoder) {
@@ -132,6 +121,16 @@ class TimerDetailTableView: UITableViewCell {
         //        self.backgroundColor = #colorLiteral(red: 0.08406862617, green: 0.7534314394, blue: 0.5585784912, alpha: 1)
         //        self.layer.cornerRadius = 10
     }
+    
+    
+    func update(statisticsTime: Int?){
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            guard let time = statisticsTime else { return }
+            self.statisticTargetlabel.text = self.timeString(time: TimeInterval(time))
+        }
+    }
+    
     
     @objc private func didCgangeStatisticSegment(_ sender: UISegmentedControl) {
         if sender == self.statisticsSegmetControll {

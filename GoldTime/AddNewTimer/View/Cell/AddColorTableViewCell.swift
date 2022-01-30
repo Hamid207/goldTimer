@@ -10,8 +10,9 @@ import UIKit
 class AddColorTableViewCell: UITableViewCell {
     
     weak var sentColorDelegate: SentColorDelegate?
-    
+        
     private let colors: [UIColor] = [#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1),#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1),#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1),#colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1),#colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1),#colorLiteral(red: 0.5738074183, green: 0.5655357838, blue: 0, alpha: 1),#colorLiteral(red: 0.476841867, green: 0.5048075914, blue: 1, alpha: 1),#colorLiteral(red: 1, green: 0.1857388616, blue: 0.5733950138, alpha: 1),#colorLiteral(red: 0.4500938654, green: 0.9813225865, blue: 0.4743030667, alpha: 1),#colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1),#colorLiteral(red: 0.9113644697, green: 1, blue: 0.2127622225, alpha: 1),#colorLiteral(red: 1, green: 0.6779185229, blue: 0.6740228027, alpha: 1),#colorLiteral(red: 1, green: 0.4179403918, blue: 0.5995694924, alpha: 1),#colorLiteral(red: 0.1388941829, green: 1, blue: 0.3525316029, alpha: 1),#colorLiteral(red: 0.4223175002, green: 0.2351700891, blue: 1, alpha: 1)]
+    private lazy var checkMarkArray: [Int : Bool] = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false, 8 : false, 9 : false, 10 : false,11 : false, 12 : false, 13 : false, 14 : false, 15 : false, 16 : false, 17 : false, 18 : false, 19 : false, 20 : false, 21 : false]
     
     private let gradientLayer = CAGradientLayer()
     
@@ -83,7 +84,8 @@ extension AddColorTableViewCell: UICollectionViewDataSource, UICollectionViewDel
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AddColorTableViewCell", for: indexPath) as! IconsCell
         let item = colors[indexPath.item]
-        cell.update(color: item)
+        let chekMarkItem = checkMarkArray[indexPath.item + 1]
+        cell.update(color: item, isSelected: chekMarkItem!)
         return cell
     }
     
@@ -105,18 +107,38 @@ extension AddColorTableViewCell: UICollectionViewDataSource, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let item = colors[indexPath.item]
-        sentColorDelegate?.setColorDelegate(color: item)
+        collectionView.reloadData()
+        for i in 1...checkMarkArray.count {
+            checkMarkArray[i] = false
+        }
+        
+        if checkMarkArray[indexPath.item + 1] == false {
+            checkMarkArray[indexPath.item + 1] = true
+            let item = colors[indexPath.item]
+            sentColorDelegate?.setColorDelegate(color: item)
+        }
+        
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
-
 }
 
 private class IconsCell: UICollectionViewCell  {
-    
+        
     private let colorView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+    
+    private let checkMarkImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(systemName: "checkmark.circle")
+        imageView.tintColor = .black
+        imageView.isHidden = true
+        return imageView
     }()
     
     override init(frame: CGRect) {
@@ -128,8 +150,16 @@ private class IconsCell: UICollectionViewCell  {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(color: UIColor) {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        checkMarkImageView.isHidden = true
+    }
+    
+    func update(color: UIColor, isSelected: Bool) {
         colorView.backgroundColor = color
+        if isSelected == true {
+            checkMarkImageView.isHidden = false
+        }
     }
     
     override func layoutSubviews() {
@@ -144,5 +174,11 @@ private class IconsCell: UICollectionViewCell  {
     private func itemSetup() {
         addSubview(colorView)
         colorView.frame = self.bounds
+        
+        addSubview(checkMarkImageView)
+        checkMarkImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        checkMarkImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        checkMarkImageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1/2).isActive = true
+        checkMarkImageView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/2).isActive = true
     }
 }

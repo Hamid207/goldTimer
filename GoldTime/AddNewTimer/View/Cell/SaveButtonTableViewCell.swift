@@ -9,6 +9,8 @@ import UIKit
 
 class SaveButtonTableViewCell: UITableViewCell {
     
+    weak var saveButtonDelegate: SaveButtonDelegate?
+    
     private let saveButtonView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -41,7 +43,7 @@ class SaveButtonTableViewCell: UITableViewCell {
     }
     
     @objc private func saveButtonTarget() {
-        
+        saveButtonDelegate?.saveTimer()
     }
     
     private func itemSetup() {

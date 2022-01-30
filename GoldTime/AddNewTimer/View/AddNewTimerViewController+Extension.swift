@@ -50,13 +50,26 @@ extension AddNewTimerViewController: TimerItemAddDelegate {
 }
 
 
-extension AddNewTimerViewController: SentColorDelegate, SentTimerTimeDelegate {
+extension AddNewTimerViewController: SentTimerNameDelegate, SaveWeekDayDelegate, SentColorDelegate, SentTimerTimeDelegate, SaveButtonDelegate {
+    
+    func sentTimerName(name: String?) {
+        print(name)
+    }
+    
     func sentTimerTime(h: Int, m: Int) {
         print(h)
     }
     
-    func setColorDelegate(color: UIColor) {
+    func saveWeekDay(mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool, sun: Bool) {
+        print(mon, tue, wed, thu, fri, sat, sun)
+    }
+    
+    func setColorDelegate(color: UIColor?) {
         print(color)
+    }
+    
+    func saveTimer() {
+        print("SAVE")
     }
 }
 
@@ -107,9 +120,10 @@ extension AddNewTimerViewController: UITableViewDataSource {
         switch indexPath.section {
             case 0:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AddNewTimerTableViewCellId", for: indexPath) as! AddNewTimerTableViewCell
+                cell.sentTimerNameDelegate = self
                 cell.update(color: viewModel?.color)
-                cell.addTimerDelegate = self
-                cell.addColorDelegate = self
+//                cell.addTimerDelegate = self
+//                cell.addColorDelegate = self
                 return cell
             case 1:
                 let timerPickerCell = tableView.dequeueReusableCell(withIdentifier: "TimerPickerTableViewCellId", for: indexPath) as! TimerPickerTableViewCell
@@ -117,6 +131,7 @@ extension AddNewTimerViewController: UITableViewDataSource {
                 return timerPickerCell
             case 2:
                 let addWeekCell = tableView.dequeueReusableCell(withIdentifier: "AddWeekDayTableViewCellId", for: indexPath) as! AddWeekDayTableViewCell
+                addWeekCell.saveWeekDayDelegate = self
                 return addWeekCell
             case 3:
                 let addColorCell = tableView.dequeueReusableCell(withIdentifier: "AddColorTableViewCellId", for: indexPath) as! AddColorTableViewCell
@@ -124,6 +139,7 @@ extension AddNewTimerViewController: UITableViewDataSource {
                 return addColorCell
             case 4:
                 let saveButtonCell = tableView.dequeueReusableCell(withIdentifier: "SaveButtonTableViewCellId", for: indexPath) as! SaveButtonTableViewCell
+                saveButtonCell.saveButtonDelegate = self
                 return saveButtonCell
             default:
                 return UITableViewCell()
