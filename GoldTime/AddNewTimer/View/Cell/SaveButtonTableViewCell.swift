@@ -42,6 +42,16 @@ class SaveButtonTableViewCell: UITableViewCell {
         saveButton.layer.cornerRadius = 10
     }
     
+    func update(isSelected: Bool) {
+        if isSelected == false {
+            saveButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)
+//            saveButton.isHidden = true
+        }else {
+            saveButton.backgroundColor = .black
+//            saveButton.isHidden = false
+        }
+    }
+    
     @objc private func saveButtonTarget() {
         saveButtonDelegate?.saveTimer()
     }

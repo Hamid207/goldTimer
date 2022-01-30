@@ -44,59 +44,31 @@ extension AddNewTimerViewController {
 
 extension AddNewTimerViewController: TimerItemAddDelegate {
     func timerAdd(timer: TimerModelData) {
-        viewModel?.saveTimer(timer: timer)
+//        viewModel?.saveTimer(timer: timer)
         viewModel?.popVC()
     }
 }
 
 
 extension AddNewTimerViewController: SentTimerNameDelegate, SaveWeekDayDelegate, SentColorDelegate, SentTimerTimeDelegate, SaveButtonDelegate {
-    
     func sentTimerName(name: String?) {
-        print(name)
+        viewModel?.saveTimerName(name: name)
     }
     
     func sentTimerTime(h: Int, m: Int) {
-        print(h)
+        viewModel?.saveTimerTime(hourse: h, minute: m)
     }
     
     func saveWeekDay(mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool, sun: Bool) {
-        print(mon, tue, wed, thu, fri, sat, sun)
+        viewModel?.saveTimerWeekDay(mon: mon, tue: tue, wed: wed, thu: thu, fri: fri, sat: sat, sun: sun)
     }
     
     func setColorDelegate(color: UIColor?) {
-        print(color)
+        viewModel?.saveTimerColor(color: color)
     }
     
     func saveTimer() {
-        print("SAVE")
-    }
-}
-
-extension AddNewTimerViewController: AddColorDelegate, UIColorPickerViewControllerDelegate{
-    @available(iOS 14.0, *)
-    func addColor() {
-        let colorPickerVc =  UIColorPickerViewController()
-        colorPickerVc.delegate = self
-        present(colorPickerVc, animated: true, completion: nil)
-    }
-    
-    func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
-//        var color = viewController.selectedColor
-//        print("color=== \(color.cgColor.components)")
-        colorr = CGColor(srgbRed: 0.9522833228111267, green: 0.6849521994590759, blue: 0.23968574404716492, alpha: 1.0)
-//        viewModel?.color = color
-        addNewTimertableView.backgroundColor = UIColor(cgColor: colorr!)
-        addNewTimertableView.reloadData()
-    }
-    
-    func colorPickerViewControllerDidSelectColor(_ viewController: UIColorPickerViewController) {
-        let color = viewController.selectedColor
-        colorr = CGColor(srgbRed: 0.9522833228111267, green: 0.6849521994590759, blue: 0.23968574404716492, alpha: 1.0)
-//        viewModel?.color = color
-        addNewTimertableView.backgroundColor = UIColor(cgColor: colorr!)
-        viewModel?.color = color
-        addNewTimertableView.reloadData()
+        viewModel?.saveTimerButton()
     }
 }
 
@@ -121,9 +93,7 @@ extension AddNewTimerViewController: UITableViewDataSource {
             case 0:
                 let cell = tableView.dequeueReusableCell(withIdentifier: "AddNewTimerTableViewCellId", for: indexPath) as! AddNewTimerTableViewCell
                 cell.sentTimerNameDelegate = self
-                cell.update(color: viewModel?.color)
-//                cell.addTimerDelegate = self
-//                cell.addColorDelegate = self
+//                cell.update(color: viewModel?.color)
                 return cell
             case 1:
                 let timerPickerCell = tableView.dequeueReusableCell(withIdentifier: "TimerPickerTableViewCellId", for: indexPath) as! TimerPickerTableViewCell
@@ -140,6 +110,8 @@ extension AddNewTimerViewController: UITableViewDataSource {
             case 4:
                 let saveButtonCell = tableView.dequeueReusableCell(withIdentifier: "SaveButtonTableViewCellId", for: indexPath) as! SaveButtonTableViewCell
                 saveButtonCell.saveButtonDelegate = self
+                let item = viewModel?.saveButtonIsSelected
+                saveButtonCell.update(isSelected: item!)
                 return saveButtonCell
             default:
                 return UITableViewCell()
