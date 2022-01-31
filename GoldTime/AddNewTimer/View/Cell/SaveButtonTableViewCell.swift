@@ -45,10 +45,10 @@ class SaveButtonTableViewCell: UITableViewCell {
     func update(isSelected: Bool, indexPathSection: IndexPath) {
         if isSelected == false {
             saveButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)
-//            saveButton.isHidden = true
+            saveButton.isEnabled = false
         }else {
             saveButton.backgroundColor = .black
-//            saveButton.isHidden = false
+            saveButton.isEnabled = true
         }
     }
     

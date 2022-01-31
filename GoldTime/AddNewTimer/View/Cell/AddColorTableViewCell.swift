@@ -134,7 +134,7 @@ extension AddColorTableViewCell: UICollectionViewDataSource, UICollectionViewDel
                 default:
                     color = "#15C08E"
             }
-            sentColorDelegate?.setColorDelegate(color: color)
+            sentColorDelegate?.setColorDelegate(color: color, colorIndex: indexPath.item + 1)
         }
         
         DispatchQueue.main.async {

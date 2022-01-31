@@ -8,5 +8,5 @@
 import Foundation
 
 protocol TapOnTheEdirVcDelegate: AnyObject {
-    func showEditVc()
+    func showEditVc(index: Int)
 }

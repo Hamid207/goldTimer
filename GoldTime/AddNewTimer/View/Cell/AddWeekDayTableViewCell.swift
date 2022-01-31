@@ -91,7 +91,7 @@ class AddWeekDayTableViewCell: UITableViewCell {
     }
     
     private func itemSetum() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.weekDayAdd()
         }
         contentView.addSubview(addAllWeekDayView)

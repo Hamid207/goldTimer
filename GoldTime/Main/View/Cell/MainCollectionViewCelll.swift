@@ -32,6 +32,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
     private var stopTime: Date?
     private lazy var timerCounting:Bool = false
     private lazy var timerDoneSelected: Bool = false
+    private var editTimerTime: Int? = nil
     
     private var isPomodoroTimerOnOff: Bool?
     private lazy var pomodoroTime: Int? = 0
@@ -191,6 +192,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         nameLabel.text = model.name
         startTime = model.startTimer
         stopTime = model.stopTimer
+        editTimerTime = model.editTimerTime
         self.timerCounting = model.timerCounting
         self.index = index
         timerDoneSelected = model.timerDone
@@ -246,7 +248,11 @@ class MainCollectionViewCelll: UICollectionViewCell {
             if toDay == weekDay {
                 setTimeLabel(timerUpdateTime)
             }else {
-                setTimeLabel(timerTime!)
+                if editTimerTime != nil {
+                    setTimeLabel(editTimerTime!)
+                }else {
+                    setTimeLabel(timerTime!)
+                }
             }
             
             if let start = startTime {
@@ -364,7 +370,8 @@ class MainCollectionViewCelll: UICollectionViewCell {
     
     //MARK: - Edit Timer
     @objc private func editTimerAction() {
-        showEditVcDelegate?.showEditVc()
+        guard let index = index else { return }
+        showEditVcDelegate?.showEditVc(index: index)
     }
     
     //MARK: - Timer Remove
@@ -389,7 +396,11 @@ class MainCollectionViewCelll: UICollectionViewCell {
             if toDay == weekDay {
                 setTimeLabel(Int(diff))
             }else {
-                setTimeLabel(timerTime)
+                if editTimerTime != nil {
+                    setTimeLabel(editTimerTime!)
+                }else {
+                    setTimeLabel(timerTime)
+                }
             }
             setTimerUpdateTimeDeleagte?.setTimerNewTime(newTime: Int(diff), index: index!)
             if Int(diff) <= 0 {

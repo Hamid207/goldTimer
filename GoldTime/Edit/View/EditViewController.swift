@@ -24,6 +24,7 @@ class EditViewController: UIViewController {
         view.backgroundColor = #colorLiteral(red: 0.9490196078, green: 0.9490196078, blue: 0.968627451, alpha: 1)
         nav()
         setupItem()
+        viewModel?.tableView = editTimertableView
     }
 
 }

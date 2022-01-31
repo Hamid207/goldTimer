@@ -9,7 +9,7 @@ import UIKit
 
 class EditTimerPickerTableViewCell: UITableViewCell {
     
-    weak var sentTimerTimeDelegate: SentTimerTimeDelegate?
+    weak var sentNewTimerDelegate: EditTimerTimeDelegate?
     
     private lazy var hourse: Int = 0
     private lazy var minute: Int = 15
@@ -46,6 +46,23 @@ class EditTimerPickerTableViewCell: UITableViewCell {
         viewPicker.layer.cornerRadius = 10
     }
     
+    func update(timerTime: Int) {
+        secondsToHoursMinutesSeconds(timerTime)
+    }
+    
+    private func secondsToHoursMinutesSeconds(_ ms: Int){
+        let hour = ms / 3600
+        let min = (ms % 3600) / 60
+        hourse = hour
+        minute = min
+        timerPickerView.selectRow(hour, inComponent: 2, animated: true)
+        timerPickerView.selectRow(min, inComponent: 4, animated: true)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            guard let self = self else { return }
+            self.sentNewTimerDelegate?.sentNewTime(h: self.hourse, m: self.minute)
+        }
+    }
+    
     private func itemSetup() {
         timerPickerView.delegate = self
         timerPickerView.dataSource = self
@@ -61,12 +78,12 @@ class EditTimerPickerTableViewCell: UITableViewCell {
         timerPickerView.leadingAnchor.constraint(equalTo: viewPicker.leadingAnchor, constant: 0).isActive = true
         timerPickerView.trailingAnchor.constraint(equalTo: viewPicker.trailingAnchor, constant: 0).isActive = true
         timerPickerView.bottomAnchor.constraint(equalTo: viewPicker.bottomAnchor).isActive = true
-        timerPickerView.selectRow(15, inComponent: 4, animated: true)
+//        timerPickerView.selectRow(15, inComponent: 4, animated: true)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-            guard let self = self else { return }
-            self.sentTimerTimeDelegate?.sentTimerTime(h: self.hourse, m: self.minute)
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+//            guard let self = self else { return }
+//            self.sentTimerTimeDelegate?.sentTimerTime(h: self.hourse, m: self.minute)
+//        }
     }
 }
 
@@ -122,7 +139,7 @@ extension EditTimerPickerTableViewCell: UIPickerViewDelegate {
 //        hourse = (pickerView.selectedRow(inComponent: 0))
         hourse = (pickerView.selectedRow(inComponent: 2))
         minute = (pickerView.selectedRow(inComponent: 4))
-        sentTimerTimeDelegate?.sentTimerTime(h: hourse, m: minute)
+        sentNewTimerDelegate?.sentNewTime(h: self.hourse, m: self.minute)
     }
 }
 

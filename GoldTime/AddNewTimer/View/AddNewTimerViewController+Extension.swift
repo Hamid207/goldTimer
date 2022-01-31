@@ -46,16 +46,16 @@ extension AddNewTimerViewController: SentTimerNameDelegate, SaveWeekDayDelegate,
         viewModel?.saveTimerName(name: name)
     }
     
+    func setColorDelegate(color: String?, colorIndex: Int) {
+        viewModel?.saveTimerColor(color: color, colorIndex: colorIndex)
+    }
+    
     func sentTimerTime(h: Int, m: Int) {
         viewModel?.saveTimerTime(hourse: h, minute: m)
     }
     
     func saveWeekDay(mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool, sun: Bool) {
         viewModel?.saveTimerWeekDay(mon: mon, tue: tue, wed: wed, thu: thu, fri: fri, sat: sat, sun: sun)
-    }
-    
-    func setColorDelegate(color: String?) {
-        viewModel?.saveTimerColor(color: color)
     }
     
     func saveTimer() {

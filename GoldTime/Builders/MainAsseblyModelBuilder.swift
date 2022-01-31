@@ -11,7 +11,7 @@ protocol MainAsseblyModelBuilderProtocol {
     func ceatMainModule(mainRouter: MainRouterProtocol) -> UIViewController
     func creatAddNewTimerModule(mainRouter: MainRouterProtocol) -> UIViewController
     func creatTimerDetailModule(mainRouter: MainRouterProtocol, index: Int, predicate: NSPredicate) -> UIViewController
-    func creatEditModule(mainRouter: MainRouterProtocol) -> UIViewController
+    func creatEditModule(mainRouter: MainRouterProtocol, timerModel: TimerModelData, index: Int) -> UIViewController
 }
 
 class MainAsseblyModelBuilder: MainAsseblyModelBuilderProtocol {
@@ -47,10 +47,10 @@ class MainAsseblyModelBuilder: MainAsseblyModelBuilderProtocol {
     }
     
     //MARK: - EditViewController
-    func creatEditModule(mainRouter: MainRouterProtocol) -> UIViewController {
+    func creatEditModule(mainRouter: MainRouterProtocol, timerModel: TimerModelData, index: Int) -> UIViewController {
         let view = EditViewController()
         let dataStore = DataStore()
-        let viewModel = EditViewModel(mainRouter: mainRouter, dataStore: dataStore)
+        let viewModel = EditViewModel(mainRouter: mainRouter, dataStore: dataStore, timerModel: timerModel, index: index)
         view.viewModel = viewModel
         return view
     }

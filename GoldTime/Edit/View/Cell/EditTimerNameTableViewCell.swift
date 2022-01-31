@@ -9,7 +9,7 @@ import UIKit
 
 class EditTimerNameTableViewCell: UITableViewCell {
         
-    weak var sentTimerNameDelegate: SentTimerNameDelegate?
+    weak var sentNewTimerNameDelegate: EditTimerNameDelegate?
     
 //    private lazy var pomodoroTime: Int? = 0
 //    private lazy var isPomodoroTimerOnOff: Bool = false
@@ -45,9 +45,9 @@ class EditTimerNameTableViewCell: UITableViewCell {
         subView()
     }
     
-//    func update(color: UIColor?) {
-//
-//    }
+    func update(timerName: String) {
+        nameTextField.text = timerName
+    }
     
     private func subView() {
         self.backgroundColor = .clear
@@ -56,7 +56,7 @@ class EditTimerNameTableViewCell: UITableViewCell {
     }
     
     @objc private func sentNameAction() {
-        sentTimerNameDelegate?.sentTimerName(name: nameTextField.text)
+        sentNewTimerNameDelegate?.sentNewTimerName(name: nameTextField.text)
     }
     
     private func setup() {

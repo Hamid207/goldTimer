@@ -9,7 +9,7 @@ import UIKit
 
 class EditColorTableViewCell: UITableViewCell {
     
-    weak var sentColorDelegate: SentColorDelegate?
+    weak var editColorDelegate: EditColorDelegate?
         
     private let colors: [UIColor] = [#colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1),#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1),#colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1),#colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1),#colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1),#colorLiteral(red: 0.5725490196, green: 0.5647058824, blue: 0, alpha: 1),#colorLiteral(red: 0.4784313725, green: 0.5058823529, blue: 1, alpha: 1),#colorLiteral(red: 1, green: 0.1843137255, blue: 0.5725490196, alpha: 1),#colorLiteral(red: 0.4509803922, green: 0.9803921569, blue: 0.4745098039, alpha: 1),#colorLiteral(red: 0.462745098, green: 0.8392156863, blue: 1, alpha: 1),#colorLiteral(red: 0.9098039216, green: 1, blue: 0.2117647059, alpha: 1),#colorLiteral(red: 1, green: 0.6784313725, blue: 0.6745098039, alpha: 1),#colorLiteral(red: 1, green: 0.4196078431, blue: 0.6, alpha: 1),#colorLiteral(red: 0.137254902, green: 1, blue: 0.3529411765, alpha: 1),#colorLiteral(red: 0.4235294118, green: 0.2352941176, blue: 1, alpha: 1)]
     private lazy var checkMarkArray: [Int : Bool] = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false, 8 : false, 9 : false, 10 : false,11 : false, 12 : false, 13 : false, 14 : false, 15 : false, 16 : false, 17 : false, 18 : false, 19 : false, 20 : false, 21 : false]
@@ -53,6 +53,15 @@ class EditColorTableViewCell: UITableViewCell {
     private func setupGradient() {
         self.layer.addSublayer(gradientLayer)
         gradientLayer.colors = [UIColor.red.cgColor, UIColor.blue.cgColor]
+    }
+    
+    func update(colorIndex: Int?) {
+        if let index = colorIndex {
+            checkMarkArray[index] = true
+        }
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
     }
     
     private func itemSetup() {
@@ -134,7 +143,7 @@ extension EditColorTableViewCell: UICollectionViewDataSource, UICollectionViewDe
                 default:
                     color = "#15C08E"
             }
-            sentColorDelegate?.setColorDelegate(color: color)
+            editColorDelegate?.sentNewColor(color: color, colorIndex: indexPath.item + 1)
         }
         
         DispatchQueue.main.async {

@@ -10,3 +10,7 @@ import Foundation
 protocol SaveButtonDelegate: AnyObject {
     func saveTimer()
 }
+
+protocol EditSaveButtonDelegate: AnyObject {
+    func saveTimer()
+}

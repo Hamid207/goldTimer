@@ -16,7 +16,7 @@ protocol MainRouterProtocol: MainRouterNC{
     func initialViewController()
     func showAddNewTimerVc()
     func showTimerDetail(index: Int, predicate: NSPredicate)
-    func showEditViewController()
+    func showEditViewController(timerModel: TimerModelData, index: Int)
     func popVC()
 }
 
@@ -53,9 +53,9 @@ class MainRouter: MainRouterProtocol {
         }
     }
     
-    func showEditViewController() {
+    func showEditViewController(timerModel: TimerModelData, index: Int) {
         if let navigationController = mainNaviGationController  {
-            guard let editVc = mainAssemblyBuilder?.creatEditModule(mainRouter: self) else { return }
+            guard let editVc = mainAssemblyBuilder?.creatEditModule(mainRouter: self, timerModel: timerModel, index: index) else { return }
             navigationController.pushViewController(editVc, animated: true)
         }
     }

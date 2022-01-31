@@ -10,3 +10,7 @@ import Foundation
 protocol SentTimerTimeDelegate: AnyObject {
     func sentTimerTime(h: Int, m: Int)
 }
+
+protocol EditTimerTimeDelegate: AnyObject {
+    func sentNewTime(h: Int, m: Int)
+}

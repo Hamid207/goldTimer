@@ -110,8 +110,8 @@ extension MainViewController: TimerStartStopDelegate, SetIndexDelegate, AddModel
 
 //MARK: - TimerRemoveDelegate, TapOnTheEdirVcDelegate
 extension MainViewController: TimerRemoveDelegate, TapOnTheEdirVcDelegate {
-    func showEditVc() {
-        viewModell?.tapOnTheEditVc()
+    func showEditVc(index: Int) {
+        viewModell?.tapOnTheEditVc(timerModel: (viewModell?.model?[index])!, index: index)
     }
     
     func removeIndex(modelIndex: TimerModelData, deleteBool: Bool, cellIndex: Int) {

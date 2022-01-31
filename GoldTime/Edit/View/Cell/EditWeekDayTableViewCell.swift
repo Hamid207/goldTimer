@@ -9,7 +9,7 @@ import UIKit
 
 class EditWeekDayTableViewCell: UITableViewCell {
     
-    weak var saveWeekDayDelegate: SaveWeekDayDelegate?
+    weak var editWeekDayDelegate: EditWeekDayDelegate?
     
     private var weekDayArray: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     private lazy var tapWeekDayArray: [Int : Bool] = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
@@ -57,7 +57,7 @@ class EditWeekDayTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         itemSetum()
-        weekDayAdd()
+//        weekDayAdd()
     }
     
     required init?(coder: NSCoder) {
@@ -87,11 +87,56 @@ class EditWeekDayTableViewCell: UITableViewCell {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
-        saveWeekDayDelegate?.saveWeekDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
+//        saveWeekDayDelegate?.saveWeekDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
+    }
+
+    func update(mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool, sun: Bool) {
+        if mon == true {
+            tapWeekDayArray[1] = true
+        }
+        if tue == true {
+            tapWeekDayArray[2] = true
+        }
+        if wed == true {
+            tapWeekDayArray[3] = true
+        }
+        if thu == true {
+            tapWeekDayArray[4] = true
+        }
+        if fri == true {
+            tapWeekDayArray[5] = true
+        }
+        if sat == true {
+            tapWeekDayArray[6] = true
+        }
+        if sun == true {
+            tapWeekDayArray[7] = true
+        }
+
+        weekOnOfSwitch()
+        
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+    
+    private func weekOnOfSwitch() {
+        var intt = 0
+        for i in 1...tapWeekDayArray.count {
+            if tapWeekDayArray[i] == true {
+                intt += 1
+            }
+        }
+        
+        if intt == 7 {
+            addAllWeekDaySwitch.isOn = true
+        }else {
+            addAllWeekDaySwitch.isOn = false
+        }
     }
     
     private func itemSetum() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             self.weekDayAdd()
         }
         contentView.addSubview(addAllWeekDayView)
@@ -129,12 +174,12 @@ class EditWeekDayTableViewCell: UITableViewCell {
         collectionView.bottomAnchor.constraint(equalTo: weekDayView.bottomAnchor).isActive = true
     }
     
-    //MARK: - Week Day yeni bugun necenci gundu
+    //MARK: - Week Day 
     private func weekDayAdd() {
-        let date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
-        let today = Calendar.current.component(.weekday, from: date)
-        tapWeekDayArray[today] = true
-        saveWeekDayDelegate?.saveWeekDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
+//        let date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+//        let today = Calendar.current.component(.weekday, from: date)
+//        tapWeekDayArray[today] = true
+        editWeekDayDelegate?.sentNewDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
     }
 }
 
@@ -179,20 +224,9 @@ extension EditWeekDayTableViewCell: UICollectionViewDataSource, UICollectionView
             self.collectionView.reloadData()
         }
         
-        var intt = 0
-        for i in 1...tapWeekDayArray.count {
-            if tapWeekDayArray[i] == true {
-                intt += 1
-            }
-        }
+        weekOnOfSwitch()
         
-        if intt == 7 {
-            addAllWeekDaySwitch.isOn = true
-        }else {
-            addAllWeekDaySwitch.isOn = false
-        }
-        
-        saveWeekDayDelegate?.saveWeekDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
+        editWeekDayDelegate?.sentNewDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
     }
 }
 

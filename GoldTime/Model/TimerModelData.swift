@@ -12,7 +12,10 @@ class TimerModelData: Object {
     @Persisted var name: String?
     @Persisted var index: Int
     @Persisted var timerTime: Int
+    @Persisted var editTimerTime: Int? = nil
+    @Persisted var editTimerTimeBool: Bool = false
     @Persisted var timerColor: String?
+    @Persisted var timerColorIndex: Int? = 0
     @Persisted var hourse: Int
     @Persisted var minute: Int
     @Persisted var seconds: Int
@@ -45,9 +48,10 @@ class TimerModelData: Object {
     @Persisted var Fri: Bool
     @Persisted var Sat: Bool
     @Persisted var Sun: Bool
+    
 //    @Persisted var test = List<tests>()
         
-    convenience init(name: String?, timerTime: Int, timerColor: String?, hourse: Int, minute: Int, seconds: Int, statick: Int, pomodoroTime: Int?, pomodoroTimerOnOff: Bool?, pomodorTimerWorkOrBreak: Bool?, startFix: Bool, bugFixBool: Bool?, userTimerstatistics: Int?, startTimer: Date?, stopTimer: Date?, timerCounting: Bool, timerUpdateTime: Int, pomodoroTimerUpdateTime: Int, pomdoroStartTime: Date?, pomdoroStopTime: Date?, todayDate: String?, weekDay: Int?, timer24houresResetOnOff: Bool, mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool, sun: Bool, timerDone: Bool) {
+    convenience init(name: String?, timerTime: Int, timerColor: String?, hourse: Int, minute: Int, seconds: Int, statick: Int, pomodoroTime: Int?, pomodoroTimerOnOff: Bool?, pomodorTimerWorkOrBreak: Bool?, startFix: Bool, bugFixBool: Bool?, userTimerstatistics: Int?, startTimer: Date?, stopTimer: Date?, timerCounting: Bool, timerUpdateTime: Int, pomodoroTimerUpdateTime: Int, pomdoroStartTime: Date?, pomdoroStopTime: Date?, todayDate: String?, weekDay: Int?, timer24houresResetOnOff: Bool, mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool, sun: Bool, timerDone: Bool, timerColorIndex: Int?) {
         self.init()
         self.name = name
         self.timerTime = timerTime
@@ -80,6 +84,7 @@ class TimerModelData: Object {
         self.Sat = sat
         self.Sun = sun
         self.timerDone = timerDone
+        self.timerColorIndex = timerColorIndex
     }
 }
 
