@@ -297,7 +297,7 @@ final class MainViewModell: MainViewModellProtocol {
         if dataStore?.timerArray?[index].todayDate != Date().getFormattedDate() {
             try! realm.write {
                 dataStore?.timerArray?[index].todayDate = Date().getFormattedDate()
-                if dataStore?.timerArray?[index].editTimerTimeBool == true {
+                if dataStore?.timerArray?[index].editTimerTimeBool == true { //edit vc de yeni timerTime olsa
                     guard let newTime =  dataStore?.timerArray?[index].editTimerTime else { return }
                     dataStore?.timerArray?[index].timerTime = newTime
                     dataStore?.timerArray?[index].editTimerTimeBool = false
