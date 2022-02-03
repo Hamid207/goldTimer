@@ -10,12 +10,12 @@ import UIKit
 extension MainViewController {
     
     func nav() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus.rectangle.portrait.fill")
                                                             , style: .done, target: self, action: #selector(addVC))
-        //                navigationItem.rightBarButtonItem?.tintColor = .green
+                        navigationItem.rightBarButtonItem?.tintColor = .black
         //        navigationItem.rightBarButtonItem?.tintColor = UIColor(named: "headerColor")
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: .remove, style: .done, target: self, action: #selector(removeTest))
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(image: .remove, style: .done, target: self, action: #selector(removeTest))
     }
     
     @objc func addVC() {
@@ -46,9 +46,9 @@ extension MainViewController {
         weekDayView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/10).isActive = true
             
         weekDayView.addSubview(weekDayCollectionView)
-//        weekDayCollectionView.layer.borderWidth = 1
-//        weekDayCollectionView.layer.borderColor = UIColor.black.cgColor
-//        weekDayCollectionView.layer.cornerRadius = 10
+        weekDayCollectionView.layer.borderWidth = 1
+        weekDayCollectionView.layer.borderColor = UIColor.black.cgColor
+        weekDayCollectionView.layer.cornerRadius = 10
         weekDayCollectionView.delegate = self
         weekDayCollectionView.dataSource = self
         weekDayCollectionView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -66,11 +66,12 @@ extension MainViewController {
         mainCollectionView.dataSource = self
         //        mainCollectionView.cancelInteractiveMovement()
         mainCollectionView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        mainCollectionView.showsHorizontalScrollIndicator = false
+//        mainCollectionView.showsHorizontalScrollIndicator = false
+        mainCollectionView.showsVerticalScrollIndicator = false
         mainCollectionView.translatesAutoresizingMaskIntoConstraints = false
         //        mainCollectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         mainCollectionView.register(MainCollectionViewCelll.self, forCellWithReuseIdentifier: "cell")
-        mainCollectionView.topAnchor.constraint(equalTo: weekDayView.bottomAnchor, constant: 5).isActive = true
+        mainCollectionView.topAnchor.constraint(equalTo: weekDayView.bottomAnchor).isActive = true
         mainCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         mainCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         mainCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
@@ -211,7 +212,7 @@ extension MainViewController: UICollectionViewDelegate {
 extension MainViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == mainCollectionView {
-            return CGSize(width: view.frame.width - 40, height: view.frame.height / 3)
+            return CGSize(width: view.frame.width - 35, height: view.frame.height / 3)
         }else {
             return CGSize(width: view.frame.width / 8, height: weekDayView.frame.height - 10)
         }
@@ -222,7 +223,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
             return UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
 
         }
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -238,6 +239,16 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
         }
         return 20
     }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if collectionView == mainCollectionView {
+            cell.alpha = 0
+            UIView.animate(withDuration: 0.7) {
+                cell.alpha = 1
+            }
+        }
+    }
+    
 }
 
 ////MARK: - UITableViewDataSource

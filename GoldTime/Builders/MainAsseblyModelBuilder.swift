@@ -21,7 +21,8 @@ class MainAsseblyModelBuilder: MainAsseblyModelBuilderProtocol {
         let timerTimeArray = TimerTimerArray()
         let dataStore = DataStore()
         let timerStatistics = TimerStatistics()
-        let viewModel = MainViewModell(mainRouter: mainRouter, timerTimerArray: timerTimeArray, dataStore: dataStore, timerStatistics: timerStatistics)
+        let timerNotifications = TimerNotifications()
+        let viewModel = MainViewModell(mainRouter: mainRouter, timerTimerArray: timerTimeArray, dataStore: dataStore, timerStatistics: timerStatistics, timerNotifications: timerNotifications)
         view.viewModell = viewModel
         return view
     }

@@ -25,7 +25,7 @@ final class MainViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .white
+        cv.backgroundColor = .clear
         cv.isPagingEnabled = false
         return cv
     }()

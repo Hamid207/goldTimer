@@ -78,7 +78,7 @@ final class AddNewTimerViewModel: AddNewTimerViewModelProtocol {
         self.fri = fri
         self.sat = sat
         self.sun = sun
-        if mon == false && thu == false && wed == false && thu == false && fri == false && sat == false && sun == false {
+        if mon == false && tue == false && wed == false && thu == false && fri == false && sat == false && sun == false {
             timerAllWeekDayFalse = true
             checkNill()
         }else {

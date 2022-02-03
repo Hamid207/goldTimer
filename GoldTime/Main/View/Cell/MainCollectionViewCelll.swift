@@ -88,6 +88,8 @@ class MainCollectionViewCelll: UICollectionViewCell {
         button.translatesAutoresizingMaskIntoConstraints = false
 //                button.backgroundColor = .orange
         button.setTitleColor(.black, for: .normal)
+        button.setTitle("Edit", for: .normal)
+        button.tintColor = .black
         return button
     }()
     
@@ -116,7 +118,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 30, weight: .medium)
+        label.font = UIFont.systemFont(ofSize: 30, weight: .regular)
 //        label.backgroundColor = .red
         return label
     }()
@@ -134,7 +136,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
 //        label.textColor = .black
         label.textAlignment = .center
         //        label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
-        label.font = UIFont.monospacedDigitSystemFont(ofSize: 50, weight: .medium)
+        label.font = UIFont.monospacedDigitSystemFont(ofSize: 55, weight: .regular)
 //        label.backgroundColor = .yellow
         return label
     }()
@@ -154,7 +156,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         button.setTitle("Start", for: .normal)
 //        button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .medium)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .regular)
         return button
     }()
     
@@ -254,6 +256,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
                     setTimeLabel(timerTime!)
                 }
             }
+            
             
             if let start = startTime {
                 if let stop = stopTime {
@@ -392,7 +395,6 @@ class MainCollectionViewCelll: UICollectionViewCell {
         if let start = startTime, let timerTime = timerTime {
             let diff = start.timeIntervalSince(Date(timeIntervalSinceNow: TimeInterval(-timerTime)))
             //            let diff = Date().timeIntervalSince(start)
-            
             if toDay == weekDay {
                 setTimeLabel(Int(diff))
             }else {
@@ -480,12 +482,12 @@ class MainCollectionViewCelll: UICollectionViewCell {
    
     //MARK: - Setup Item
     private func setupItem() {
-        addSubview(editsImageView)
-        editsImageView.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
-//        editsImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        editsImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-        editsImageView.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        editsImageView.widthAnchor.constraint(equalToConstant: 25).isActive = true
+//        addSubview(editsImageView)
+//        editsImageView.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
+////        editsImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+//        editsImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
+//        editsImageView.heightAnchor.constraint(equalToConstant: 25).isActive = true
+//        editsImageView.widthAnchor.constraint(equalToConstant: 25).isActive = true
         
         contentView.addSubview(editsTimerButton)
         editsTimerButton.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true

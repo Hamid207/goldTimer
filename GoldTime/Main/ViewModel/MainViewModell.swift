@@ -31,12 +31,13 @@ protocol MainViewModellProtocol {
     var dataStore: DataStoreProtocol? { get set }
     var toDay: Int? { get set }
     var checkDay: Int? { get set }
-    init(mainRouter: MainRouterProtocol?, timerTimerArray: TimerTimeArrayProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?)
+    init(mainRouter: MainRouterProtocol?, timerTimerArray: TimerTimeArrayProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?, timerNotifications: TimerNotifications?)
 }
 
 final class MainViewModell: MainViewModellProtocol {
     private let mainRouter: MainRouterProtocol?
     private var timerTimerArray: TimerTimeArrayProtocol?
+    private var timerNotifications: TimerNotifications?
     var dataStore: DataStoreProtocol?
     private let timerStatistics: TimerStatistics?
     var model: Results<TimerModelData>?
@@ -59,11 +60,13 @@ final class MainViewModell: MainViewModellProtocol {
     }
     var newDay: Bool = false
     
-    init(mainRouter: MainRouterProtocol?, timerTimerArray: TimerTimeArrayProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?) {
+    init(mainRouter: MainRouterProtocol?, timerTimerArray: TimerTimeArrayProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?, timerNotifications: TimerNotifications?) {
         self.mainRouter = mainRouter
         self.timerTimerArray = timerTimerArray
         self.dataStore = dataStore
+        self.timerNotifications = timerNotifications
         self.timerStatistics = timerStatistics
+        self.timerNotifications = timerNotifications
         ifTimerOnNextday()
         weekDay()
         model = dataStore?.timerArray
@@ -118,7 +121,6 @@ final class MainViewModell: MainViewModellProtocol {
     
     //MARK: - Timer Remove
     func timerRemove(modelIndex: TimerModelData, removeBool: Bool, index: Int, view: UIViewController, collectionView: UICollectionView) {
-        print("INDEXXX == \(index)")
         let alert = UIAlertController(title: "100% ?", message: nil, preferredStyle: .alert)
         let actionDelete = UIAlertAction(title: "Delete", style: .destructive) { action in
             if let selfIndex = self.index {
@@ -207,6 +209,7 @@ final class MainViewModell: MainViewModellProtocol {
             if let cell = collectionView?.cellForItem(at: [0,index]) as? MainCollectionViewCelll {
                 cell.startTimer()
             }
+            timerNotifications?.scheduleNotification(inSeconds: TimeInterval((dataStore?.timerArray?[index].timerUpdateTime)!), timerName: (dataStore?.timerArray?[index].name)!)
             print("STARTT")
         }else if timerCounting == false && self.index == index {
             self.timerCounting = timerCounting
@@ -219,7 +222,7 @@ final class MainViewModell: MainViewModellProtocol {
             if let cell = collectionView?.cellForItem(at: [0,index]) as? MainCollectionViewCelll {
                 cell.stopTimer()
             }
-            
+            timerNotifications?.removeNotifications(withIdentifires: ["MyUniqueIdentifire"])
             endOFTheDayViewUpdate()
             
         }else if dataStore?.timerArray?[index].timerDone == true {

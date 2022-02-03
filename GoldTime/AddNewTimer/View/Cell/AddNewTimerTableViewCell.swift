@@ -28,6 +28,7 @@ class AddNewTimerTableViewCell: UITableViewCell {
         textField.autocorrectionType = .no
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.textColor = .black
         return textField
     }()
     
@@ -61,10 +62,28 @@ class AddNewTimerTableViewCell: UITableViewCell {
     
     private func setup() {
         contentView.addSubview(nameTextField)
+        nameTextField.delegate = self
         nameTextField.topAnchor.constraint(equalTo: topAnchor).isActive = true
         nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
         nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
         nameTextField.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         nameTextField.addTarget(self, action: #selector(sentNameAction), for: .editingChanged)
+    }
+}
+
+//MARK: - UITextFieldDelegate
+extension AddNewTimerTableViewCell: UITextFieldDelegate {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.endEditing(true)
+        nameTextField.resignFirstResponder()
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        nameTextField.resignFirstResponder()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        nameTextField.resignFirstResponder()
+        return true
     }
 }

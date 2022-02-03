@@ -68,3 +68,20 @@ class EditTimerNameTableViewCell: UITableViewCell {
         nameTextField.addTarget(self, action: #selector(sentNameAction), for: .editingChanged)
     }
 }
+
+//MARK: - UITextFieldDelegate
+extension EditTimerNameTableViewCell: UITextFieldDelegate {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.endEditing(true)
+        nameTextField.resignFirstResponder()
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        nameTextField.resignFirstResponder()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        nameTextField.resignFirstResponder()
+        return true
+    }
+}
