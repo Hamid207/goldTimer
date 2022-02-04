@@ -12,8 +12,7 @@ extension MainViewController {
     func nav() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus.rectangle.portrait.fill")
                                                             , style: .done, target: self, action: #selector(addVC))
-                        navigationItem.rightBarButtonItem?.tintColor = .black
-        //        navigationItem.rightBarButtonItem?.tintColor = UIColor(named: "headerColor")
+                        navigationItem.rightBarButtonItem?.tintColor = UIColor(named: "OtherColor")
         
 //        navigationItem.leftBarButtonItem = UIBarButtonItem(image: .remove, style: .done, target: self, action: #selector(removeTest))
     }
@@ -37,7 +36,7 @@ extension MainViewController {
     func mainViewSetup() {
         view.addSubview(weekDayView)
         weekDayView.translatesAutoresizingMaskIntoConstraints = false
-        weekDayView.backgroundColor = .white
+        weekDayView.backgroundColor = .clear
 //        weekDayView.layer.borderWidth = 1
 //        weekDayView.layer.borderColor = UIColor.black.cgColor
         weekDayView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
@@ -51,7 +50,7 @@ extension MainViewController {
         weekDayCollectionView.layer.cornerRadius = 10
         weekDayCollectionView.delegate = self
         weekDayCollectionView.dataSource = self
-        weekDayCollectionView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        weekDayCollectionView.backgroundColor = .clear
         weekDayCollectionView.showsHorizontalScrollIndicator = false
         weekDayCollectionView.translatesAutoresizingMaskIntoConstraints = false
         weekDayCollectionView.register(WeekDayCollectionViewCell.self, forCellWithReuseIdentifier: "weekDayCell")
@@ -65,7 +64,7 @@ extension MainViewController {
         mainCollectionView.delegate = self
         mainCollectionView.dataSource = self
         //        mainCollectionView.cancelInteractiveMovement()
-        mainCollectionView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        mainCollectionView.backgroundColor = .clear
 //        mainCollectionView.showsHorizontalScrollIndicator = false
         mainCollectionView.showsVerticalScrollIndicator = false
         mainCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -192,18 +191,21 @@ extension MainViewController: UICollectionViewDelegate {
             viewModell?.tapOnTheTimerDetailVc(index: index)
 //            mainCollectionView.reloadData()
         }else {
-            for i in 1...7 {
-                viewModell?.tapWeekDayArray?[i] = false
+            if viewModell?.tapWeekDayArray?[indexPath.item + 1] == false {
+                for i in 1...7 {
+                    viewModell?.tapWeekDayArray?[i] = false
+                }
+                viewModell?.tapWeekDayArray?[indexPath.item + 1] = true
+                viewModell?.checkDay = indexPath.item + 1
+                let day = viewModell?.weekDayArray?[indexPath.item]
+                let predicateRepeat = NSPredicate(format: "\(day!) = true")
+                viewModell?.sentPredicate(predicate: predicateRepeat)
+                DispatchQueue.main.async {
+                    self.weekDayCollectionView.reloadData()
+                    self.mainCollectionView.reloadData()
+                }
             }
-            viewModell?.tapWeekDayArray?[indexPath.item + 1] = true
-            viewModell?.checkDay = indexPath.item + 1
-            let day = viewModell?.weekDayArray?[indexPath.item]
-            let predicateRepeat = NSPredicate(format: "\(day!) = true")
-            viewModell?.sentPredicate(predicate: predicateRepeat)
-            DispatchQueue.main.async {
-                self.weekDayCollectionView.reloadData()
-                self.mainCollectionView.reloadData()
-            }
+           
         }
     }
 }
@@ -214,7 +216,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
         if collectionView == mainCollectionView {
             return CGSize(width: view.frame.width - 35, height: view.frame.height / 3)
         }else {
-            return CGSize(width: view.frame.width / 8, height: weekDayView.frame.height - 10)
+            return CGSize(width: view.frame.width / 7.9, height: weekDayView.frame.height - 10)
         }
     }
     
@@ -243,12 +245,18 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if collectionView == mainCollectionView {
             cell.alpha = 0
-            UIView.animate(withDuration: 0.7) {
+            UIView.animate(withDuration: 0.5) {
                 cell.alpha = 1
             }
         }
     }
     
+    //user dark mode secende yada light mode qayidanda bu func ishdeyir
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        // do whatever you want to do
+        print("DARK MODE ")
+        weekDayCollectionView.reloadData()
+    }
 }
 
 ////MARK: - UITableViewDataSource

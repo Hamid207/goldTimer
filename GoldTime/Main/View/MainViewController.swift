@@ -45,9 +45,13 @@ final class MainViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true //tabbar off
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.layoutIfNeeded()
-        navigationController?.navigationBar.barTintColor = .white
-        navigationController?.navigationBar.backgroundColor = .white
-        view.backgroundColor = .white
+        navigationController?.navigationBar.barTintColor = UIColor(named: "BackroundColor")
+        navigationController?.navigationBar.backgroundColor = UIColor(named: "BackroundColor")
+//        UINavigationBar.appearance().barTintColor = .red
+//        UINavigationBar.appearance().tintColor = .white
+//        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.red]
+//        UINavigationBar.appearance().isTranslucent = false
+        view.backgroundColor = UIColor(named: "BackroundColor")
         nav()
         mainViewSetup()
         viewModel?.collectionView = mainCollectionView

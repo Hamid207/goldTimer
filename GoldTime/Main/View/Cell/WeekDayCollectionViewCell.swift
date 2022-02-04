@@ -50,8 +50,8 @@ class WeekDayCollectionViewCell: UICollectionViewCell {
             self.contentView.layer.borderColor = UIColor.white.cgColor
             weekDayLabel.textColor = .black
         }
-        
-        
+
+
         if isBlackSelected == true {
             self.contentView.layer.backgroundColor = UIColor.black.cgColor
             weekDayLabel.textColor = .white
@@ -59,6 +59,27 @@ class WeekDayCollectionViewCell: UICollectionViewCell {
             self.contentView.layer.backgroundColor = UIColor.white.cgColor
             weekDayLabel.textColor = .black
         }
+        
+        //DARK MODE olsa
+//        if isSelected {
+//            self.contentView.layer.borderWidth = 1
+//            self.contentView.layer.borderColor = UIColor(named: "OtherColor")?.cgColor
+//            weekDayLabel.textColor = UIColor(named: "OtherColor")
+//        }else {
+//            self.contentView.layer.borderWidth = 0
+//            self.contentView.layer.borderColor = UIColor(named: "BackroundColor")?.cgColor
+//            weekDayLabel.textColor = UIColor(named: "OtherColor")
+//        }
+//
+//
+//        if isBlackSelected == true {
+//            self.contentView.layer.backgroundColor = UIColor(named: "OtherColor")?.cgColor
+//            weekDayLabel.textColor = UIColor(named: "BackroundColor")
+//        }else if isBlackSelected == false {
+//            self.contentView.layer.backgroundColor = UIColor(named: "BackroundColor")?.cgColor
+//            weekDayLabel.textColor = UIColor(named: "OtherColor")
+//        }
+//
     }
     
     private func setup() {

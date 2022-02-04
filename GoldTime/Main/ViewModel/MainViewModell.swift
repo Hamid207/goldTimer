@@ -143,15 +143,24 @@ final class MainViewModell: MainViewModellProtocol {
                 self.dataStore?.deleteObject(modelIndex)
                 self.index = nil
             }
-        
             DispatchQueue.main.async {
-                collectionView.reloadData()
+                self.remove(index)
             }
         }
         let actionBack = UIAlertAction(title: "Back", style: .cancel, handler: nil)
         alert.addAction(actionDelete)
         alert.addAction(actionBack)
         view.present(alert, animated: true, completion: nil)
+    }
+    
+    //reload
+    func remove(_ i: Int) {
+        let indexPath = IndexPath(row: i, section: 0)
+        collectionView!.performBatchUpdates({
+            collectionView!.deleteItems(at: [indexPath])
+        }) { [self] (finished) in
+            collectionView!.reloadItems(at: collectionView!.indexPathsForVisibleItems)
+        }
     }
     
     //MARK: - Timer Time Update

@@ -395,14 +395,16 @@ class MainCollectionViewCelll: UICollectionViewCell {
         if let start = startTime, let timerTime = timerTime {
             let diff = start.timeIntervalSince(Date(timeIntervalSinceNow: TimeInterval(-timerTime)))
             //            let diff = Date().timeIntervalSince(start)
-            if toDay == weekDay {
-                setTimeLabel(Int(diff))
+            
+            if self.toDay == self.weekDay {
+                self.setTimeLabel(Int(diff))
             }else {
-                if editTimerTime != nil {
-                    setTimeLabel(editTimerTime!)
+                if self.editTimerTime != nil {
+                    self.setTimeLabel(self.editTimerTime!)
                 }else {
-                    setTimeLabel(timerTime)
+                    self.setTimeLabel(timerTime)
                 }
+                
             }
             setTimerUpdateTimeDeleagte?.setTimerNewTime(newTime: Int(diff), index: index!)
             if Int(diff) <= 0 {
