@@ -51,7 +51,7 @@ final class MainViewController: UIViewController {
 //        UINavigationBar.appearance().tintColor = .white
 //        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.red]
 //        UINavigationBar.appearance().isTranslucent = false
-        view.backgroundColor = UIColor(named: "BackroundColor")
+        view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         nav()
         mainViewSetup()
         viewModel?.collectionView = mainCollectionView

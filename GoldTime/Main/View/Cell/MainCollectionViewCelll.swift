@@ -156,7 +156,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         button.setTitle("Start", for: .normal)
 //        button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .regular)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .regular)
         return button
     }()
     
@@ -309,19 +309,21 @@ class MainCollectionViewCelll: UICollectionViewCell {
         RunLoop.current.add(timer, forMode: .common)
         timer.tolerance = 0.1
         self.timer = timer
-        timerLabel.textColor = .white
         //        setTimerCounting(true)
         removeBool = true
         if toDay == weekDay {
-            startButton.setTitle("Pause", for: .normal)
-            startButton.backgroundColor = .white
-            startButton.setTitleColor(.black, for: .normal)
+            UIView.animate(withDuration: 0.3) {
+                self.startButton.setTitle("Pause", for: .normal)
+                self.startButton.backgroundColor = .white
+                self.startButton.setTitleColor(.black, for: .normal)
+            }
         }else {
             startButton.setTitle("Start", for: .normal)
             startButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)
             startButton.setTitleColor(.white, for: .normal)
         }
-        
+        self.timerLabel.textColor = .white
+
         
         //circular bar
 //        if animteBool == false {
@@ -348,9 +350,11 @@ class MainCollectionViewCelll: UICollectionViewCell {
         removeBool = false
         //        setTimerCounting(false)
         if toDay == weekDay {
-            startButton.setTitle("Start", for: .normal)
-            startButton.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-            startButton.setTitleColor(.white, for: .normal)
+            UIView.animate(withDuration: 0.3) {
+                self.startButton.setTitle("Start", for: .normal)
+                self.startButton.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+                self.startButton.setTitleColor(.white, for: .normal)
+            }
         }else {
             startButton.setTitle("Start", for: .normal)
             startButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)
@@ -561,7 +565,9 @@ class MainCollectionViewCelll: UICollectionViewCell {
     private func layoutSub() {
         self.backgroundColor = UIColor().hexStringToUIColor(hex: timerCellColor)
         self.layer.cornerRadius = 10
+        self.clipsToBounds = true
         startButton.layer.cornerRadius = 10
+        startButton.clipsToBounds = true
     }
     
     
