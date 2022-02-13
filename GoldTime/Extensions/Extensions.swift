@@ -101,3 +101,25 @@ extension UIColor {
         )
     }
  }
+
+extension NSNumber {
+    func getPercentage() -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .percent
+        formatter.maximumFractionDigits = 0 // You can set what you want
+        return formatter.string(from: self)!
+    }
+}
+
+extension String {
+    func PadLeft( totalWidth: Int,byString:String) -> String {
+        let toPad = totalWidth
+        if toPad < 1 {
+            return self
+        }
+        
+        return "".padding(toLength: toPad, withPad: byString, startingAt: 1) + self
+        
+    }
+}
+

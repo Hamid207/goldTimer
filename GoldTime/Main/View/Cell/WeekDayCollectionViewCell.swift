@@ -34,7 +34,6 @@ class WeekDayCollectionViewCell: UICollectionViewCell {
     }
     
     override func layoutSubviews() {
-//        self.backgroundColor = .red
         self.contentView.layer.cornerRadius = 5
     }
     

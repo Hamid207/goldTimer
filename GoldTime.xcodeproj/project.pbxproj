@@ -63,6 +63,12 @@
 		61C15D3E27A6E04800A721B8 /* EditWeekDayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C15D3D27A6E04800A721B8 /* EditWeekDayTableViewCell.swift */; };
 		61C15D4027A6E07300A721B8 /* EditColorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C15D3F27A6E07300A721B8 /* EditColorTableViewCell.swift */; };
 		61C15D4227A6E0A200A721B8 /* EditSaveButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C15D4127A6E0A200A721B8 /* EditSaveButtonTableViewCell.swift */; };
+		61E5DB5427B69B9600B21E7C /* Extensions+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E5DB4F27B69B9300B21E7C /* Extensions+UIView.swift */; };
+		61E5DB5527B69B9600B21E7C /* UILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E5DB5027B69B9400B21E7C /* UILabel.swift */; };
+		61E5DB5627B69B9600B21E7C /* UIView+Stacking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E5DB5127B69B9400B21E7C /* UIView+Stacking.swift */; };
+		61E5DB5727B69B9600B21E7C /* GenericCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E5DB5227B69B9500B21E7C /* GenericCell.swift */; };
+		61E5DB5827B69B9600B21E7C /* GenericController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E5DB5327B69B9600B21E7C /* GenericController.swift */; };
+		61E5DB5C27B69C8000B21E7C /* BarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61E5DB5B27B69C8000B21E7C /* BarChartView.swift */; };
 		61F6BB2E279AB05100E5BC68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F6BB2D279AB05100E5BC68 /* AppDelegate.swift */; };
 		61F6BB30279AB05100E5BC68 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F6BB2F279AB05100E5BC68 /* SceneDelegate.swift */; };
 		61F6BB37279AB05400E5BC68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 61F6BB36279AB05400E5BC68 /* Assets.xcassets */; };
@@ -147,6 +153,12 @@
 		61C15D3D27A6E04800A721B8 /* EditWeekDayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWeekDayTableViewCell.swift; sourceTree = "<group>"; };
 		61C15D3F27A6E07300A721B8 /* EditColorTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditColorTableViewCell.swift; sourceTree = "<group>"; };
 		61C15D4127A6E0A200A721B8 /* EditSaveButtonTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditSaveButtonTableViewCell.swift; sourceTree = "<group>"; };
+		61E5DB4F27B69B9300B21E7C /* Extensions+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Extensions+UIView.swift"; sourceTree = "<group>"; };
+		61E5DB5027B69B9400B21E7C /* UILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UILabel.swift; sourceTree = "<group>"; };
+		61E5DB5127B69B9400B21E7C /* UIView+Stacking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Stacking.swift"; sourceTree = "<group>"; };
+		61E5DB5227B69B9500B21E7C /* GenericCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericCell.swift; sourceTree = "<group>"; };
+		61E5DB5327B69B9600B21E7C /* GenericController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericController.swift; sourceTree = "<group>"; };
+		61E5DB5B27B69C8000B21E7C /* BarChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarChartView.swift; sourceTree = "<group>"; };
 		61F6BB2A279AB05100E5BC68 /* GoldTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoldTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		61F6BB2D279AB05100E5BC68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		61F6BB2F279AB05100E5BC68 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -375,6 +387,8 @@
 			children = (
 				6199ABB9279B2DDC000CFB82 /* TimerDetailViewController.swift */,
 				6199ABBB279B2DE9000CFB82 /* TimerDetailViewController+Extension.swift */,
+				61E5DB5327B69B9600B21E7C /* GenericController.swift */,
+				61E5DB5B27B69C8000B21E7C /* BarChartView.swift */,
 				6199ABBF279B2E1E000CFB82 /* Cell */,
 			);
 			path = View;
@@ -384,6 +398,7 @@
 			isa = PBXGroup;
 			children = (
 				6199ABC0279B2E3F000CFB82 /* TimerDetailTableViewCell.swift */,
+				61E5DB5227B69B9500B21E7C /* GenericCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -435,6 +450,16 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		61E5DB4E27B69A4D00B21E7C /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				61E5DB4F27B69B9300B21E7C /* Extensions+UIView.swift */,
+				61E5DB5027B69B9400B21E7C /* UILabel.swift */,
+				61E5DB5127B69B9400B21E7C /* UIView+Stacking.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		61F6BB21279AB05000E5BC68 = {
 			isa = PBXGroup;
 			children = (
@@ -467,6 +492,7 @@
 				6199AB74279B296E000CFB82 /* Builders */,
 				6199AB75279B2991000CFB82 /* Service */,
 				6199AB7C279B2A54000CFB82 /* Extensions */,
+				61E5DB4E27B69A4D00B21E7C /* Helpers */,
 				6199AB81279B2A90000CFB82 /* Protocols */,
 				6199AB90279B2B12000CFB82 /* Model */,
 				6199AB99279B2BA7000CFB82 /* Main */,
@@ -689,10 +715,12 @@
 				6199ABC1279B2E3F000CFB82 /* TimerDetailTableViewCell.swift in Sources */,
 				6199ABAC279B2CE1000CFB82 /* MainViewModell.swift in Sources */,
 				6121F8D127A40B79000EB44B /* HeaderTableviewCell.swift in Sources */,
+				61E5DB5527B69B9600B21E7C /* UILabel.swift in Sources */,
 				6121F8CC27A3F64D000EB44B /* AddColorTableViewCell.swift in Sources */,
 				6121F8CA27A3F63A000EB44B /* AddWeekDayTableViewCell.swift in Sources */,
 				6199ABC8279B2F2E000CFB82 /* EditViewController+Extension.swift in Sources */,
 				6199AB7E279B2A68000CFB82 /* Extensions.swift in Sources */,
+				61E5DB5C27B69C8000B21E7C /* BarChartView.swift in Sources */,
 				6121F8D727A46E10000EB44B /* SentTimerNameDelegate.swift in Sources */,
 				61C15D3727A6DE5600A721B8 /* TapOnTheEdirVcDelegate.swift in Sources */,
 				6199AB8D279B2AEE000CFB82 /* SentAlertActionDelegate.swift in Sources */,
@@ -707,7 +735,9 @@
 				6121F8C827A3F60A000EB44B /* TimerPickerTableViewCell.swift in Sources */,
 				6199ABBC279B2DE9000CFB82 /* TimerDetailViewController+Extension.swift in Sources */,
 				6199AB77279B2A04000CFB82 /* TimerTimeArray.swift in Sources */,
+				61E5DB5727B69B9600B21E7C /* GenericCell.swift in Sources */,
 				61C15D4227A6E0A200A721B8 /* EditSaveButtonTableViewCell.swift in Sources */,
+				61E5DB5627B69B9600B21E7C /* UIView+Stacking.swift in Sources */,
 				6199AB8F279B2B0B000CFB82 /* TimerModelData.swift in Sources */,
 				61A3F4DC279D882E00C9B997 /* LastUseTimerIndex.swift in Sources */,
 				6199AB87279B2AC1000CFB82 /* SetIndexDelegate.swift in Sources */,
@@ -722,6 +752,7 @@
 				6199AB85279B2AB4000CFB82 /* TimerRemoveDelegate.swift in Sources */,
 				6199ABB0279B2D29000CFB82 /* AddNewTimerViewController+Extension.swift in Sources */,
 				6199ABA1279B2C24000CFB82 /* MainCollectionViewCelll.swift in Sources */,
+				61E5DB5427B69B9600B21E7C /* Extensions+UIView.swift in Sources */,
 				6199AB70279B2938000CFB82 /* MainRouter.swift in Sources */,
 				6199AB83279B2AA4000CFB82 /* TimerAddProtocol.swift in Sources */,
 				6199AB6D279B2918000CFB82 /* TabbarController.swift in Sources */,
@@ -732,6 +763,7 @@
 				6199ABA7279B2C8D000CFB82 /* ProgressBar.swift in Sources */,
 				6199AB92279B2B2C000CFB82 /* UserStatisticsData.swift in Sources */,
 				6199AB80279B2A85000CFB82 /* TimerStartStopProtocol.swift in Sources */,
+				61E5DB5827B69B9600B21E7C /* GenericController.swift in Sources */,
 				6121F8D327A466E2000EB44B /* SentColorDelegate.swift in Sources */,
 				61F7778F27A57FAB00A0467D /* SaveWeekDayDelegate.swift in Sources */,
 				6199ABA3279B2C4C000CFB82 /* WeekDayCollectionViewCell.swift in Sources */,
@@ -908,7 +940,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 77QNKT8P7A;
 				INFOPLIST_FILE = GoldTime/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -929,7 +961,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 77QNKT8P7A;
 				INFOPLIST_FILE = GoldTime/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

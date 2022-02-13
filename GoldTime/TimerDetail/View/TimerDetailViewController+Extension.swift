@@ -17,10 +17,7 @@ extension TimerDetailViewController {
         viewModel?.popVC()
     }
     
-    @objc func addVC() {
-        timerDetailTableView.reloadData()
-//                viewModel?.sendAction(startPauseBool: true)
-    }
+ 
     
     func itemSetup() {
 //        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus")
@@ -70,7 +67,7 @@ extension TimerDetailViewController: UITableViewDataSource {
         cell.index = indexPath.row
 //        let index = (viewModel?.index)!
 //        let item = viewModel?.model?[index]
-        cell.update(statisticsTime: viewModel?.statisticsTime)
+        cell.update(statisticsTime: viewModel?.statisticsTime, timeArray: (viewModel?.timeDayArray)!, timerTime: (viewModel?.timerTime)!)
         return cell
     }
 }

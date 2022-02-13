@@ -39,7 +39,7 @@ extension MainViewController {
         weekDayView.backgroundColor = .clear
 //        weekDayView.layer.borderWidth = 1
 //        weekDayView.layer.borderColor = UIColor.black.cgColor
-        weekDayView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
+        weekDayView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         weekDayView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         weekDayView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         weekDayView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/10).isActive = true
@@ -50,7 +50,7 @@ extension MainViewController {
         weekDayCollectionView.layer.cornerRadius = 10
         weekDayCollectionView.delegate = self
         weekDayCollectionView.dataSource = self
-        weekDayCollectionView.backgroundColor = .clear
+        weekDayCollectionView.backgroundColor = .white
         weekDayCollectionView.showsHorizontalScrollIndicator = false
         weekDayCollectionView.translatesAutoresizingMaskIntoConstraints = false
         weekDayCollectionView.register(WeekDayCollectionViewCell.self, forCellWithReuseIdentifier: "weekDayCell")
@@ -70,7 +70,7 @@ extension MainViewController {
         mainCollectionView.translatesAutoresizingMaskIntoConstraints = false
         //        mainCollectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         mainCollectionView.register(MainCollectionViewCelll.self, forCellWithReuseIdentifier: "cell")
-        mainCollectionView.topAnchor.constraint(equalTo: weekDayView.bottomAnchor).isActive = true
+        mainCollectionView.topAnchor.constraint(equalTo: weekDayView.bottomAnchor, constant: 10).isActive = true
         mainCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         mainCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         mainCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
@@ -115,7 +115,6 @@ extension MainViewController: TimerRemoveDelegate, TapOnTheEdirVcDelegate {
     }
     
     func removeIndex(modelIndex: TimerModelData, deleteBool: Bool, cellIndex: Int) {
-        //        viewModel?.timerRemove(modelIndex: modelIndex, deleteBool: deleteBool, cellIndex: cellIndex, view: self, collectionView: mainCollectionView)
         viewModell?.timerRemove(modelIndex: modelIndex, removeBool: deleteBool, index: cellIndex, view: self, collectionView: mainCollectionView)
     }
 }
@@ -126,10 +125,11 @@ extension MainViewController: SetTimerUpdateTimeDelegate, SetPomdoroTimerUpdateT
         if viewModell?.toDay == viewModell?.checkDay {
             viewModell?.timerTimeUpdate(timerTimeUpdate: newTime, index: index)
         }
+//
     }
     
     func setPomodoroNewTime(newTime: Int, pomdoroTimerBreakOrWork: Bool, index: Int) {
-        viewModell?.pomodoroTimeUpdate(newTime: newTime, pomdoroTimerBreakOrWork: pomdoroTimerBreakOrWork, index: index)
+//        viewModell?.pomodoroTimeUpdate(newTime: newTime, pomdoroTimerBreakOrWork: pomdoroTimerBreakOrWork, index: index)
     }
 }
 
@@ -225,7 +225,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
             return UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
 
         }
-        return UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

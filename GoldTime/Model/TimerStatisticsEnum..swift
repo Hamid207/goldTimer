@@ -8,8 +8,8 @@
 import Foundation
 
 enum TimerStatisticsEnum: Int {
-    case week = -7
-    case month = -30
-    case threeMonth = -90
-    case sixMonth = -180
+    case week = -6
+    case month = -29
+    case threeMonth = -89
+    case sixMonth = -179
 }

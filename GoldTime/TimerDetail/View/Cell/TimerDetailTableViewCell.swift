@@ -13,9 +13,10 @@ class TimerDetailTableView: UITableViewCell {
     weak var timerStatisticsDelegate: SentTimerStatisticDelegate?
     
     var index: Int?
-    
+    private var statistics = 7
     private var userTimerStatistic: Int?
-    
+    private let barChartView = BarChartView()
+
     private let timerDetailStatictic: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -88,7 +89,7 @@ class TimerDetailTableView: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 40, weight: .heavy)
+        label.font = UIFont.systemFont(ofSize: 55, weight: .heavy)
 //        label.text = "12h 25m 30s"
         return label
     }()
@@ -123,11 +124,12 @@ class TimerDetailTableView: UITableViewCell {
     }
     
     
-    func update(statisticsTime: Int?){
+    func update(statisticsTime: Int?, timeArray: [Int], timerTime: Int){
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             guard let time = statisticsTime else { return }
             self.statisticTargetlabel.text = self.timeString(time: TimeInterval(time))
+//            self.barChartView.update(timeArray: timeArray, days: self.statistics, timerTime: timerTime)
         }
     }
     
@@ -136,9 +138,13 @@ class TimerDetailTableView: UITableViewCell {
         if sender == self.statisticsSegmetControll {
             switch sender.selectedSegmentIndex {
                 case 0: timerStatisticsDelegate?.sentTimerStatisticDelegate(days: .week)
+                    statistics = 7
                 case 1: timerStatisticsDelegate?.sentTimerStatisticDelegate(days: .month)
+                    statistics = 30
                 case 2: timerStatisticsDelegate?.sentTimerStatisticDelegate(days: .threeMonth)
+                    statistics = 90
                 case 3: timerStatisticsDelegate?.sentTimerStatisticDelegate(days: .sixMonth)
+                    statistics = 180
                 default: break
             }
         }
@@ -185,9 +191,16 @@ class TimerDetailTableView: UITableViewCell {
         statisticsSegmetControll.addTarget(self, action: #selector(didCgangeStatisticSegment), for: .valueChanged)
 
         contentView.addSubview(statisticTargetlabel)
-        statisticTargetlabel.topAnchor.constraint(equalTo: statisticsSegmetControll.bottomAnchor, constant: 10).isActive = true
+        statisticTargetlabel.topAnchor.constraint(equalTo: statisticsSegmetControll.bottomAnchor, constant: 20).isActive = true
         statisticTargetlabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         statisticTargetlabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
         
+//        contentView.addSubview(barChartView)
+//        barChartView.translatesAutoresizingMaskIntoConstraints = false
+//        barChartView.backgroundColor = .clear
+//        barChartView.topAnchor.constraint(equalTo: statisticTargetlabel.bottomAnchor, constant: 20).isActive = true
+//        barChartView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
+//        barChartView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+//        barChartView.heightAnchor.constraint(equalToConstant: 200).isActive = true
     }
 }

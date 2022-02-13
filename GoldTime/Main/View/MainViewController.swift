@@ -35,7 +35,7 @@ final class MainViewController: UIViewController {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.backgroundColor = .white
+        cv.backgroundColor = .clear
         cv.isPagingEnabled = false
         return cv
     }()
@@ -51,7 +51,7 @@ final class MainViewController: UIViewController {
 //        UINavigationBar.appearance().tintColor = .white
 //        UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.red]
 //        UINavigationBar.appearance().isTranslucent = false
-        view.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         nav()
         mainViewSetup()
         viewModel?.collectionView = mainCollectionView

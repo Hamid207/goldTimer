@@ -17,6 +17,9 @@ protocol TimerDetailViewModelProtocol {
     func sentTimerStatistics(days: TimerStatisticsEnum, tableView: UITableView)
     var statisticsTime: Int? { get set }
     var dataStore: DataStoreProtocol? { get set }
+    var timeDayArray: [Int]? { get set }
+    func statisticsStart()
+    var timerTime: Int? { get set }
     init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, index: Int, predicate: NSPredicate, timerStatistics: TimerStatistics?)
 }
 
@@ -29,6 +32,8 @@ final class TimerDetailViewModel: TimerDetailViewModelProtocol {
     var startPauseBool: Bool?
     var statisticsTime: Int?
     private var predicate: NSPredicate!
+    var timeDayArray: [Int]?
+    var timerTime: Int?
     init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, index: Int, predicate: NSPredicate, timerStatistics: TimerStatistics?) {
         self.mainRouter = mainRouter
         self.dataStore = dataStore
@@ -36,9 +41,15 @@ final class TimerDetailViewModel: TimerDetailViewModelProtocol {
         self.timerStatistics = timerStatistics
         self.predicate = predicate
         model = dataStore?.timerArray
+        timerTime = model?[index].timerTime
         self.dataStore?.timerArray = realm.objects(TimerModelData.self).filter(predicate)
     }
    
+    func statisticsStart() {
+        statisticsTime = dataStore?.findOutStatistics(days: .week, index: index, predicate: predicate).0
+        timeDayArray = dataStore?.findOutStatistics(days: .week, index: index, predicate: predicate).1
+    }
+    
     func sendAction(startPauseBool: Bool?) {
 //        self.dataStore?.timerStart(index: self.index!, startPauseBool: startPauseBool, completion: { booll in
 //        })
@@ -49,7 +60,8 @@ final class TimerDetailViewModel: TimerDetailViewModelProtocol {
     }
     
     func sentTimerStatistics(days: TimerStatisticsEnum, tableView: UITableView) {
-        statisticsTime = dataStore?.findOutStatistics(days: days, index: index, predicate: predicate)
+        statisticsTime = dataStore?.findOutStatistics(days: days, index: index, predicate: predicate).0
+        timeDayArray = dataStore?.findOutStatistics(days: days, index: index, predicate: predicate).1
         DispatchQueue.main.async {
             tableView.reloadData()
         }

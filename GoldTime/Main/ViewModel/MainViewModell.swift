@@ -100,7 +100,6 @@ final class MainViewModell: MainViewModellProtocol {
         predicateRepeat = predicate
         dataStore?.predicateFilter(predicate: predicate)
         model = dataStore?.timerArray
-        
     }
     
     //MARK: - weekDay
@@ -169,7 +168,7 @@ final class MainViewModell: MainViewModellProtocol {
         try! realm.write {
             dataStore?.timerArray?[index].timerUpdateTime = timerTimeUpdate
         }
-        
+
         //timer statistics add
         let timerTimeeee = (dataStore?.timerArray?[index].timerTime)! - timerTimeUpdate
         dataStore?.saveTimerStatistics(key: Date().getFormattedDate(), value: timerTimeeee, index: index)
@@ -189,7 +188,7 @@ final class MainViewModell: MainViewModellProtocol {
             }
         }
         
-        //Timer ishdiye ishdiye eger saat 00:00 olursa onda bu funcciya ishe dushur
+//        Timer ishdiye ishdiye eger saat 00:00 olursa onda bu funcciya ishe dushur
         if dataStore?.timerArray?[index].todayDate != Date().getFormattedDate() {
             ifTimerOnNextday()
             weekDay()
@@ -219,7 +218,6 @@ final class MainViewModell: MainViewModellProtocol {
                 cell.startTimer()
             }
             timerNotifications?.scheduleNotification(inSeconds: TimeInterval((dataStore?.timerArray?[index].timerUpdateTime)!), timerName: (dataStore?.timerArray?[index].name)!)
-            print("STARTT")
         }else if timerCounting == false && self.index == index {
             self.timerCounting = timerCounting
             self.index = nil
@@ -381,10 +379,10 @@ final class MainViewModell: MainViewModellProtocol {
     }
     
     func pomodoroTimeUpdate(newTime: Int, pomdoroTimerBreakOrWork: Bool, index: Int) {
-        try! realm.write {
-            dataStore?.timerArray?[index].pomodoroTimerUpdateTime = newTime
-            dataStore?.timerArray?[index].pomodorTimerWorkOrBreak = pomdoroTimerBreakOrWork
-        }
+//        try! realm.write {
+//            dataStore?.timerArray?[index].pomodoroTimerUpdateTime = newTime
+//            dataStore?.timerArray?[index].pomodorTimerWorkOrBreak = pomdoroTimerBreakOrWork
+//        }
         //        print("TIMERR = == \(newTime)  === true falseee  -=-=-=- \(pomdoroTimerBreakOrWork)")
     }
     

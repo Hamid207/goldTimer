@@ -71,7 +71,6 @@ class MainCollectionViewCelll: UICollectionViewCell {
     private var circularBarReload = false
     private var circulerStartStopTime: Float?
     var countFred: CGFloat = 0
-    
     //===============================================
     
     private let editsImageView: UIImageView = {
@@ -211,7 +210,9 @@ class MainCollectionViewCelll: UICollectionViewCell {
             //            }
         }
 //        progressBar.firstAnimation(value: 0.0)
-        addModelIndexDelegate?.addModelIndex(index: index)
+        if toDay == weekDay {
+            addModelIndexDelegate?.addModelIndex(index: index)
+        }
         autoStart()
     }
     
@@ -228,10 +229,16 @@ class MainCollectionViewCelll: UICollectionViewCell {
         //        }else {
         //            pomodoroTimerLabel.text = ""
         //        }
+        
         if timerCounting {
-            setTimerCounting(true)
-            startTimer()
-            setIndexDeleagte?.setIndex(index: self.index)
+            if toDay == weekDay {
+                setTimerCounting(true)
+                startTimer()
+                setIndexDeleagte?.setIndex(index: self.index)
+                print("CEELLLLINDExxx")
+            }else {
+                startTimerFake()
+            }
 //            if isFirstAnimation == true {
 //                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
 //                    self.progressBar.firstAnimation(value: 0.5)
@@ -241,11 +248,11 @@ class MainCollectionViewCelll: UICollectionViewCell {
         }else {
             setTimerCounting(false)
             stopTimer()
-//            if timerDoneSelected == true && toDay == weekDay {
-//                timerDone()
-//            }else {
-//                stopTimer()
-//            }
+            if timerDoneSelected == true && toDay == weekDay {
+                timerDone()
+            }else {
+                stopTimer()
+            }
 
             if toDay == weekDay {
                 setTimeLabel(timerUpdateTime)
@@ -309,20 +316,20 @@ class MainCollectionViewCelll: UICollectionViewCell {
         RunLoop.current.add(timer, forMode: .common)
         timer.tolerance = 0.1
         self.timer = timer
-        //        setTimerCounting(true)
         removeBool = true
         if toDay == weekDay {
             UIView.animate(withDuration: 0.3) {
+                self.timerLabel.textColor = .white
                 self.startButton.setTitle("Pause", for: .normal)
                 self.startButton.backgroundColor = .white
                 self.startButton.setTitleColor(.black, for: .normal)
             }
         }else {
+            self.timerLabel.textColor = .black
             startButton.setTitle("Start", for: .normal)
             startButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)
             startButton.setTitleColor(.white, for: .normal)
         }
-        self.timerLabel.textColor = .white
 
         
         //circular bar
@@ -340,6 +347,52 @@ class MainCollectionViewCelll: UICollectionViewCell {
 //        }
     }
     
+    //MARK: - Refresh Value
+    @objc private func refreshValue() {
+        weekDayAdd()
+        if let start = startTime, let timerTime = timerTime {
+            let diff = start.timeIntervalSince(Date(timeIntervalSinceNow: TimeInterval(-timerTime)))
+            //            let diff = Date().timeIntervalSince(start)
+            
+            if self.toDay == self.weekDay {
+                self.setTimeLabel(Int(diff))
+            }else {
+                if self.editTimerTime != nil {
+                    self.setTimeLabel(self.editTimerTime!)
+                }else {
+                    self.setTimeLabel(timerTime)
+                }
+            }
+            setTimerUpdateTimeDeleagte?.setTimerNewTime(newTime: Int(diff), index: index!)
+            if Int(diff) <= 0 {
+                stopTimer()
+                if toDay == weekDay {
+                    timerDone()
+                }
+                setTimerCounting(false)
+                setTimeLabel(self.timerTime!)
+                setStartTime(date: nil)
+                setStopTime(date: nil)
+                animteBool = false
+            }
+        }
+    }
+    
+    //MARK: = Start Timer Fake
+    //if today != weekday
+    private func startTimerFake() {
+        timerLabel.textColor = .black
+        startButton.setTitle("Start", for: .normal)
+        startButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)
+        startButton.setTitleColor(.white, for: .normal)
+        
+        if self.editTimerTime != nil {
+            self.setTimeLabel(self.editTimerTime!)
+        }else {
+            self.setTimeLabel(timerUpdateTime)
+        }
+    }
+    
     //MARK: - Stop timer
     func stopTimer() {
         timerLabel.textColor = .black
@@ -348,7 +401,6 @@ class MainCollectionViewCelll: UICollectionViewCell {
             timer = nil
         }
         removeBool = false
-        //        setTimerCounting(false)
         if toDay == weekDay {
             UIView.animate(withDuration: 0.3) {
                 self.startButton.setTitle("Start", for: .normal)
@@ -391,38 +443,6 @@ class MainCollectionViewCelll: UICollectionViewCell {
     func timerIsRemove() {
         setStartTime(date: nil)
         setStopTime(date: nil)
-    }
-    
-    //MARK: - Refresh Value
-    @objc private func refreshValue() {
-        weekDayAdd()
-        if let start = startTime, let timerTime = timerTime {
-            let diff = start.timeIntervalSince(Date(timeIntervalSinceNow: TimeInterval(-timerTime)))
-            //            let diff = Date().timeIntervalSince(start)
-            
-            if self.toDay == self.weekDay {
-                self.setTimeLabel(Int(diff))
-            }else {
-                if self.editTimerTime != nil {
-                    self.setTimeLabel(self.editTimerTime!)
-                }else {
-                    self.setTimeLabel(timerTime)
-                }
-                
-            }
-            setTimerUpdateTimeDeleagte?.setTimerNewTime(newTime: Int(diff), index: index!)
-            if Int(diff) <= 0 {
-                stopTimer()
-//                if toDay == weekDay {
-//                    timerDone()
-//                }
-                setTimerCounting(false)
-                setTimeLabel(self.timerTime!)
-                setStartTime(date: nil)
-                setStopTime(date: nil)
-                animteBool = false
-            }
-        }
     }
     
     private func calcRestartTime(start: Date, stop: Date) -> Date {

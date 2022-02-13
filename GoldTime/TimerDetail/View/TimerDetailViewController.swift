@@ -21,7 +21,7 @@ final class TimerDetailViewController: UIViewController {
         navigationItem.title = String(describing: name) + " statistics"
         self.navItems()
         self.itemSetup()
-        viewModel?.sentTimerStatistics(days: .week, tableView: timerDetailTableView)
+        viewModel?.statisticsStart()
     }
 
 }
