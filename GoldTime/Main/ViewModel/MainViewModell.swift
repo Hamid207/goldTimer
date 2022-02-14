@@ -31,6 +31,7 @@ protocol MainViewModellProtocol {
     var dataStore: DataStoreProtocol? { get set }
     var toDay: Int? { get set }
     var checkDay: Int? { get set }
+    var editDayIndex: Int! { get set }
     init(mainRouter: MainRouterProtocol?, timerTimerArray: TimerTimeArrayProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?, timerNotifications: TimerNotifications?)
 }
 
@@ -59,6 +60,7 @@ final class MainViewModell: MainViewModellProtocol {
         }
     }
     var newDay: Bool = false
+    var editDayIndex: Int!
     
     init(mainRouter: MainRouterProtocol?, timerTimerArray: TimerTimeArrayProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?, timerNotifications: TimerNotifications?) {
         self.mainRouter = mainRouter
@@ -71,6 +73,7 @@ final class MainViewModell: MainViewModellProtocol {
         weekDay()
         model = dataStore?.timerArray
         endOFTheDayViewUpdate()
+        editDayIndex = toDay
     }
     
     func tapTHeAddNewTimerVc() {
@@ -82,7 +85,8 @@ final class MainViewModell: MainViewModellProtocol {
     }
     
     func tapOnTheEditVc(timerModel: TimerModelData, index: Int) {
-        mainRouter?.showEditViewController(timerModel: timerModel, index: index)
+        guard let predicate = predicateRepeat else { return }
+        mainRouter?.showEditViewController(timerModel: timerModel, index: index, predicate: predicate, day: editDayIndex, col: collectionView!)
     }
     
     func remiveTest() {

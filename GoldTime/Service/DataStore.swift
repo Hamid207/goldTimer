@@ -46,10 +46,10 @@ class DataStore: DataStoreProtocol {
     var test: Results<TimerModelData>?
     init() {
         timerArray = realm.objects(TimerModelData.self)
+        
         timerArrayHelper = realm.objects(TimerModelData.self)
-//        print("TESTss Model 111 == \(test)")
-//        print("timerArray Model 111 == \(timerArray)")
         userStaticsArray = realm.objects(UserStatisticsData.self)
+        
         indexUserDefolts = UserDefaults.standard
         timerBoolUserDefolts = UserDefaults.standard
         index = indexUserDefolts?.object(forKey: "index") as? Int ?? 0
@@ -180,7 +180,6 @@ class DataStore: DataStoreProtocol {
     func saveObject(_ timerModel: TimerModelData) {
         try! realm.write {
             realm.add(timerModel)
-            
         }
     }
     

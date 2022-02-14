@@ -109,7 +109,7 @@ extension MainViewController: TimerStartStopDelegate, SetIndexDelegate, AddModel
 }
 
 //MARK: - TimerRemoveDelegate, TapOnTheEdirVcDelegate
-extension MainViewController: TimerRemoveDelegate, TapOnTheEdirVcDelegate {
+extension MainViewController: TimerRemoveDelegate, TapOnTheEditVcDelegate {
     func showEditVc(index: Int) {
         viewModell?.tapOnTheEditVc(timerModel: (viewModell?.model?[index])!, index: index)
     }
@@ -200,6 +200,7 @@ extension MainViewController: UICollectionViewDelegate {
                 let day = viewModell?.weekDayArray?[indexPath.item]
                 let predicateRepeat = NSPredicate(format: "\(day!) = true")
                 viewModell?.sentPredicate(predicate: predicateRepeat)
+                viewModell?.editDayIndex = indexPath.item + 1
                 DispatchQueue.main.async {
                     self.weekDayCollectionView.reloadData()
                     self.mainCollectionView.reloadData()

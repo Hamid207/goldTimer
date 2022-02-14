@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol TapOnTheEdirVcDelegate: AnyObject {
+protocol TapOnTheEditVcDelegate: AnyObject {
     func showEditVc(index: Int)
 }

@@ -6,7 +6,6 @@
 //
 
 import UIKit
-
 protocol EditViewModelProtocol{
     func popVC()
     var model: TimerModelData? { get set }
@@ -17,12 +16,12 @@ protocol EditViewModelProtocol{
     func saveTimerColor(color: String?, colorIndex: Int)
     func saveTimerButton()
     var saveButtonIsSelected: Bool! { get set }
-    init(mainRouter: MainRouterProtocol?,dataStore: DataStoreProtocol?, timerModel: TimerModelData?, index: Int)
+    init(mainRouter: MainRouterProtocol?,dataStore: DataStoreProtocol?, timerModel: TimerModelData?, index: Int, predicate: NSPredicate, day: Int, col: UICollectionView)
 }
 
 final class EditViewModel: EditViewModelProtocol {
     private let mainRouter: MainRouterProtocol?
-    private let dataStore: DataStoreProtocol?
+    private var dataStore: DataStoreProtocol?
     var tableView: UITableView?
     var model: TimerModelData?
     private var index: Int?
@@ -33,18 +32,28 @@ final class EditViewModel: EditViewModelProtocol {
     private lazy var fri = false
     private lazy var sat = false
     private lazy var sun = false
+    private lazy var editWeekDay = Int()
     private var timerName: String?
     private var timerTime: Int?
     private var timerColor: String?
     private var timerColorIndex: Int?
     private var timerAllWeekDayFalse = false
     var saveButtonIsSelected: Bool! = false
-    init(mainRouter: MainRouterProtocol?,dataStore: DataStoreProtocol?, timerModel: TimerModelData?, index: Int) {
+    private lazy var day = Int()
+    var col: UICollectionView!
+    init(mainRouter: MainRouterProtocol?,dataStore: DataStoreProtocol?, timerModel: TimerModelData?, index: Int, predicate: NSPredicate, day: Int, col: UICollectionView) {
         self.mainRouter = mainRouter
         self.dataStore = dataStore
         self.index = index
+        self.day = day
+        self.col = col
         model = timerModel
         timerName = model?.name
+        sentPredicate(predicate: predicate)
+    }
+    
+    private func sentPredicate(predicate: NSPredicate) {
+        dataStore?.predicateFilter(predicate: predicate)
     }
     
     func saveTimerName(name: String?) {
@@ -99,25 +108,139 @@ final class EditViewModel: EditViewModelProtocol {
         guard let index = index else { return }
         try! realm.write {
             dataStore?.timerArray?[index].name = timerName
-            print("TIMER TIME 111 === \(dataStore?.timerArray?[index].timerTime) -- newtime 111 === \(timerTime)")
-
+            //            print("TIMER TIME 111 === \(dataStore?.timerArray?[index].timerTime) -- newtime 111 === \(timerTime)")
+            
             if dataStore?.timerArray?[index].timerTime != timerTime {
-                print("TIMER TIME 222 === \(dataStore?.timerArray?[index].timerTime) -- newtime 222 === \(timerTime)")
+                //                print("TIMER TIME 222 === \(dataStore?.timerArray?[index].timerTime) -- newtime 222 === \(timerTime)")
                 dataStore?.timerArray?[index].editTimerTime = timerTime!
                 dataStore?.timerArray?[index].editTimerTimeBool = true
             }
-            dataStore?.timerArray?[index].Mon = mon
-            dataStore?.timerArray?[index].Tue = tue
-            dataStore?.timerArray?[index].Wed = wed
-            dataStore?.timerArray?[index].Thu = thu
-            dataStore?.timerArray?[index].Fri = fri
-            dataStore?.timerArray?[index].Sat = sat
-            dataStore?.timerArray?[index].Sun = sun
             if timerColor != nil {
                 dataStore?.timerArray?[index].timerColor = timerColor
                 dataStore?.timerArray?[index].timerColorIndex = timerColorIndex
             }
+            
         }
+        
+        //gunleri edit edende eger bu gun MONday idise sende MONdayden girib MONdayi false eliyende crash olurdu - realm osaniye updaye elediyi birde Realm filter olundugu ucun index nil verirdi - helli helki beledi sora duzelt
+        if day != 1 {
+            try! realm.write {
+                dataStore?.timerArray?[index].Mon = mon
+            }
+        }else {
+            editWeekDay = 1
+        }
+        if day != 2 {
+            try! realm.write {
+                dataStore?.timerArray?[index].Tue = tue
+            }
+        }else {
+            editWeekDay = 2
+        }
+        if day != 3 {
+            try! realm.write {
+                dataStore?.timerArray?[index].Wed = wed
+            }
+        }else {
+            editWeekDay = 3
+        }
+        if day != 4 {
+            try! realm.write {
+                dataStore?.timerArray?[index].Thu = thu
+            }
+        }else {
+            editWeekDay = 4
+        }
+        if day != 5 {
+            try! realm.write {
+                dataStore?.timerArray?[index].Fri = fri
+            }
+        }else {
+            editWeekDay = 5
+        }
+        if day != 6 {
+            try! realm.write {
+                dataStore?.timerArray?[index].Sat = sat
+            }
+        }else {
+            editWeekDay = 6
+        }
+        if day != 7 {
+            try! realm.write {
+                dataStore?.timerArray?[index].Sun = sun
+            }
+        }else {
+            editWeekDay = 7
+        }
+        
+        
+        switch editWeekDay {
+            case 1:
+                if dataStore?.timerArray?[index].timerCounting == true {
+                    let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
+                    cell.stopInEdit()
+                }
+                try! realm.write {
+                    dataStore?.timerArray?[index].Mon = mon
+                }
+            case 2:
+                if dataStore?.timerArray?[index].timerCounting == true {
+                    let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
+                    cell.stopInEdit()
+                }
+                
+                try! realm.write {
+                    dataStore?.timerArray?[index].Tue = tue
+                }
+            case 3:
+                if dataStore?.timerArray?[index].timerCounting == true {
+                    let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
+                    cell.stopInEdit()
+                }
+                
+                try! realm.write {
+                    dataStore?.timerArray?[index].Wed = wed
+                }
+            case 4:
+                if dataStore?.timerArray?[index].timerCounting == true {
+                    let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
+                    cell.stopInEdit()
+                }
+                
+                try! realm.write {
+                    dataStore?.timerArray?[index].Thu = thu
+                }
+            case 5:
+                if dataStore?.timerArray?[index].timerCounting == true {
+                    let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
+                    cell.stopInEdit()
+                }
+                
+                try! realm.write {
+                    dataStore?.timerArray?[index].Fri = fri
+                }
+            case 6:
+                if dataStore?.timerArray?[index].timerCounting == true {
+                    let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
+                    cell.stopInEdit()
+                }
+                
+                try! realm.write {
+                    dataStore?.timerArray?[index].Sat = sat
+                }
+            case 7:
+                if dataStore?.timerArray?[index].timerCounting == true {
+                    let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
+                    cell.stopInEdit()
+                }
+                
+                try! realm.write {
+                    dataStore?.timerArray?[index].Sun = sun
+                }
+            default:
+                break
+        }
+        
         popVC()
     }
     
@@ -130,12 +253,12 @@ final class EditViewModel: EditViewModelProtocol {
             saveButtonIsSelected = true
             let indexPosition = IndexPath(row: 0, section: 4)
             tableView?.reloadRows(at: [indexPosition], with: .none)
-//            print("TRUEE AddNEWTIMER ViewMODEl 120")
+            //            print("TRUEE AddNEWTIMER ViewMODEl 120")
         }else {
             saveButtonIsSelected = false
             let indexPosition = IndexPath(row: 0, section: 4)
             tableView?.reloadRows(at: [indexPosition], with: .none)
-//            print("Falsee AddNEWTIMER ViewMODEl 120")
+            //            print("Falsee AddNEWTIMER ViewMODEl 120")
         }
     }
 }

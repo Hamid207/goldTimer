@@ -19,7 +19,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
     weak var removeTimerDelegate: TimerRemoveDelegate?
     weak var pomodoroTimerStartStopDelegate: PomodoroTimerStartStopDelegate?
     weak var sentAlertActionDelegate: SentAlertActionDelegate?
-    weak var showEditVcDelegate: TapOnTheEdirVcDelegate?
+    weak var showEditVcDelegate: TapOnTheEditVcDelegate?
     
     
     var index: Int?
@@ -310,6 +310,16 @@ class MainCollectionViewCelll: UICollectionViewCell {
         }
     }
     
+    //MARK: - Dtop In Edit
+    //Edit vc den dayy false edende eger timer isdeyirse bu timrei stop edir
+    func stopInEdit() {
+        setStopTime(date: Date())
+        pomodoroStopTime = Date()
+        //            stopTimer()
+        setTimerCounting(false)
+        timerStartStopDelegate?.timerStartStop(index: index, timerCounting: timerCounting, startTime: startTime, stopStime: stopTime)
+    }
+    
     //MARK: - Start timer
     func startTimer() {
         let timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(refreshValue), userInfo: nil, repeats: true)
@@ -378,7 +388,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         }
     }
     
-    //MARK: = Start Timer Fake
+    //MARK: - Start Timer Fake
     //if today != weekday
     private func startTimerFake() {
         timerLabel.textColor = .black
@@ -389,7 +399,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         if self.editTimerTime != nil {
             self.setTimeLabel(self.editTimerTime!)
         }else {
-            self.setTimeLabel(timerUpdateTime)
+            self.setTimeLabel(timerTime!)
         }
     }
     
