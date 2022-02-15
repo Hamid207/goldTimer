@@ -16,6 +16,7 @@ protocol EditViewModelProtocol{
     func saveTimerColor(color: String?, colorIndex: Int)
     func saveTimerButton()
     var saveButtonIsSelected: Bool! { get set }
+    var timerStartToDay: Bool! { get set }
     init(mainRouter: MainRouterProtocol?,dataStore: DataStoreProtocol?, timerModel: TimerModelData?, index: Int, predicate: NSPredicate, day: Int, col: UICollectionView)
 }
 
@@ -41,6 +42,7 @@ final class EditViewModel: EditViewModelProtocol {
     var saveButtonIsSelected: Bool! = false
     private lazy var day = Int()
     var col: UICollectionView!
+    var timerStartToDay: Bool! = false
     init(mainRouter: MainRouterProtocol?,dataStore: DataStoreProtocol?, timerModel: TimerModelData?, index: Int, predicate: NSPredicate, day: Int, col: UICollectionView) {
         self.mainRouter = mainRouter
         self.dataStore = dataStore
@@ -50,6 +52,7 @@ final class EditViewModel: EditViewModelProtocol {
         model = timerModel
         timerName = model?.name
         sentPredicate(predicate: predicate)
+        timerStartToDay = dataStore?.timerArray?[index].timerStartToDay
     }
     
     private func sentPredicate(predicate: NSPredicate) {
@@ -173,67 +176,33 @@ final class EditViewModel: EditViewModelProtocol {
             editWeekDay = 7
         }
         
-        
+
         switch editWeekDay {
             case 1:
-                if dataStore?.timerArray?[index].timerCounting == true {
-                    let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
-                    cell.stopInEdit()
-                }
                 try! realm.write {
                     dataStore?.timerArray?[index].Mon = mon
                 }
             case 2:
-                if dataStore?.timerArray?[index].timerCounting == true {
-                    let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
-                    cell.stopInEdit()
-                }
-                
                 try! realm.write {
                     dataStore?.timerArray?[index].Tue = tue
                 }
             case 3:
-                if dataStore?.timerArray?[index].timerCounting == true {
-                    let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
-                    cell.stopInEdit()
-                }
-                
                 try! realm.write {
                     dataStore?.timerArray?[index].Wed = wed
                 }
             case 4:
-                if dataStore?.timerArray?[index].timerCounting == true {
-                    let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
-                    cell.stopInEdit()
-                }
-                
                 try! realm.write {
                     dataStore?.timerArray?[index].Thu = thu
                 }
             case 5:
-                if dataStore?.timerArray?[index].timerCounting == true {
-                    let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
-                    cell.stopInEdit()
-                }
-                
                 try! realm.write {
                     dataStore?.timerArray?[index].Fri = fri
                 }
             case 6:
-                if dataStore?.timerArray?[index].timerCounting == true {
-                    let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
-                    cell.stopInEdit()
-                }
-                
                 try! realm.write {
                     dataStore?.timerArray?[index].Sat = sat
                 }
             case 7:
-                if dataStore?.timerArray?[index].timerCounting == true {
-                    let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
-                    cell.stopInEdit()
-                }
-                
                 try! realm.write {
                     dataStore?.timerArray?[index].Sun = sun
                 }
@@ -243,6 +212,14 @@ final class EditViewModel: EditViewModelProtocol {
         
         popVC()
     }
+    
+//    private func stopTimer() {
+////        guard let index = index else { return }
+////        if dataStore?.timerArray?[index].timerCounting == true {
+////            let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
+////            cell.stopInEdit()
+////        }
+//    }
     
     func popVC() {
         mainRouter?.popVC()
@@ -261,4 +238,10 @@ final class EditViewModel: EditViewModelProtocol {
             //            print("Falsee AddNEWTIMER ViewMODEl 120")
         }
     }
+    
+//    private func weekDay() {
+//        let date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+//        let today = Calendar.current.component(.weekday, from: date)
+//        day = today
+//    }
 }

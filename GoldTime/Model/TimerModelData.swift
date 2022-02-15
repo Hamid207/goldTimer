@@ -48,6 +48,7 @@ class TimerModelData: Object {
     @Persisted var Fri: Bool
     @Persisted var Sat: Bool
     @Persisted var Sun: Bool
+    @Persisted var timerStartToDay: Bool = false
     
 //    @Persisted var test = List<tests>()
         

@@ -167,12 +167,12 @@ final class MainViewModell: MainViewModellProtocol {
     }
     
     //MARK: - Timer Time Update
-    func timerTimeUpdate(timerTimeUpdate: Int, index: Int?) {
+    func timerTimeUpdate(timerTimeUpdate: Int, index: Int?) {        
         guard let index = index else { return }
         try! realm.write {
             dataStore?.timerArray?[index].timerUpdateTime = timerTimeUpdate
         }
-
+        
         //timer statistics add
         let timerTimeeee = (dataStore?.timerArray?[index].timerTime)! - timerTimeUpdate
         dataStore?.saveTimerStatistics(key: Date().getFormattedDate(), value: timerTimeeee, index: index)
@@ -192,7 +192,7 @@ final class MainViewModell: MainViewModellProtocol {
             }
         }
         
-//        Timer ishdiye ishdiye eger saat 00:00 olursa onda bu funcciya ishe dushur
+        //        Timer ishdiye ishdiye eger saat 00:00 olursa onda bu funcciya ishe dushur
         if dataStore?.timerArray?[index].todayDate != Date().getFormattedDate() {
             ifTimerOnNextday()
             weekDay()
@@ -206,6 +206,7 @@ final class MainViewModell: MainViewModellProtocol {
     
     //MARK: - Timer Start Stop
     func timerStartStop(timerCounting: Bool, index: Int?, startTime: Date?, stopTime: Date?) {
+        print("timerCounting == \(timerCounting) -- index == \(self.index)")
         guard let index = index else { return }
         if timerCounting == true && self.index == nil && dataStore?.timerArray?[index].timerDone == false {
             endOFTheDayTimer?.invalidate()
@@ -216,12 +217,14 @@ final class MainViewModell: MainViewModellProtocol {
                 dataStore?.timerArray?[index].bugFixBool = timerCounting
                 dataStore?.timerArray?[index].timerCounting = timerCounting
                 dataStore?.timerArray?[index].startTimer = startTime
+                dataStore?.timerArray?[index].timerStartToDay = true
                 dataStore?.timerArray?[index].todayDate = Date().getFormattedDate()
             }
             if let cell = collectionView?.cellForItem(at: [0,index]) as? MainCollectionViewCelll {
                 cell.startTimer()
             }
             timerNotifications?.scheduleNotification(inSeconds: TimeInterval((dataStore?.timerArray?[index].timerUpdateTime)!), timerName: (dataStore?.timerArray?[index].name)!)
+            print("VIEWMODEL START")
         }else if timerCounting == false && self.index == index {
             self.timerCounting = timerCounting
             self.index = nil
@@ -235,19 +238,52 @@ final class MainViewModell: MainViewModellProtocol {
             }
             timerNotifications?.removeNotifications(withIdentifires: ["MyUniqueIdentifire"])
             endOFTheDayViewUpdate()
-            
+            print("VIEWMODEL STOP")
         }else if dataStore?.timerArray?[index].timerDone == true {
             if let cell = self.collectionView?.cellForItem(at: [0,index]) as? MainCollectionViewCelll {
                 cell.missTimer()
             }
             print("timer done trueee")
+        }else if timerCounting == false && self.index != nil {
+            print("stoppppp edittt ")
+            self.timerCounting = timerCounting
+            self.index = nil
+            try! realm.write {
+                dataStore?.timerArray?[index].bugFixBool = timerCounting
+                dataStore?.timerArray?[index].timerCounting = timerCounting
+                dataStore?.timerArray?[index].stopTimer = stopTime
+            }
+            if let cell = collectionView?.cellForItem(at: [0,index]) as? MainCollectionViewCelll {
+                cell.stopTimer()
+            }
+            timerNotifications?.removeNotifications(withIdentifires: ["MyUniqueIdentifire"])
+            endOFTheDayViewUpdate()
+
         }else {
             if let cell = self.collectionView?.cellForItem(at: [0,index]) as? MainCollectionViewCelll {
                 cell.missTimer()
             }
             print("REIS ALINMADI ancaq birin sec")
         }
+        
+        
     }
+    
+//    private func stopTimerViewModel() {
+//        guard let index = index else { return }
+//        self.timerCounting = fal
+//        try! realm.write {
+//            dataStore?.timerArray?[index].bugFixBool = timerCounting
+//            dataStore?.timerArray?[index].timerCounting = timerCounting
+//            dataStore?.timerArray?[index].stopTimer = stopTime
+//        }
+//        if let cell = collectionView?.cellForItem(at: [0,index]) as? MainCollectionViewCelll {
+//            cell.stopTimer()
+//        }
+//        self.index = nil
+//        timerNotifications?.removeNotifications(withIdentifires: ["MyUniqueIdentifire"])
+//        endOFTheDayViewUpdate()
+//    }
     
     //MARK: - TimerReset or Timer == 0
     private func timerReset(index: Int) {
@@ -257,6 +293,7 @@ final class MainViewModell: MainViewModellProtocol {
             dataStore?.timerArray?[index].stopTimer = nil
             dataStore?.timerArray?[index].timerCounting = false
             dataStore?.timerArray?[index].timerDone = false
+            dataStore?.timerArray?[index].timerStartToDay = false
             dataStore?.timerArray?[index].timerUpdateTime = (dataStore?.timerArray?[index].timerTime)!
         }
         
@@ -304,13 +341,14 @@ final class MainViewModell: MainViewModellProtocol {
                 timerDayOff(index: i)
             }
         }
-//                dataStore?.timerArray = realm.objects(TimerModelData.self).filter(predicateRepeat!)
+        //                dataStore?.timerArray = realm.objects(TimerModelData.self).filter(predicateRepeat!)
     }
     
     private func timerDayOff(index: Int) {
         if dataStore?.timerArray?[index].todayDate != Date().getFormattedDate() {
             try! realm.write {
                 dataStore?.timerArray?[index].todayDate = Date().getFormattedDate()
+                dataStore?.timerArray?[index].timerStartToDay = false
                 if dataStore?.timerArray?[index].editTimerTimeBool == true { //edit vc de yeni timerTime olsa
                     guard let newTime =  dataStore?.timerArray?[index].editTimerTime else { return }
                     dataStore?.timerArray?[index].timerTime = newTime
@@ -325,7 +363,7 @@ final class MainViewModell: MainViewModellProtocol {
                 self.collectionView?.reloadData()
                 self.weekDayCollectionView?.reloadData()
             }
-//            timerReset(index: index)
+            //            timerReset(index: index)
         }
     }
     
@@ -339,7 +377,7 @@ final class MainViewModell: MainViewModellProtocol {
     }
     
     @objc private func refreshValue() {
-//        print("5 sec reload")
+        //        print("5 sec reload")
         var modelIndex = dataStore?.timerArray?.count
         if modelIndex != 0 {
             modelIndex! -= 1
@@ -383,10 +421,10 @@ final class MainViewModell: MainViewModellProtocol {
     }
     
     func pomodoroTimeUpdate(newTime: Int, pomdoroTimerBreakOrWork: Bool, index: Int) {
-//        try! realm.write {
-//            dataStore?.timerArray?[index].pomodoroTimerUpdateTime = newTime
-//            dataStore?.timerArray?[index].pomodorTimerWorkOrBreak = pomdoroTimerBreakOrWork
-//        }
+        //        try! realm.write {
+        //            dataStore?.timerArray?[index].pomodoroTimerUpdateTime = newTime
+        //            dataStore?.timerArray?[index].pomodorTimerWorkOrBreak = pomdoroTimerBreakOrWork
+        //        }
         //        print("TIMERR = == \(newTime)  === true falseee  -=-=-=- \(pomdoroTimerBreakOrWork)")
     }
     

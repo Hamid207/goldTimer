@@ -103,7 +103,7 @@ extension EditViewController: UITableViewDataSource {
                 let fri = viewModel?.model?.Fri
                 let sat = viewModel?.model?.Sat
                 let sun = viewModel?.model?.Sun
-                editWeekCell.update(mon: mon ?? false, tue: tue ?? false, wed: wed ?? false, thu: thu ?? false, fri: fri ?? false, sat: sat ?? false, sun: sun ?? false)
+                editWeekCell.update(mon: mon ?? false, tue: tue ?? false, wed: wed ?? false, thu: thu ?? false, fri: fri ?? false, sat: sat ?? false, sun: sun ?? false, timerStartToday: (viewModel?.timerStartToDay)!)
                 return editWeekCell
             case 3:
                 let editColorCell = tableView.dequeueReusableCell(withIdentifier: "EditColorTableViewCellId", for: indexPath) as! EditColorTableViewCell

@@ -13,8 +13,10 @@ class EditWeekDayTableViewCell: UITableViewCell {
     
     private var weekDayArray: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     private lazy var tapWeekDayArray: [Int : Bool] = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
-    
+    private lazy var dontTapWeekDayArray = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
+    private var day: Int?
     private lazy var isSeletedd = false
+    private lazy var timerStartToDay = false
     
     private let addAllWeekDayView: UIView = {
         let view = UIView()
@@ -57,7 +59,7 @@ class EditWeekDayTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         itemSetum()
-//        weekDayAdd()
+        weekDayAdd()
     }
     
     required init?(coder: NSCoder) {
@@ -90,7 +92,7 @@ class EditWeekDayTableViewCell: UITableViewCell {
 //        saveWeekDayDelegate?.saveWeekDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
     }
 
-    func update(mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool, sun: Bool) {
+    func update(mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool, sun: Bool, timerStartToday: Bool) {
         if mon == true {
             tapWeekDayArray[1] = true
         }
@@ -112,7 +114,8 @@ class EditWeekDayTableViewCell: UITableViewCell {
         if sun == true {
             tapWeekDayArray[7] = true
         }
-
+        
+        timerStartToDay = timerStartToday
         weekOnOfSwitch()
         
         DispatchQueue.main.async {
@@ -176,9 +179,10 @@ class EditWeekDayTableViewCell: UITableViewCell {
     
     //MARK: - Week Day 
     private func weekDayAdd() {
-//        let date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
-//        let today = Calendar.current.component(.weekday, from: date)
-//        tapWeekDayArray[today] = true
+        let date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+        let today = Calendar.current.component(.weekday, from: date)
+        day = today
+        dontTapWeekDayArray[today] = true
         editWeekDayDelegate?.sentNewDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
     }
 }
@@ -193,7 +197,8 @@ extension EditWeekDayTableViewCell: UICollectionViewDataSource, UICollectionView
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! IconsCell
         let item = weekDayArray[indexPath.item]
         let item2 = tapWeekDayArray[indexPath.item + 1]
-        cell.update(name: item, isSelected: item2)
+        guard let dontTapITem = dontTapWeekDayArray[indexPath.item + 1] else { return cell}
+        cell.update(name: item, isSelected: item2, dontTapIsSelected: dontTapITem, timerStartToDay: timerStartToDay)
         return cell
     }
     
@@ -214,23 +219,45 @@ extension EditWeekDayTableViewCell: UICollectionViewDataSource, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if tapWeekDayArray[indexPath.item + 1] == false{
-            tapWeekDayArray[indexPath.item + 1] = true
-        }else if tapWeekDayArray[indexPath.item + 1] == true {
-            tapWeekDayArray[indexPath.item + 1] = false
-//            isSeletedd = false
-        }
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
+        if timerStartToDay == false {
+            if tapWeekDayArray[indexPath.item + 1] == false{
+                tapWeekDayArray[indexPath.item + 1] = true
+            }else if tapWeekDayArray[indexPath.item + 1] == true{
+                tapWeekDayArray[indexPath.item + 1] = false
+    //            isSeletedd = false
+            }
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
+        }else {
+            if tapWeekDayArray[indexPath.item + 1] == false{
+                tapWeekDayArray[indexPath.item + 1] = true
+            }else if tapWeekDayArray[indexPath.item + 1] == true && day != indexPath.item + 1{
+                tapWeekDayArray[indexPath.item + 1] = false
+    //            isSeletedd = false
+            }
+            DispatchQueue.main.async {
+                self.collectionView.reloadData()
+            }
         }
         
         weekOnOfSwitch()
         
         editWeekDayDelegate?.sentNewDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
     }
+    
+    func tapWeekDay(index: Int) {
+        if tapWeekDayArray[index] == false{
+            tapWeekDayArray[index] = true
+        }else if tapWeekDayArray[index] == true{
+            tapWeekDayArray[index] = false
+//            isSeletedd = false
+        }
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
 }
-
-
 
 private class IconsCell: UICollectionViewCell  {
     
@@ -252,15 +279,25 @@ private class IconsCell: UICollectionViewCell  {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(name: String, isSelected: Bool?) {
+    func update(name: String, isSelected: Bool?, dontTapIsSelected: Bool, timerStartToDay: Bool) {
         nameLabel.text = name
         nameLabel.textColor = .black
-        if isSelected! {
+        if isSelected! && dontTapIsSelected == true && timerStartToDay == true{
             nameLabel.textColor = .white
+            self.contentView.layer.backgroundColor = UIColor.red.cgColor
+//            print("1111111")
+        }else if isSelected! && dontTapIsSelected == false {
+            nameLabel.textColor = .white
+            self.contentView.layer.backgroundColor = UIColor.black.cgColor
+//            print("22222")
+        } else if isSelected! && dontTapIsSelected == true && timerStartToDay == false {
+            nameLabel.textColor = .white
+//            print("33333")
             self.contentView.layer.backgroundColor = UIColor.black.cgColor
         }else {
             nameLabel.textColor = .black
             self.contentView.layer.backgroundColor = UIColor.white.cgColor
+//            print("44444")
         }
     }
     
