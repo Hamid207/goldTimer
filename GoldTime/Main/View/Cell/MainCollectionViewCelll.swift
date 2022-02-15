@@ -135,7 +135,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
 //        label.textColor = .black
         label.textAlignment = .center
         //        label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
-        label.font = UIFont.monospacedDigitSystemFont(ofSize: 55, weight: .regular)
+        label.font = UIFont.monospacedDigitSystemFont(ofSize: 60, weight: .regular)
 //        label.backgroundColor = .yellow
         return label
     }()
@@ -155,7 +155,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         button.setTitle("Start", for: .normal)
 //        button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 22, weight: .regular)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .regular)
         return button
     }()
     

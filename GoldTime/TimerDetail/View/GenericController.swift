@@ -1,9 +1,8 @@
 //
 //  GenericController.swift
-//  YaBao
 //
-//  Created by Brian Voong on 12/26/18.
-//  Copyright © 2018 Brian Voong. All rights reserved.
+//  Created by Hamid Manafov on 21.01.22.
+//
 //
 
 import UIKit

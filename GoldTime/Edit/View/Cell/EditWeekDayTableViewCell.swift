@@ -15,7 +15,7 @@ class EditWeekDayTableViewCell: UITableViewCell {
     private lazy var tapWeekDayArray: [Int : Bool] = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
     private lazy var dontTapWeekDayArray = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
     private var day: Int?
-    private lazy var isSeletedd = false
+//    private lazy var isSeletedd = false
     private lazy var timerStartToDay = false
     
     private let addAllWeekDayView: UIView = {
@@ -75,15 +75,18 @@ class EditWeekDayTableViewCell: UITableViewCell {
     
     @objc private func switchOnOffAction(switchParam: UISwitch) {
         if switchParam.isOn {
-            print("ON")
             for i in 1...weekDayArray.count {
                 tapWeekDayArray[i] = true
             }
         }else {
-            print("Off")
             for i in 1...weekDayArray.count {
                 tapWeekDayArray[i] = false
             }
+        }
+        
+        if timerStartToDay == true {
+            guard let day = day else { return }
+            tapWeekDayArray[day] = true
         }
         weekDayAdd()
         DispatchQueue.main.async {
@@ -124,18 +127,18 @@ class EditWeekDayTableViewCell: UITableViewCell {
     }
     
     private func weekOnOfSwitch() {
-        var intt = 0
-        for i in 1...tapWeekDayArray.count {
-            if tapWeekDayArray[i] == true {
-                intt += 1
+            var intt = 0
+            for i in 1...tapWeekDayArray.count {
+                if tapWeekDayArray[i] == true {
+                    intt += 1
+                }
             }
-        }
-        
-        if intt == 7 {
-            addAllWeekDaySwitch.isOn = true
-        }else {
-            addAllWeekDaySwitch.isOn = false
-        }
+            
+            if intt == 7 {
+                addAllWeekDaySwitch.isOn = true
+            }else {
+                addAllWeekDaySwitch.isOn = false
+            }
     }
     
     private func itemSetum() {

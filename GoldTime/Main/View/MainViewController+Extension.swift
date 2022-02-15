@@ -215,7 +215,7 @@ extension MainViewController: UICollectionViewDelegate {
 extension MainViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == mainCollectionView {
-            return CGSize(width: view.frame.width - 35, height: view.frame.height / 3)
+            return CGSize(width: view.frame.width - 30, height: view.frame.height / 3)
         }else {
             return CGSize(width: view.frame.width / 7.9, height: weekDayView.frame.height - 10)
         }

@@ -1,9 +1,8 @@
 //
 //  UIView+Stacking.swift
-//  video-social
+//  GoldTime
 //
-//  Created by Brian Voong on 4/28/19.
-//  Copyright © 2019 Tieda Wei. All rights reserved.
+//  Created by Hamid Manafov on 21.01.22.
 //
 
 import UIKit

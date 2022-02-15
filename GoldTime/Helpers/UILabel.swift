@@ -1,9 +1,8 @@
 //
 //  UILabel.swift
-//  SwipeMatchFirestoreLBTA
+//  GoldTime
 //
-//  Created by Brian Voong on 4/26/19.
-//  Copyright © 2019 Brian Voong. All rights reserved.
+//  Created by Hamid Manafov on 21.01.22.
 //
 
 import UIKit

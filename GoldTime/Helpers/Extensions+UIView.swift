@@ -1,9 +1,8 @@
 //
 //  Extensions+UIView.swift
-//  SlideOutMenuInProgress
+//  GoldTime
 //
-//  Created by Brian Voong on 9/30/18.
-//  Copyright © 2018 Brian Voong. All rights reserved.
+//  Created by Hamid Manafov on 21.01.22.
 //
 
 import UIKit
