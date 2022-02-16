@@ -235,7 +235,6 @@ class MainCollectionViewCelll: UICollectionViewCell {
                 setTimerCounting(true)
                 startTimer()
                 setIndexDeleagte?.setIndex(index: self.index)
-                print("CEELLLLINDExxx")
             }else {
                 startTimerFake()
             }

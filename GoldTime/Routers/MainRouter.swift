@@ -32,7 +32,7 @@ class MainRouter: MainRouterProtocol {
     //MARK: - MainViewController
     func initialViewController() {
         if let navigationController = mainNaviGationController {
-            guard let mainVc = mainAssemblyBuilder?.ceatMainModule(mainRouter: self) else { return }
+            guard let mainVc = mainAssemblyBuilder?.creatMainModule(mainRouter: self) else { return }
             navigationController.viewControllers = [mainVc]
         }
     }
