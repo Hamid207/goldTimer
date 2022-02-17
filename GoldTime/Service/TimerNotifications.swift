@@ -23,7 +23,6 @@ class TimerNotifications: TimerNotificationsProtocol {
             notificationCenter.getNotificationSettings { settings in
                 let title = "\(name) finished"
                 let date = Date(timeIntervalSinceNow: seconds)
-                print(date.getFormattedDate(),    Date().getFormattedDate())
                 if settings.authorizationStatus == .authorized {
                     let content = UNMutableNotificationContent()
                     content.title = title

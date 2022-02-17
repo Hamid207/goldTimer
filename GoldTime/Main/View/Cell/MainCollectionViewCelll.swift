@@ -71,6 +71,11 @@ class MainCollectionViewCelll: UICollectionViewCell {
     private var circularBarReload = false
     private var circulerStartStopTime: Float?
     var countFred: CGFloat = 0
+    
+    
+    var testBoool = false
+    var stopInt = 0
+    var startInt = 0
     //===============================================
     
     private let editsImageView: UIImageView = {
@@ -85,7 +90,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
     private let editsTimerButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-//                button.backgroundColor = .orange
+        //                button.backgroundColor = .orange
         button.setTitleColor(.black, for: .normal)
         button.setTitle("Edit", for: .normal)
         button.tintColor = .black
@@ -118,7 +123,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         label.textColor = .black
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 30, weight: .regular)
-//        label.backgroundColor = .red
+        //        label.backgroundColor = .red
         return label
     }()
     
@@ -132,11 +137,10 @@ class MainCollectionViewCelll: UICollectionViewCell {
     private let timerLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-//        label.textColor = .black
+        //        label.textColor = .black
         label.textAlignment = .center
         //        label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
         label.font = UIFont.monospacedDigitSystemFont(ofSize: 60, weight: .regular)
-//        label.backgroundColor = .yellow
         return label
     }()
     
@@ -153,7 +157,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Start", for: .normal)
-//        button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        //        button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .regular)
         return button
@@ -162,17 +166,17 @@ class MainCollectionViewCelll: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupItem()
-//        let startDate = Date()
-//        let endDate: Date = {
-//            let component = DateComponents(day: 1, second: -1 )
-//            return Calendar.current.date(byAdding: component, to: startDate)!
-//        }()
-//        print("START DATE == \(startDate) END DATE == \(endDate)")
+        //        let startDate = Date()
+        //        let endDate: Date = {
+        //            let component = DateComponents(day: 1, second: -1 )
+        //            return Calendar.current.date(byAdding: component, to: startDate)!
+        //        }()
+        //        print("START DATE == \(startDate) END DATE == \(endDate)")
     }
     
-//    func calendarr(didSelect date: Date) {
-//
-//    }
+    //    func calendarr(didSelect date: Date) {
+    //
+    //    }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -209,7 +213,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
             //                pomodoroUpdateBreakTime = model.pomodoroTimerUpdateTime
             //            }
         }
-//        progressBar.firstAnimation(value: 0.0)
+        //        progressBar.firstAnimation(value: 0.0)
         if toDay == weekDay {
             addModelIndexDelegate?.addModelIndex(index: index)
         }
@@ -231,20 +235,26 @@ class MainCollectionViewCelll: UICollectionViewCell {
         //        }
         
         if timerCounting {
+            print("START Cell == \(nameLabel.text)")
             if toDay == weekDay {
                 setTimerCounting(true)
                 startTimer()
                 setIndexDeleagte?.setIndex(index: self.index)
+                startInt += 1
+//                print("AUTO START === \(nameLabel.text) == \(startInt)")
             }else {
                 startTimerFake()
             }
-//            if isFirstAnimation == true {
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
-//                    self.progressBar.firstAnimation(value: 0.5)
-//                    self.isFirstAnimation = false
-//                }
-//            }
+            //            if isFirstAnimation == true {
+            //                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            //                    self.progressBar.firstAnimation(value: 0.5)
+            //                    self.isFirstAnimation = false
+            //                }
+            //            }
         }else {
+            print("STOP cell == \(nameLabel.text)")
+            stopInt += 1
+//            print("AUTO STOP === \(nameLabel.text) === \(stopInt)")
             setTimerCounting(false)
             stopTimer()
             if timerDoneSelected == true && toDay == weekDay {
@@ -252,7 +262,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
             }else {
                 stopTimer()
             }
-
+            
             if toDay == weekDay {
                 setTimeLabel(timerUpdateTime)
             }else {
@@ -262,44 +272,46 @@ class MainCollectionViewCelll: UICollectionViewCell {
                     setTimeLabel(timerTime!)
                 }
             }
-            
-            
-            if let start = startTime {
-                if let stop = stopTime {
-                    let time = calcRestartTime(start: start, stop: stop)
-                    let diff = Date().timeIntervalSince(time)//burda startdan stopa nece saniye kecib onu gosterir ama bu burda lazim deyil
-                    //                    setTimeLabel(Int(diff))
-                }
-            }
+            //      if let start = startTime {
+            //        if let stop = stopTime {
+            //          let time = calcRestartTime(start: start, stop: stop)
+            //          let diff = Date().timeIntervalSince(time)//burda startdan stopa nece saniye kecib onu gosterir ama bu burda lazim deyil
+            //          //                    setTimeLabel(Int(diff))
+            //        }
+            //      }
         }
     }
     
     //MARK: - StartStopButtonAction
     @objc private func startStopButtonAction() {
-        if timerCounting {
+        if timerCounting { //stop timer
             setStopTime(date: Date())
-            pomodoroStopTime = Date()
-            //            stopTimer()
+            //      pomodoroStopTime = Date()
             setTimerCounting(false)
             if toDay == weekDay {
                 timerStartStopDelegate?.timerStartStop(index: index, timerCounting: timerCounting, startTime: startTime, stopStime: stopTime)
             }else {
                 sentAlertActionDelegate?.sentAlert()
             }
-//            progressBar.pauseAnimation()
+            //            progressBar.pauseAnimation()
             
-        }else {
+        }else { //start timer
+            //        print("start cell test 291  name == \(nameLabel.text)")
+            print("3333333")
             misStopTime = stopTime
             misStartTime = startTime
             if let stop = stopTime {
-//                guard let startTime = startTime else { return }
+                //                guard let startTime = startTime else { return }
+                
                 let restartTime = calcRestartTime(start: startTime!, stop: stop)
                 setStopTime(date: nil)
+                print("22222222")
+                //        print("RESTART  TIMEE CEll 294 === \(restartTime)  nameee == \(nameLabel.text)")
+                //        print("STARTIME == \(startTime) --- stopTime == \(stop)  nameee == \(nameLabel.text)")
                 setStartTime(date: restartTime)
             }else {
                 setStartTime(date: Date())
             }
-            //            startTimer()
             setTimerCounting(true)
             if toDay == weekDay {
                 timerStartStopDelegate?.timerStartStop(index: index, timerCounting: timerCounting, startTime: startTime, stopStime: stopTime)
@@ -309,8 +321,9 @@ class MainCollectionViewCelll: UICollectionViewCell {
         }
     }
     
-    //MARK: - Dtop In Edit
+    //MARK: - Stop In Edit
     //Edit vc den dayy false edende eger timer isdeyirse bu timrei stop edir
+    //Bu uje lazim deyil sora bax cunki timer start olubsa onu editden stop elemek olmur
     func stopInEdit() {
         setStopTime(date: Date())
         pomodoroStopTime = Date()
@@ -334,30 +347,36 @@ class MainCollectionViewCelll: UICollectionViewCell {
                 self.startButton.setTitleColor(.black, for: .normal)
             }
         }else {
-            self.timerLabel.textColor = .black
+            timerLabel.textColor = .black
             startButton.setTitle("Start", for: .normal)
             startButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)
             startButton.setTitleColor(.white, for: .normal)
         }
-
+        
         
         //circular bar
-//        if animteBool == false {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.27) {
-////                self.progressBar.firstAnimation(value: self.updateCircularBar())
-//                self.progressBar.basicAnimationFunc()
-//                self.progressBar.resumeAnimation()
-//                self.animteBool = true
-//                print("AAAAAAAAAA")
-//            }
-//        }else {
-//            print("CELL RESUMEE")
-//            progressBar.resumeAnimation()
-//        }
+        //        if animteBool == false {
+        //            DispatchQueue.main.asyncAfter(deadline: .now() + 0.27) {
+        ////                self.progressBar.firstAnimation(value: self.updateCircularBar())
+        //                self.progressBar.basicAnimationFunc()
+        //                self.progressBar.resumeAnimation()
+        //                self.animteBool = true
+        //                print("AAAAAAAAAA")
+        //            }
+        //        }else {
+        //            print("CELL RESUMEE")
+        //            progressBar.resumeAnimation()
+        //        }
     }
     
     //MARK: - Refresh Value
     @objc private func refreshValue() {
+        if testBoool == false {
+            print("TIMER start time == \(startTime) == \(nameLabel.text)")
+            print("TIMER STOP time == \(secondsToHoursMinutesSeconds(Int(startTime!.timeIntervalSince(Date(timeIntervalSinceNow: TimeInterval(-timerTime!)))))) == \(nameLabel.text)")
+            testBoool = true
+        }
+        
         weekDayAdd()
         if let start = startTime, let timerTime = timerTime {
             let diff = start.timeIntervalSince(Date(timeIntervalSinceNow: TimeInterval(-timerTime)))
@@ -404,6 +423,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
     
     //MARK: - Stop timer
     func stopTimer() {
+        testBoool = false
         timerLabel.textColor = .black
         if timer != nil {
             timer?.invalidate()
@@ -429,7 +449,8 @@ class MainCollectionViewCelll: UICollectionViewCell {
         startButton.setTitleColor(.black, for: .normal)
     }
     
-    //MARK: MisTimer - start basanda eger basqa timerde start olubsa onda bu isdeyecey yoxsa startTime, stopTimeda vaxtlar sef olacaq
+    //MARK: - MisTimer
+    //Start basanda eger basqa timerde start olubsa onda bu isdeyecey yoxsa startTime, stopTimeda vaxtlar sef olacaq
     func missTimer() {
         setStopTime(date: misStopTime)
         setStartTime(date: misStartTime)
@@ -456,6 +477,10 @@ class MainCollectionViewCelll: UICollectionViewCell {
     
     private func calcRestartTime(start: Date, stop: Date) -> Date {
         let diff = start.timeIntervalSince(stop)
+//        print("DIFFF == \(secondsToHoursMinutesSeconds(Int(diff)))")
+//        print(Int(diff))
+//        print(Date().addingTimeInterval(diff))
+//        print(secondsToHoursMinutesSeconds(300))
         return Date().addingTimeInterval(diff)
     }
     
@@ -483,18 +508,22 @@ class MainCollectionViewCelll: UICollectionViewCell {
         return timeString
     }
     
-//    private func updateCircularBar() -> Float {
-//        var bbb = String()
-//        if let timerTimeee = timerTime {
-//            let aaa = timerTimeee - timerUpdateTime
-//            bbb = String(format:"%.02f", Float(aaa * 100) / Float(timerTimeee))
-////            circulerStartStopTime = Float(bbb)
-//            print("TIMER TIME UPDATE == \(bbb)")
-//
-//        }
-//        print("BBBBBBBBB === \(bbb)")
-//        return Float(bbb)!
-//    }
+    //    private func updateCircularBar() -> Float {
+    //        var bbb = String()
+    //        if let timerTimeee = timerTime {
+    //            let aaa = timerTimeee - timerUpdateTime
+    //            bbb = String(format:"%.02f", Float(aaa * 100) / Float(timerTimeee))
+    ////            circulerStartStopTime = Float(bbb)
+    //            print("TIMER TIME UPDATE == \(bbb)")
+    //
+    //        }
+    //        print("BBBBBBBBB === \(bbb)")
+    //        return Float(bbb)!
+    //    }
+    
+    func timerCountingFalse() {
+        timerCounting = false
+    }
     
     private func setStartTime(date: Date?) {
         startTime = date
@@ -514,28 +543,28 @@ class MainCollectionViewCelll: UICollectionViewCell {
         let today = Calendar.current.component(.weekday, from: date)
         self.toDay = today
     }
-   
+    
     //MARK: - Setup Item
     private func setupItem() {
-//        addSubview(editsImageView)
-//        editsImageView.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
-////        editsImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-//        editsImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-//        editsImageView.heightAnchor.constraint(equalToConstant: 25).isActive = true
-//        editsImageView.widthAnchor.constraint(equalToConstant: 25).isActive = true
+        //        addSubview(editsImageView)
+        //        editsImageView.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
+        ////        editsImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+        //        editsImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
+        //        editsImageView.heightAnchor.constraint(equalToConstant: 25).isActive = true
+        //        editsImageView.widthAnchor.constraint(equalToConstant: 25).isActive = true
         
         contentView.addSubview(editsTimerButton)
         editsTimerButton.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
         editsTimerButton.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 15).isActive = true
-//        editsTimerButton.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-//        editsTimerButton.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        //        editsTimerButton.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        //        editsTimerButton.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         editsTimerButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
         editsTimerButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
         editsTimerButton.addTarget(self, action: #selector(editTimerAction), for: .touchDown)
         
         addSubview(nameLabel)
         nameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
-//        nameLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        //        nameLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         nameLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 35).isActive = true
         nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -35).isActive = true
@@ -553,17 +582,17 @@ class MainCollectionViewCelll: UICollectionViewCell {
         removeTimer.widthAnchor.constraint(equalToConstant: 35).isActive = true
         removeTimer.addTarget(self, action: #selector(timerRemove), for: .touchDown)
         
-   
         
-      
         
-//        progressBar = ProgressBar()
-//        contentView.addSubview(progressBar)
-//        progressBar.translatesAutoresizingMaskIntoConstraints = false
-//        progressBar.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 0).isActive = true
-//        progressBar.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
-//        progressBar.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
-//        progressBar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -100).isActive = true
+        
+        
+        //        progressBar = ProgressBar()
+        //        contentView.addSubview(progressBar)
+        //        progressBar.translatesAutoresizingMaskIntoConstraints = false
+        //        progressBar.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 0).isActive = true
+        //        progressBar.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
+        //        progressBar.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
+        //        progressBar.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -100).isActive = true
         
         //        contentView.addSubview(timerLabelAndProfressUIView)
         //        timerLabelAndProfressUIView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 10).isActive = true
@@ -581,7 +610,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         startButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15).isActive = true
         startButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         startButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-//        startButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        //        startButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         startButton.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1/6).isActive = true
         startButton.addTarget(self, action: #selector(startStopButtonAction), for: .touchDown)
         
@@ -601,54 +630,54 @@ class MainCollectionViewCelll: UICollectionViewCell {
     
     
     //MARK: - Pomodoro Timer
-//    private func pomodoroTimerStart() {
-//        let pomodoroTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(refreshPomodoroValue), userInfo: nil, repeats: true)
-//        RunLoop.current.add(pomodoroTimer, forMode: .common)
-//        pomodoroTimer.tolerance = 0.1
-//        self.pomodoroTimer = pomodoroTimer
-//
-//        print("START")
-//    }
-//
-//    @objc private func refreshPomodoroValue() {
-//        if let pomodoroStartTime = pomodoroStartTime {
-//            if isPomodorTimerWorkOrBreak == true {
-//                let pomodoroDiff = pomodoroStartTime.timeIntervalSince(Date(timeIntervalSinceNow: TimeInterval(-pomodoroWorkTime )))
-//                setPomodoroTimeLabel(Int(pomodoroDiff))
-//                //                print("111111 === \(Int(pomodoroDiff))")
-//                if pomodoroDiff <= 0 {
-//                    isPomodorTimerWorkOrBreak = false
-//                    self.pomodoroStartTime = Date()
-//                    print("111111 === \(Int(pomodoroDiff))")
-//                }
-//                setPomodoroTimerUpdateTimeDeleagte?.setPomodoroNewTime(newTime: Int(pomodoroDiff), pomdoroTimerBreakOrWork: isPomodorTimerWorkOrBreak, index: index!)
-//            }else {
-//                let pomodoroDiff = pomodoroStartTime.timeIntervalSince(Date(timeIntervalSinceNow: TimeInterval(-pomodoroBreakTime )))
-//                setPomodoroTimeLabel(Int(pomodoroDiff))
-//                //                print("22222 === \(Int(pomodoroDiff))")
-//                if pomodoroDiff <= 0 {
-//                    isPomodorTimerWorkOrBreak = true
-//                    self.pomodoroStartTime = Date()
-//                    print("22222 === \(Int(pomodoroDiff))")
-//                }
-//                setPomodoroTimerUpdateTimeDeleagte?.setPomodoroNewTime(newTime: Int(pomodoroDiff), pomdoroTimerBreakOrWork: isPomodorTimerWorkOrBreak, index: index!)
-//            }
-//        }
-//    }
-//
-//    private func setPomodoroTimeLabel(_ val: Int) {
-//        let time = secondsToHoursMinutesSeconds(val)
-//        let pomodoroTimeString = makePomodoroTimeString(min: time.1, sec: time.2)
-//        pomodoroTimerLabel.text = pomodoroTimeString
-//    }
-//
-//    private func makePomodoroTimeString(min: Int, sec: Int) -> String {
-//        var timeString = ""
-//        timeString += String(format: "%02d", min)
-//        timeString += ":"
-//        timeString += String(format: "%02d", sec)
-//        return timeString
-//    }
+    //    private func pomodoroTimerStart() {
+    //        let pomodoroTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(refreshPomodoroValue), userInfo: nil, repeats: true)
+    //        RunLoop.current.add(pomodoroTimer, forMode: .common)
+    //        pomodoroTimer.tolerance = 0.1
+    //        self.pomodoroTimer = pomodoroTimer
+    //
+    //        print("START")
+    //    }
+    //
+    //    @objc private func refreshPomodoroValue() {
+    //        if let pomodoroStartTime = pomodoroStartTime {
+    //            if isPomodorTimerWorkOrBreak == true {
+    //                let pomodoroDiff = pomodoroStartTime.timeIntervalSince(Date(timeIntervalSinceNow: TimeInterval(-pomodoroWorkTime )))
+    //                setPomodoroTimeLabel(Int(pomodoroDiff))
+    //                //                print("111111 === \(Int(pomodoroDiff))")
+    //                if pomodoroDiff <= 0 {
+    //                    isPomodorTimerWorkOrBreak = false
+    //                    self.pomodoroStartTime = Date()
+    //                    print("111111 === \(Int(pomodoroDiff))")
+    //                }
+    //                setPomodoroTimerUpdateTimeDeleagte?.setPomodoroNewTime(newTime: Int(pomodoroDiff), pomdoroTimerBreakOrWork: isPomodorTimerWorkOrBreak, index: index!)
+    //            }else {
+    //                let pomodoroDiff = pomodoroStartTime.timeIntervalSince(Date(timeIntervalSinceNow: TimeInterval(-pomodoroBreakTime )))
+    //                setPomodoroTimeLabel(Int(pomodoroDiff))
+    //                //                print("22222 === \(Int(pomodoroDiff))")
+    //                if pomodoroDiff <= 0 {
+    //                    isPomodorTimerWorkOrBreak = true
+    //                    self.pomodoroStartTime = Date()
+    //                    print("22222 === \(Int(pomodoroDiff))")
+    //                }
+    //                setPomodoroTimerUpdateTimeDeleagte?.setPomodoroNewTime(newTime: Int(pomodoroDiff), pomdoroTimerBreakOrWork: isPomodorTimerWorkOrBreak, index: index!)
+    //            }
+    //        }
+    //    }
+    //
+    //    private func setPomodoroTimeLabel(_ val: Int) {
+    //        let time = secondsToHoursMinutesSeconds(val)
+    //        let pomodoroTimeString = makePomodoroTimeString(min: time.1, sec: time.2)
+    //        pomodoroTimerLabel.text = pomodoroTimeString
+    //    }
+    //
+    //    private func makePomodoroTimeString(min: Int, sec: Int) -> String {
+    //        var timeString = ""
+    //        timeString += String(format: "%02d", min)
+    //        timeString += ":"
+    //        timeString += String(format: "%02d", sec)
+    //        return timeString
+    //    }
     
 }
 

@@ -18,13 +18,12 @@ class MainAsseblyModelBuilder: MainAsseblyModelBuilderProtocol {
   //MARK: - MainViewController
   func creatMainModule(mainRouter: MainRouterProtocol) -> UIViewController {
     let view = MainViewController()
-    let timerTimeArray = TimerTimerArray()
     let dataStore = DataStore()
     let timerStatistics = TimerStatistics()
     let timerNotifications = TimerNotifications()
     let timerDoneAlert = TimerDoneAlert()
     let timerAlert = TimerAlert()
-    let viewModel = MainViewModell(mainRouter: mainRouter, timerTimerArray: timerTimeArray, dataStore: dataStore, timerStatistics: timerStatistics, timerNotifications: timerNotifications, timerDoneAlert: timerDoneAlert, timerAlert: timerAlert)
+    let viewModel = MainViewModell(mainRouter: mainRouter, dataStore: dataStore, timerStatistics: timerStatistics, timerNotifications: timerNotifications, timerDoneAlert: timerDoneAlert, timerAlert: timerAlert)
     view.viewModell = viewModel
     return view
   }
@@ -32,9 +31,8 @@ class MainAsseblyModelBuilder: MainAsseblyModelBuilderProtocol {
   //MARK: - AddNewTimerViewController
   func creatAddNewTimerModule(mainRouter: MainRouterProtocol) -> UIViewController {
     let view = AddNewTimerViewController()
-    let timerTimeArray = TimerTimerArray()
     let dataStore = DataStore()
-    let viewModel = AddNewTimerViewModel(mainRouter: mainRouter, timerTimerArray: timerTimeArray, dataStore: dataStore)
+    let viewModel = AddNewTimerViewModel(mainRouter: mainRouter, dataStore: dataStore)
     view.viewModel = viewModel
     return view
   }

@@ -17,12 +17,11 @@ protocol AddNewTimerViewModelProtocol {
     func saveTimerColor(color: String?, colorIndex: Int)
     func saveTimerButton()
     var saveButtonIsSelected: Bool! { get set }
-    init(mainRouter: MainRouterProtocol?, timerTimerArray: TimerTimeArrayProtocol?, dataStore: DataStoreProtocol?)
+    init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?)
 }
 
 final class AddNewTimerViewModel: AddNewTimerViewModelProtocol {
     private let mainRouter: MainRouterProtocol?
-    private var timerTimerArray: TimerTimeArrayProtocol?
     private let dataStore: DataStoreProtocol?
     var tableView: UITableView?
 //    private let timerName: String?
@@ -39,9 +38,8 @@ final class AddNewTimerViewModel: AddNewTimerViewModelProtocol {
     private var timerColorIndex: Int?
     private var timerAllWeekDayFalse = false
     var saveButtonIsSelected: Bool! = false
-    init(mainRouter: MainRouterProtocol?, timerTimerArray: TimerTimeArrayProtocol?, dataStore: DataStoreProtocol?) {
+    init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?) {
         self.mainRouter = mainRouter
-        self.timerTimerArray = timerTimerArray
         self.dataStore = dataStore
     }
     

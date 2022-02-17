@@ -70,7 +70,7 @@ extension MainViewController {
         mainCollectionView.translatesAutoresizingMaskIntoConstraints = false
         //        mainCollectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         mainCollectionView.register(MainCollectionViewCelll.self, forCellWithReuseIdentifier: "cell")
-        mainCollectionView.topAnchor.constraint(equalTo: weekDayView.bottomAnchor, constant: 10).isActive = true
+        mainCollectionView.topAnchor.constraint(equalTo: weekDayView.bottomAnchor, constant: 0).isActive = true
         mainCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         mainCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         mainCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
@@ -104,7 +104,7 @@ extension MainViewController: TimerStartStopDelegate, SetIndexDelegate, AddModel
     }
     
     func sentAlert() {
-        print("REIS ALINMADI ancaq birin sec extension 2")
+        print("ancaq birin sec extension 2")
     }
 }
 
@@ -226,21 +226,21 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
             return UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
 
         }
-        return UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         if collectionView == weekDayCollectionView {
             return 1
         }
-        return 20
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         if collectionView == weekDayCollectionView {
             return 1
         }
-        return 20
+        return 10
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

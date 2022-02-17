@@ -19,12 +19,11 @@ protocol MainViewModelProtocol {
     var startFix: Bool? { get set }
     var bugFixBool: Bool? { get set }
     var collectionView: UICollectionView? { get set }
-    init(mainRouter: MainRouterProtocol?, timerTimerArray: TimerTimeArrayProtocol?, dataStore: DataStoreProtocol?)
+    init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?)
 }
 
 final class MainViewModel: MainViewModelProtocol {
     private let mainRouter: MainRouterProtocol?
-    private var timerTimerArray: TimerTimeArrayProtocol?
     private let dataStore: DataStoreProtocol?
     private weak var timer: Timer?
     private lazy var secondTimerDontStart: Bool? = false
@@ -38,9 +37,8 @@ final class MainViewModel: MainViewModelProtocol {
     private var startTime: Date?
     private var stopTime: Date?
     private var timerTime: Int!
-    init(mainRouter: MainRouterProtocol?, timerTimerArray: TimerTimeArrayProtocol?, dataStore: DataStoreProtocol?) {
+    init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?) {
         self.mainRouter = mainRouter
-        self.timerTimerArray = timerTimerArray
         self.dataStore = dataStore
         model = dataStore?.timerArray
     }
