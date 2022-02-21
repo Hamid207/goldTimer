@@ -97,6 +97,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         button.setTitleColor(.black, for: .normal)
         button.setTitle("Edit", for: .normal)
         button.tintColor = .black
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .medium)
 //        button.backgroundColor = .orange
         return button
     }()
@@ -146,10 +147,8 @@ class MainCollectionViewCelll: UICollectionViewCell {
     private let timerLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        //        label.textColor = .black
         label.textAlignment = .center
-        //        label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
-        label.font = UIFont.monospacedDigitSystemFont(ofSize: 50, weight: .regular)
+        label.font = UIFont.monospacedDigitSystemFont(ofSize: 60, weight: .regular)
         return label
     }()
     
@@ -168,7 +167,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         button.setTitle("Start", for: .normal)
         //        button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .regular)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .regular)
         return button
     }()
     
@@ -487,8 +486,10 @@ class MainCollectionViewCelll: UICollectionViewCell {
     
     private func makeTimeString(hour: Int, min: Int, sec: Int) -> String {
         var timeString = ""
-        timeString += String(format: "%2d", hour)
-        timeString += ":"
+        if hour != 0 {
+            timeString += String(format: "%2d", hour)
+            timeString += ":"
+        }
         timeString += String(format: "%02d", min)
         timeString += ":"
         timeString += String(format: "%02d", sec)
@@ -567,8 +568,8 @@ class MainCollectionViewCelll: UICollectionViewCell {
         removeTimer.trailingAnchor.constraint(equalTo: removeView.trailingAnchor, constant: 0).isActive = true
         removeTimer.bottomAnchor.constraint(equalTo: removeView.bottomAnchor).isActive = true
         removeTimer.addTarget(self, action: #selector(timerRemove), for: .touchDown)
-        removeView.addSubview(removeImageView)
         
+        removeView.addSubview(removeImageView)
         removeImageView.centerYAnchor.constraint(equalTo: removeView.centerYAnchor).isActive = true
         removeImageView.centerXAnchor.constraint(equalTo: removeView.centerXAnchor).isActive = true
 //        removeImageView.topAnchor.constraint(equalTo: removeView.topAnchor, constant: 0).isActive = true

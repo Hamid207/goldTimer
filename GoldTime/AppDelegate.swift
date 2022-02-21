@@ -14,6 +14,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        //auto screen lock  off ??? test
+        application.isIdleTimerDisabled = true
+
         notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             guard granted else { return }
             self.notificationCenter.getNotificationSettings { settings in
@@ -21,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 guard settings.authorizationStatus == .authorized else { return }
             }
         }
-        
+        notificationCenter.delegate = self
         return true
     }
 
@@ -44,3 +47,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    // appden cixmayandadada alert isdesin deye
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner,.list,.sound])
+    }
+}

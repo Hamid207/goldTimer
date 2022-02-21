@@ -18,15 +18,15 @@ class AddNewTimerTableViewCell: UITableViewCell {
         
     private let nameTextField: UITextField = {
         let textField = UITextField()
-        textField.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        textField.font = UIFont.systemFont(ofSize: 22, weight: .medium)
         textField.placeholder = "Timer name"
         textField.textAlignment = .center
         textField.contentVerticalAlignment = .center
         textField.textContentType = .name
         textField.returnKeyType = .done
-        textField.autocapitalizationType = .words
+        textField.autocapitalizationType = .sentences
         textField.autocorrectionType = .no
-        textField.borderStyle = .roundedRect
+        textField.borderStyle = .none
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.textColor = .black
         return textField

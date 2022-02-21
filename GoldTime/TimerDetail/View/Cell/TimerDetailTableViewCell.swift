@@ -98,7 +98,7 @@ class TimerDetailTableView: UITableViewCell {
     label.translatesAutoresizingMaskIntoConstraints = false
     label.textColor = .black
     label.textAlignment = .left
-    label.font = UIFont.systemFont(ofSize: 45, weight: .heavy)
+    label.font = UIFont.systemFont(ofSize: 55, weight: .heavy)
 //            label.text = "12h 25m 30s"
     return label
   }()
