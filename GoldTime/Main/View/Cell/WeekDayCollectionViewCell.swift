@@ -12,7 +12,7 @@ class WeekDayCollectionViewCell: UICollectionViewCell {
     let weekDayLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 19, weight: .regular)
         label.textColor = .black
         label.textAlignment = .center
         return label

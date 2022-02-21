@@ -41,7 +41,7 @@ extension MainViewController {
         weekDayView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         weekDayView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         weekDayView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
-        weekDayView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/10).isActive = true
+        weekDayView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/14).isActive = true
         
         weekDayView.addSubview(weekDayCollectionView)
         weekDayCollectionView.layer.borderWidth = 1
@@ -54,8 +54,8 @@ extension MainViewController {
         weekDayCollectionView.translatesAutoresizingMaskIntoConstraints = false
         weekDayCollectionView.register(WeekDayCollectionViewCell.self, forCellWithReuseIdentifier: "weekDayCell")
         weekDayCollectionView.topAnchor.constraint(equalTo: weekDayView.topAnchor).isActive = true
-        weekDayCollectionView.leadingAnchor.constraint(equalTo: weekDayView.leadingAnchor, constant: 15).isActive = true
-        weekDayCollectionView.trailingAnchor.constraint(equalTo: weekDayView.trailingAnchor, constant: -15).isActive = true
+        weekDayCollectionView.leadingAnchor.constraint(equalTo: weekDayView.leadingAnchor, constant: 10).isActive = true
+        weekDayCollectionView.trailingAnchor.constraint(equalTo: weekDayView.trailingAnchor, constant: -10).isActive = true
         //        weekDayCollectionView.heightAnchor.constraint(equalTo: weekDayView.heightAnchor, multiplier: 1/5).isActive = true
         weekDayCollectionView.bottomAnchor.constraint(equalTo: weekDayView.bottomAnchor).isActive = true
         
@@ -217,9 +217,9 @@ extension MainViewController: UICollectionViewDelegate {
 extension MainViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == mainCollectionView {
-            return CGSize(width: view.frame.width - 30, height: view.frame.height / 3)
+            return CGSize(width: view.frame.width - 20, height: view.frame.height / 3.3)
         }else {
-            return CGSize(width: view.frame.width / 7.9, height: weekDayView.frame.height - 10)
+            return CGSize(width: weekDayView.frame.width / 7.7, height: weekDayView.frame.height - 10)
         }
     }
     

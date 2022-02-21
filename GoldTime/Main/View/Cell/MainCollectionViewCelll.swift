@@ -131,7 +131,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 30, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 28, weight: .regular)
 //                label.backgroundColor = .red
         return label
     }()
@@ -149,7 +149,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         //        label.textColor = .black
         label.textAlignment = .center
         //        label.font = UIFont.systemFont(ofSize: 70, weight: .bold)
-        label.font = UIFont.monospacedDigitSystemFont(ofSize: 60, weight: .regular)
+        label.font = UIFont.monospacedDigitSystemFont(ofSize: 50, weight: .regular)
         return label
     }()
     
@@ -158,7 +158,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         label.textAlignment = .center
-        label.font = UIFont.monospacedDigitSystemFont(ofSize: 50, weight: .bold)
+        label.font = UIFont.monospacedDigitSystemFont(ofSize: 55, weight: .bold)
         return label
     }()
     

@@ -232,7 +232,7 @@ final class MainViewModell: MainViewModellProtocol {
             print("stoppppp edittt viewModel 228")
             //      stopTimerViewModel(timerCounting: timerCounting, index: index, stopTime: stopTime)
             
-        }else if timerCounting == true && self.index != nil {//view tez yuxari edende timer 2-20 saniye gecikir  yada telesir buna bax +
+        }else if timerCounting == true && self.index != nil {
             guard let viewController = viewController else { return }
             
             timerAlert?.secondTimerStart(viewController: viewController, completionHandler: { bool in
