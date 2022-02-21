@@ -12,9 +12,8 @@ extension MainViewController {
     func nav() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus.rectangle.portrait.fill")
                                                             , style: .done, target: self, action: #selector(addVC))
-                        navigationItem.rightBarButtonItem?.tintColor = UIColor(named: "OtherColor")
-        
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(image: .remove, style: .done, target: self, action: #selector(removeTest))
+        navigationItem.rightBarButtonItem?.tintColor = UIColor(named: "OtherColor")
+        //        navigationItem.leftBarButtonItem = UIBarButtonItem(image: .remove, style: .done, target: self, action: #selector(removeTest))
     }
     
     @objc func addVC() {
@@ -37,13 +36,13 @@ extension MainViewController {
         view.addSubview(weekDayView)
         weekDayView.translatesAutoresizingMaskIntoConstraints = false
         weekDayView.backgroundColor = .clear
-//        weekDayView.layer.borderWidth = 1
-//        weekDayView.layer.borderColor = UIColor.black.cgColor
+        //        weekDayView.layer.borderWidth = 1
+        //        weekDayView.layer.borderColor = UIColor.black.cgColor
         weekDayView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0).isActive = true
         weekDayView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         weekDayView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         weekDayView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/10).isActive = true
-            
+        
         weekDayView.addSubview(weekDayCollectionView)
         weekDayCollectionView.layer.borderWidth = 1
         weekDayCollectionView.layer.borderColor = UIColor.black.cgColor
@@ -57,7 +56,7 @@ extension MainViewController {
         weekDayCollectionView.topAnchor.constraint(equalTo: weekDayView.topAnchor).isActive = true
         weekDayCollectionView.leadingAnchor.constraint(equalTo: weekDayView.leadingAnchor, constant: 15).isActive = true
         weekDayCollectionView.trailingAnchor.constraint(equalTo: weekDayView.trailingAnchor, constant: -15).isActive = true
-//        weekDayCollectionView.heightAnchor.constraint(equalTo: weekDayView.heightAnchor, multiplier: 1/5).isActive = true
+        //        weekDayCollectionView.heightAnchor.constraint(equalTo: weekDayView.heightAnchor, multiplier: 1/5).isActive = true
         weekDayCollectionView.bottomAnchor.constraint(equalTo: weekDayView.bottomAnchor).isActive = true
         
         view.addSubview(mainCollectionView)
@@ -65,7 +64,7 @@ extension MainViewController {
         mainCollectionView.dataSource = self
         //        mainCollectionView.cancelInteractiveMovement()
         mainCollectionView.backgroundColor = .clear
-//        mainCollectionView.showsHorizontalScrollIndicator = false
+        //        mainCollectionView.showsHorizontalScrollIndicator = false
         mainCollectionView.showsVerticalScrollIndicator = false
         mainCollectionView.translatesAutoresizingMaskIntoConstraints = false
         //        mainCollectionView.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
@@ -76,7 +75,7 @@ extension MainViewController {
         mainCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         //        mainCollectionView.indexPathsForVisibleItems
     }
-
+    
 }
 
 //MARK: - PushTimerDetailVCDelegate
@@ -91,7 +90,6 @@ extension MainViewController: PushTimerDetailVCDelegate {
 //MARK: - TimerStartStopDelegate, SetIndexDelegate, AddModelIndexDelegate, SentAlertActionDelegate
 extension MainViewController: TimerStartStopDelegate, SetIndexDelegate, AddModelIndexDelegate, SentAlertActionDelegate {
     func timerStartStop(index: Int?, timerCounting: Bool, startTime: Date?, stopStime: Date?) {
-//        print("INDEX == \(index)   timercouting == \(timerCounting)")
         viewModell?.timerStartStop(timerCounting: timerCounting, index: index, startTime: startTime, stopTime: stopStime)
     }
     
@@ -125,11 +123,11 @@ extension MainViewController: SetTimerUpdateTimeDelegate, SetPomdoroTimerUpdateT
         if viewModell?.toDay == viewModell?.checkDay {
             viewModell?.timerTimeUpdate(timerTimeUpdate: newTime, index: index)
         }
-//
+        //
     }
     
     func setPomodoroNewTime(newTime: Int, pomdoroTimerBreakOrWork: Bool, index: Int) {
-//        viewModell?.pomodoroTimeUpdate(newTime: newTime, pomdoroTimerBreakOrWork: pomdoroTimerBreakOrWork, index: index)
+        //        viewModell?.pomodoroTimeUpdate(newTime: newTime, pomdoroTimerBreakOrWork: pomdoroTimerBreakOrWork, index: index)
     }
 }
 
@@ -158,13 +156,13 @@ extension MainViewController: UICollectionViewDataSource {
             let item2 = viewModell?.tapWeekDayArray?[indexPath.item + 1]
             let datee = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
             let weekday = Calendar.current.component(.weekday, from: datee)
-            let index = indexPath.row + 1 == weekday // bu if else di bool qaytarir
+            let index = indexPath.item + 1 == weekday // bu if else di bool qaytarir
             weekDayCell?.update(name: item!, isSelected: index, isBlackSelected: item2 ?? false)
             return weekDayCell!
         }else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? MainCollectionViewCelll
             //        cell.pushhDelegate = self
-//            print("CELLL INDEX == \(indexPath.item)")
+            //            print("CELLL INDEX == \(indexPath.item)")
             cell?.timerStartStopDelegate = self
             cell?.removeTimerDelegate = self
             cell?.setIndexDeleagte = self
@@ -189,7 +187,8 @@ extension MainViewController: UICollectionViewDelegate {
         if collectionView == mainCollectionView {
             let index = indexPath.row
             viewModell?.tapOnTheTimerDetailVc(index: index)
-//            mainCollectionView.reloadData()
+            viewModell?.timerDoneAlert?.alertIselectedFalse()
+            //            mainCollectionView.reloadData()
         }else {
             if viewModell?.tapWeekDayArray?[indexPath.item + 1] == false {
                 for i in 1...7 {
@@ -205,8 +204,11 @@ extension MainViewController: UICollectionViewDelegate {
                     self.weekDayCollectionView.reloadData()
                     self.mainCollectionView.reloadData()
                 }
+                if indexPath.item + 1 != viewModell?.toDay {
+                    viewModell?.scrollToIndex(index: 0)
+                }
             }
-           
+            
         }
     }
 }
@@ -224,7 +226,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         if collectionView == weekDayCollectionView {
             return UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-
+            
         }
         return UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
     }

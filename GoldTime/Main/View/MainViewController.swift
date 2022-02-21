@@ -16,9 +16,7 @@ final class MainViewController: UIViewController {
     
     var viewModel: MainViewModelProtocol?
     var viewModell: MainViewModellProtocol?
-    
-    var aa = IndexPath(item: 3, section: 0)
-    
+        
     let weekDayView = UIView()
     
     private var startScrolViewRect = false
@@ -67,7 +65,9 @@ final class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.navigationController?.navigationBar.prefersLargeTitles = false
-        mainCollectionView.reloadData()
+        DispatchQueue.main.async {
+            self.mainCollectionView.reloadData()
+        }
         
         //        viewModel?.timerModel()
     }
@@ -93,9 +93,4 @@ final class MainViewController: UIViewController {
             
         }
     }
-    
-//    func scrollToIndex(index:Int) {
-//        let rect = mainCollectionView.layoutAttributesForItem(at:IndexPath(row: index, section: 0))?.frame
-//        mainCollectionView.scrollRectToVisible(rect!, animated: false)
-//    }
 }

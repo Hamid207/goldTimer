@@ -72,10 +72,6 @@ class MainCollectionViewCelll: UICollectionViewCell {
     private var circulerStartStopTime: Float?
     var countFred: CGFloat = 0
     
-    
-    var testBoool = false
-    var stopInt = 0
-    var startInt = 0
     //===============================================
     
     private let editsImageView: UIImageView = {
@@ -83,8 +79,15 @@ class MainCollectionViewCelll: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "gearshape")
         imageView.tintColor = .black
-        //        imageView.backgroundColor = .red
+//                imageView.backgroundColor = .black
         return imageView
+    }()
+    
+    private let editView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+//        view.backgroundColor = .yellow
+        return view
     }()
     
     private let editsTimerButton: UIButton = {
@@ -94,23 +97,29 @@ class MainCollectionViewCelll: UICollectionViewCell {
         button.setTitleColor(.black, for: .normal)
         button.setTitle("Edit", for: .normal)
         button.tintColor = .black
+//        button.backgroundColor = .orange
         return button
     }()
     
+    private let removeView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
     
     private let removeImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "trash")
         imageView.tintColor = .black
-        //        imageView.backgroundColor = .red
+//                imageView.backgroundColor = .red
         return imageView
     }()
     
     private let removeTimer: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        //        button.backgroundColor = .red
+//                button.backgroundColor = .orange
         button.setTitleColor(.black, for: .normal)
         return button
     }()
@@ -123,7 +132,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
         label.textColor = .black
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 30, weight: .regular)
-        //        label.backgroundColor = .red
+//                label.backgroundColor = .red
         return label
     }()
     
@@ -235,13 +244,10 @@ class MainCollectionViewCelll: UICollectionViewCell {
         //        }
         
         if timerCounting {
-            print("START Cell == \(nameLabel.text)")
             if toDay == weekDay {
                 setTimerCounting(true)
                 startTimer()
                 setIndexDeleagte?.setIndex(index: self.index)
-                startInt += 1
-//                print("AUTO START === \(nameLabel.text) == \(startInt)")
             }else {
                 startTimerFake()
             }
@@ -252,9 +258,6 @@ class MainCollectionViewCelll: UICollectionViewCell {
             //                }
             //            }
         }else {
-            print("STOP cell == \(nameLabel.text)")
-            stopInt += 1
-//            print("AUTO STOP === \(nameLabel.text) === \(stopInt)")
             setTimerCounting(false)
             stopTimer()
             if timerDoneSelected == true && toDay == weekDay {
@@ -296,18 +299,12 @@ class MainCollectionViewCelll: UICollectionViewCell {
             //            progressBar.pauseAnimation()
             
         }else { //start timer
-            //        print("start cell test 291  name == \(nameLabel.text)")
-            print("3333333")
             misStopTime = stopTime
             misStartTime = startTime
             if let stop = stopTime {
-                //                guard let startTime = startTime else { return }
-                
-                let restartTime = calcRestartTime(start: startTime!, stop: stop)
+                guard let startTime = startTime else { return }
+                let restartTime = calcRestartTime(start: startTime, stop: stop)
                 setStopTime(date: nil)
-                print("22222222")
-                //        print("RESTART  TIMEE CEll 294 === \(restartTime)  nameee == \(nameLabel.text)")
-                //        print("STARTIME == \(startTime) --- stopTime == \(stop)  nameee == \(nameLabel.text)")
                 setStartTime(date: restartTime)
             }else {
                 setStartTime(date: Date())
@@ -371,12 +368,6 @@ class MainCollectionViewCelll: UICollectionViewCell {
     
     //MARK: - Refresh Value
     @objc private func refreshValue() {
-        if testBoool == false {
-            print("TIMER start time == \(startTime) == \(nameLabel.text)")
-            print("TIMER STOP time == \(secondsToHoursMinutesSeconds(Int(startTime!.timeIntervalSince(Date(timeIntervalSinceNow: TimeInterval(-timerTime!)))))) == \(nameLabel.text)")
-            testBoool = true
-        }
-        
         weekDayAdd()
         if let start = startTime, let timerTime = timerTime {
             let diff = start.timeIntervalSince(Date(timeIntervalSinceNow: TimeInterval(-timerTime)))
@@ -423,7 +414,6 @@ class MainCollectionViewCelll: UICollectionViewCell {
     
     //MARK: - Stop timer
     func stopTimer() {
-        testBoool = false
         timerLabel.textColor = .black
         if timer != nil {
             timer?.invalidate()
@@ -478,9 +468,6 @@ class MainCollectionViewCelll: UICollectionViewCell {
     private func calcRestartTime(start: Date, stop: Date) -> Date {
         let diff = start.timeIntervalSince(stop)
 //        print("DIFFF == \(secondsToHoursMinutesSeconds(Int(diff)))")
-//        print(Int(diff))
-//        print(Date().addingTimeInterval(diff))
-//        print(secondsToHoursMinutesSeconds(300))
         return Date().addingTimeInterval(diff)
     }
     
@@ -553,37 +540,47 @@ class MainCollectionViewCelll: UICollectionViewCell {
         //        editsImageView.heightAnchor.constraint(equalToConstant: 25).isActive = true
         //        editsImageView.widthAnchor.constraint(equalToConstant: 25).isActive = true
         
-        contentView.addSubview(editsTimerButton)
-        editsTimerButton.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
-        editsTimerButton.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 15).isActive = true
-        //        editsTimerButton.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        //        editsTimerButton.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        editsTimerButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        editsTimerButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        contentView.addSubview(editView)
+        editView.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
+        editView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
+        editView.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        editView.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        
+        editView.addSubview(editsTimerButton)
+        editsTimerButton.topAnchor.constraint(equalTo: editView.topAnchor).isActive = true
+        editsTimerButton.leadingAnchor.constraint(equalTo: editView.leadingAnchor).isActive = true
+        editsTimerButton.trailingAnchor.constraint(equalTo: editView.trailingAnchor).isActive = true
+        editsTimerButton.bottomAnchor.constraint(equalTo: editView.bottomAnchor).isActive = true
+//        editsTimerButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+//        editsTimerButton.widthAnchor.constraint(equalToConstant: 35).isActive = true
         editsTimerButton.addTarget(self, action: #selector(editTimerAction), for: .touchDown)
         
-        addSubview(nameLabel)
-        nameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
-        //        nameLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-        nameLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        nameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 35).isActive = true
-        nameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -35).isActive = true
+        addSubview(removeView)
+        removeView.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
+        removeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+        removeView.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        removeView.widthAnchor.constraint(equalToConstant: 35).isActive = true
         
-        addSubview(removeImageView)
-        removeImageView.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
-        removeImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+        removeView.addSubview(removeTimer)
+        removeTimer.topAnchor.constraint(equalTo: removeView.topAnchor, constant: 0).isActive = true
+        removeTimer.leadingAnchor.constraint(equalTo: removeView.leadingAnchor).isActive = true
+        removeTimer.trailingAnchor.constraint(equalTo: removeView.trailingAnchor, constant: 0).isActive = true
+        removeTimer.bottomAnchor.constraint(equalTo: removeView.bottomAnchor).isActive = true
+        removeTimer.addTarget(self, action: #selector(timerRemove), for: .touchDown)
+        removeView.addSubview(removeImageView)
+        
+        removeImageView.centerYAnchor.constraint(equalTo: removeView.centerYAnchor).isActive = true
+        removeImageView.centerXAnchor.constraint(equalTo: removeView.centerXAnchor).isActive = true
+//        removeImageView.topAnchor.constraint(equalTo: removeView.topAnchor, constant: 0).isActive = true
+//        removeImageView.trailingAnchor.constraint(equalTo: removeView.trailingAnchor, constant: -15).isActive = true
         removeImageView.heightAnchor.constraint(equalToConstant: 25).isActive = true
         removeImageView.widthAnchor.constraint(equalToConstant: 25).isActive = true
         
-        contentView.addSubview(removeTimer)
-        removeTimer.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
-        removeTimer.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        removeTimer.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        removeTimer.widthAnchor.constraint(equalToConstant: 35).isActive = true
-        removeTimer.addTarget(self, action: #selector(timerRemove), for: .touchDown)
-        
-        
-        
+        addSubview(nameLabel)
+        nameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
+        nameLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        nameLabel.leadingAnchor.constraint(equalTo: editView.trailingAnchor, constant: 2).isActive = true
+        nameLabel.trailingAnchor.constraint(equalTo: removeTimer.leadingAnchor, constant: -2).isActive = true
         
         
         //        progressBar = ProgressBar()

@@ -34,14 +34,14 @@ protocol MainViewModellProtocol {
     var editDayIndex: Int! { get set }
     var viewController: UIViewController? { get set }
     func scrollToIndex(index:Int)
-    
+    var timerDoneAlert: TimerDoneAlertProtocol? { get }
     init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?, timerNotifications: TimerNotificationsProtocol?, timerDoneAlert: TimerDoneAlertProtocol?, timerAlert: TimerAlertProtocol?)
 }
 
 final class MainViewModell: MainViewModellProtocol {
     private let mainRouter: MainRouterProtocol?
     private let timerNotifications: TimerNotificationsProtocol?
-    private let timerDoneAlert: TimerDoneAlertProtocol?
+    var timerDoneAlert: TimerDoneAlertProtocol?
     private let timerAlert: TimerAlertProtocol?
     var dataStore: DataStoreProtocol?
     private let timerStatistics: TimerStatistics?
@@ -66,6 +66,7 @@ final class MainViewModell: MainViewModellProtocol {
     var newDay: Bool = false
     var editDayIndex: Int!
     var viewController: UIViewController?
+    private var startScrolViewRect = false
     
     init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?, timerNotifications: TimerNotificationsProtocol?, timerDoneAlert: TimerDoneAlertProtocol?, timerAlert: TimerAlertProtocol?) {
         self.mainRouter = mainRouter
@@ -231,17 +232,16 @@ final class MainViewModell: MainViewModellProtocol {
             print("stoppppp edittt viewModel 228")
             //      stopTimerViewModel(timerCounting: timerCounting, index: index, stopTime: stopTime)
             
-        }else if timerCounting == true && self.index != nil {//view tez yuxari edende timer 2-20 saniye gecikir  yada telesir buna bax -
-            
+        }else if timerCounting == true && self.index != nil {//view tez yuxari edende timer 2-20 saniye gecikir  yada telesir buna bax +
             guard let viewController = viewController else { return }
             
             timerAlert?.secondTimerStart(viewController: viewController, completionHandler: { bool in
                 if bool {
+                    guard let selfIndex = self.index else { return }
                     DispatchQueue.main.async {
-                        self.scrollToIndex(index: self.index!)
-//                        print("VIEWMODEL STOP TIMe == \(Date()) == \(self.dataStore?.timerArray?[self.index!].name)")
+                        self.scrollToIndex(index: selfIndex)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            self.stopTimerViewModel(timerCounting: false, index: self.index!, stopTime: Date())
+                            self.stopTimerViewModel(timerCounting: false, index: selfIndex, stopTime: Date())
                         }
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             self.scrollToIndex(index: index)
@@ -251,9 +251,6 @@ final class MainViewModell: MainViewModellProtocol {
                                 try! realm.write {
                                     self.dataStore?.timerArray?[index].stopTimer = nil
                                 }
-//                                print("START TIMEee  view moell ==== \(self.dataStore?.timerArray?[index].startTimer)  -- name === \(self.dataStore?.timerArray?[index].name)")
-//                                print("RESTART TIME viewmodell  == \(restartTime)")
-//                                print("111111111")
                                 self.startTimerViewModel(timerCounting: true, index: index, startTime: restartTime)
                             }else {
                                 self.startTimerViewModel(timerCounting: true, index: index, startTime: Date())
@@ -275,8 +272,8 @@ final class MainViewModell: MainViewModellProtocol {
     }
     
     func scrollToIndex(index:Int) {
-        let rect = self.collectionView!.layoutAttributesForItem(at:IndexPath(row: index, section: 0))?.frame
-        self.collectionView!.scrollRectToVisible(rect!, animated: true)
+        guard let rect = self.collectionView?.layoutAttributesForItem(at:IndexPath(row: index, section: 0))?.frame else { return }
+        self.collectionView?.scrollRectToVisible(rect, animated: false)
     }
     
     
