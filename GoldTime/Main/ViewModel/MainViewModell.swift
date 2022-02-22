@@ -67,6 +67,7 @@ final class MainViewModell: MainViewModellProtocol {
     var editDayIndex: Int!
     var viewController: UIViewController?
     private var startScrolViewRect = false
+    private var timerUpdateBool = false
     
     init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?, timerNotifications: TimerNotificationsProtocol?, timerDoneAlert: TimerDoneAlertProtocol?, timerAlert: TimerAlertProtocol?) {
         self.mainRouter = mainRouter
@@ -80,6 +81,7 @@ final class MainViewModell: MainViewModellProtocol {
         model = dataStore?.timerArray
         endOFTheDayViewUpdate()
         editDayIndex = toDay
+        print(timerUpdateBool)
     }
     
     func tapTHeAddNewTimerVc() {
@@ -175,6 +177,7 @@ final class MainViewModell: MainViewModellProtocol {
     //MARK: - Timer Time Update
     func timerTimeUpdate(timerTimeUpdate: Int, index: Int?) {
         guard let index = index else { return }
+        timerUpdateBool = true
         try! realm.write {
             dataStore?.timerArray?[index].timerUpdateTime = timerTimeUpdate
         }
@@ -185,6 +188,8 @@ final class MainViewModell: MainViewModellProtocol {
         
         //Timer Time == 0 olsa
         if timerTimeUpdate <= 0{
+            //auto screen lock
+            UIApplication.shared.isIdleTimerDisabled = false
             timerReset(index: index)
             timerCounting = false
             dataStore?.saveTimerStatistics(key: Date().getFormattedDate(), value: (dataStore?.timerArray?[index].timerTime)!, index: index)
@@ -217,7 +222,6 @@ final class MainViewModell: MainViewModellProtocol {
         if timerCounting == true && self.index == nil && dataStore?.timerArray?[index].timerDone == false {
             startTimerViewModel(timerCounting: timerCounting, index: index, startTime: startTime)
         }else if timerCounting == false && self.index == index {
-//            collectionView?.reloadData()
             stopTimerViewModel(timerCounting: timerCounting, index: index, stopTime: stopTime)
             
         }else if dataStore?.timerArray?[index].timerDone == true {
@@ -292,6 +296,8 @@ final class MainViewModell: MainViewModellProtocol {
         timerNotifications?.removeNotifications(withIdentifires: ["MyUniqueIdentifire"])
         endOFTheDayViewUpdate()
         dataStore?.deleteLastIndex()
+        //auto screen lock
+        UIApplication.shared.isIdleTimerDisabled = false
         print("VIEWMODEL STOP")
     }
     
@@ -318,6 +324,8 @@ final class MainViewModell: MainViewModellProtocol {
         let lastIndex = LastIndex(index: index)
         dataStore?.saveLastIndex(lastIndex)
         timerNotifications?.scheduleNotification(inSeconds: TimeInterval((dataStore?.timerArray?[index].timerUpdateTime)!), timerName: (dataStore?.timerArray?[index].name)!)
+        //auto screen lock
+        UIApplication.shared.isIdleTimerDisabled = true
         print("VIEWMODEL START")
     }
     
@@ -406,9 +414,15 @@ final class MainViewModell: MainViewModellProtocol {
     //MARK: - End OF The Day View update
     //Eger app aciqdisa ve timer qoshulu deyilse onda her 5 saniyeden bir bu kod isdeyir
     private func endOFTheDayViewUpdate() {
-        if self.index == nil {
-            let timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(refreshValue), userInfo: nil, repeats: true)
-            endOFTheDayTimer = timer
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            if self.index == nil {
+                let timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.refreshValue), userInfo: nil, repeats: true)
+                self.endOFTheDayTimer = timer
+                
+                if UIApplication.shared.isIdleTimerDisabled == true {
+                    UIApplication.shared.isIdleTimerDisabled = false
+                }
+            }
         }
     }
     

@@ -27,19 +27,18 @@ final class TimerDoneAlert: TimerDoneAlertProtocol {
     private var messsageLabel = UILabel()
     
     internal func showAlert(title: String?, message: String, viewController: UIViewController) {
-        print("111111")
         if alertViewIsSelected == false {
-            print("222222")
             guard let targetView = viewController.view else { return }
             
-            alertView.frame = CGRect(x: 25, y: -100, width: targetView.frame.width - 50, height: 80)
+            alertView.frame = CGRect(x: 25, y: -100, width: targetView.frame.width - 50, height: 60)
             targetView.addSubview(alertView)
             
-            messsageLabel = UILabel(frame: CGRect(x: 10, y: 10, width: alertView.frame.width - 20, height: 30))
+            messsageLabel = UILabel(frame: CGRect(x: 7, y: 7, width: alertView.frame.width - 20, height: 45))
             messsageLabel.text = "\(message) Done"
             messsageLabel.textAlignment = .left
             messsageLabel.textColor = .black
             messsageLabel.numberOfLines = 0
+            messsageLabel.font = UIFont.systemFont(ofSize: 17, weight: .medium)
             alertView.addSubview(messsageLabel)
             
             UIView.animate(withDuration: 0.3, animations: {
@@ -47,7 +46,7 @@ final class TimerDoneAlert: TimerDoneAlertProtocol {
             }, completion: { done in
                 if done {
                     UIView.animate(withDuration: 0.3, animations: {
-                        self.alertView.frame = CGRect(x: 25, y: 100, width: targetView.frame.width - 50, height: 80)
+                        self.alertView.frame = CGRect(x: 25, y: 100, width: targetView.frame.width - 50, height: 60)
                     })
                 }
             })
@@ -57,7 +56,7 @@ final class TimerDoneAlert: TimerDoneAlertProtocol {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     
                     UIView.animate(withDuration: 0.3, animations: {
-                        self.alertView.frame = CGRect(x: 25, y: -targetView.frame.height, width: targetView.frame.width - 50, height: 80)
+                        self.alertView.frame = CGRect(x: 25, y: -targetView.frame.height, width: targetView.frame.width - 50, height: 60)
                     }, completion: { done in
                         if done {
                             self.alertView.removeFromSuperview()

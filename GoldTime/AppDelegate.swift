@@ -13,9 +13,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let notificationCenter = UNUserNotificationCenter.current()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        //auto screen lock  off ??? test
-        application.isIdleTimerDisabled = true
 
         notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             guard granted else { return }

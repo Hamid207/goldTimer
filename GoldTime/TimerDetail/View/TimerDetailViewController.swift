@@ -18,7 +18,7 @@ final class TimerDetailViewController: UIViewController {
         view.backgroundColor = .white
         navigationController?.navigationBar.prefersLargeTitles = true
         guard let name = viewModel?.dataStore?.timerArray?[(viewModel?.index)!].name else { return }
-        navigationItem.title = String(describing: name) + " statistics"
+        navigationItem.title = String(describing: name)
         self.navItems()
         self.itemSetup()
         viewModel?.statisticsStart()
