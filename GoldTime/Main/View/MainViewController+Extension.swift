@@ -172,8 +172,8 @@ extension MainViewController: UICollectionViewDataSource {
             cell?.addModelIndexDelegate = self
             cell?.sentAlertActionDelegate = self
             cell?.showEditVcDelegate = self
-            if let item = viewModell?.dataStore?.timerArray?[indexPath.item] {
-                cell?.update(model: item, timerCounting: true, index: indexPath.row, checkDay: (viewModell?.checkDay)!)
+            if let item = viewModell?.model?[indexPath.item], let checkDay = viewModell?.checkDay {
+                cell?.update(model: item, timerCounting: true, index: indexPath.row, checkDay: checkDay)
                 cell?.timerRemoveIndex = item
             }
             return cell!

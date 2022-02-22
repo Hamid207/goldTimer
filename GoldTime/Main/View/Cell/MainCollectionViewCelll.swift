@@ -86,7 +86,6 @@ class MainCollectionViewCelll: UICollectionViewCell {
     private let editView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-//        view.backgroundColor = .yellow
         return view
     }()
     
@@ -98,7 +97,6 @@ class MainCollectionViewCelll: UICollectionViewCell {
         button.setTitle("Edit", for: .normal)
         button.tintColor = .black
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .medium)
-//        button.backgroundColor = .orange
         return button
     }()
     
@@ -113,14 +111,12 @@ class MainCollectionViewCelll: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(systemName: "trash")
         imageView.tintColor = .black
-//                imageView.backgroundColor = .red
         return imageView
     }()
     
     private let removeTimer: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-//                button.backgroundColor = .orange
         button.setTitleColor(.black, for: .normal)
         return button
     }()
@@ -133,7 +129,6 @@ class MainCollectionViewCelll: UICollectionViewCell {
         label.textColor = .black
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 28, weight: .regular)
-//                label.backgroundColor = .red
         return label
     }()
     

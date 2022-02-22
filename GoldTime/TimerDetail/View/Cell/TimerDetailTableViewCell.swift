@@ -17,55 +17,16 @@ class TimerDetailTableView: UITableViewCell {
   private var userTimerStatistic: Int?
   private let barChartView = BarChartView()
   
-  private let timerDetailStatictic: UILabel = {
+  private let staticsLabel: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.textColor = .lightGray
+    label.textColor = .black
     label.textAlignment = .left
-    label.text = "Time Statistic"
+    label.text = "Stats"
     label.font = UIFont.systemFont(ofSize: 25, weight: .medium)
     return label
   }()
-  
-  //    private let weekStatisticsLabel: UILabel = {
-  //        let label = UILabel()
-  //        label.translatesAutoresizingMaskIntoConstraints = false
-  //        label.textAlignment = .left
-  //        label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
-  //        label.text = "7 days:  12:12:12"
-  //        return label
-  //    }()
-  
-  //    private let monthStatisticsLabel: UILabel = {
-  //        let label = UILabel()
-  //        label.translatesAutoresizingMaskIntoConstraints = false
-  //        label.textAlignment = .left
-  //        label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
-  //        label.text = "30 day: 12:12:12"
-  //        return label
-  //    }()
-  //
-  //    private let threeMonthStatisticsLabel: UILabel = {
-  //        let label = UILabel()
-  //        label.translatesAutoresizingMaskIntoConstraints = false
-  //        label.textAlignment = .left
-  //        label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
-  //        label.text = "90 day: 12:12:12"
-  //        return label
-  //    }()
-  //
-  //    private let sixMonthStatisticsLabel: UILabel = {
-  //        let label = UILabel()
-  //        label.translatesAutoresizingMaskIntoConstraints = false
-  //        label.textAlignment = .left
-  //        label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
-  //        label.text = "180 day: 12:12:12"
-  //        label.backgroundColor = .red
-  //        return label
-  //    }()
-  
-  
-  
+    
   //timerLabel
   private let timerLabel: UILabel = {
     let label = UILabel()
@@ -160,41 +121,14 @@ class TimerDetailTableView: UITableViewCell {
   }
   
   private  func itemSetup() {
-    //        contentView.addSubview(weekStatisticsLabel)
-    //        weekStatisticsLabel.topAnchor.constraint(equalTo: topAnchor, constant: 20).isActive = true
-    //        weekStatisticsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-    //        weekStatisticsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-    //
-    //        contentView.addSubview(monthStatisticsLabel)
-    //        monthStatisticsLabel.topAnchor.constraint(equalTo: weekStatisticsLabel.bottomAnchor, constant: 10).isActive = true
-    //        monthStatisticsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-    //        monthStatisticsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-    //
-    //        contentView.addSubview(threeMonthStatisticsLabel)
-    //        threeMonthStatisticsLabel.topAnchor.constraint(equalTo: monthStatisticsLabel.bottomAnchor, constant: 10).isActive = true
-    //        threeMonthStatisticsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-    //        threeMonthStatisticsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-    //
-    //        contentView.addSubview(sixMonthStatisticsLabel)
-    //        sixMonthStatisticsLabel.topAnchor.constraint(equalTo: threeMonthStatisticsLabel.bottomAnchor, constant: 10).isActive = true
-    //        sixMonthStatisticsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-    //        sixMonthStatisticsLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
     
-    //        contentView.addSubview(timerDetailStatictic)
-    //        timerDetailStatictic.topAnchor.constraint(equalTo: topAnchor, constant: 10).isActive = true
-    //        //        nameLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
-    //        timerDetailStatictic.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-    //        //        timerDetailStatictic.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5).isActive = true
-    //        //        timerDetailStatictic.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    //
-    //        contentView.addSubview(timerLabel)
-    //        timerLabel.topAnchor.constraint(equalTo: timerDetailStatictic.topAnchor).isActive = true
-    //        timerLabel.leadingAnchor.constraint(equalTo: timerDetailStatictic.trailingAnchor, constant: 5).isActive = true
-    //        timerLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-    //        //        timerLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    //
+    addSubview(staticsLabel)
+    staticsLabel.topAnchor.constraint(equalTo: topAnchor).isActive = true
+    staticsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 20).isActive = true
+    staticsLabel.heightAnchor.constraint(equalToConstant: 35).isActive = true
+
     contentView.addSubview(statisticsSegmetControll)
-    statisticsSegmetControll.topAnchor.constraint(equalTo: topAnchor, constant: 25).isActive = true
+    statisticsSegmetControll.topAnchor.constraint(equalTo: staticsLabel.bottomAnchor, constant: 10).isActive = true
     statisticsSegmetControll.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
     statisticsSegmetControll.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
     statisticsSegmetControll.addTarget(self, action: #selector(didCgangeStatisticSegment), for: .valueChanged)
@@ -208,13 +142,5 @@ class TimerDetailTableView: UITableViewCell {
     statisticTargetUIView.addSubview(statisticTargetlabel)
     statisticTargetlabel.centerYAnchor.constraint(equalTo: statisticTargetUIView.centerYAnchor).isActive = true
     statisticTargetlabel.centerXAnchor.constraint(equalTo: statisticTargetUIView.centerXAnchor).isActive = true
-    
-    //        contentView.addSubview(barChartView)
-    //        barChartView.translatesAutoresizingMaskIntoConstraints = false
-    //        barChartView.backgroundColor = .clear
-    //        barChartView.topAnchor.constraint(equalTo: statisticTargetlabel.bottomAnchor, constant: 20).isActive = true
-    //        barChartView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-    //        barChartView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-    //        barChartView.heightAnchor.constraint(equalToConstant: 200).isActive = true
   }
 }

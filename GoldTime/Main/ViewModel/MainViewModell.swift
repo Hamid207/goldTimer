@@ -31,7 +31,7 @@ protocol MainViewModellProtocol {
     var dataStore: DataStoreProtocol? { get set }
     var toDay: Int? { get set }
     var checkDay: Int? { get set }
-    var editDayIndex: Int! { get set }
+    var editDayIndex: Int? { get set }
     var viewController: UIViewController? { get set }
     func scrollToIndex(index:Int)
     var timerDoneAlert: TimerDoneAlertProtocol? { get }
@@ -64,7 +64,7 @@ final class MainViewModell: MainViewModellProtocol {
         }
     }
     var newDay: Bool = false
-    var editDayIndex: Int!
+    var editDayIndex: Int?
     var viewController: UIViewController?
     private var startScrolViewRect = false
     private var timerUpdateBool = false
@@ -81,7 +81,6 @@ final class MainViewModell: MainViewModellProtocol {
         model = dataStore?.timerArray
         endOFTheDayViewUpdate()
         editDayIndex = toDay
-        print(timerUpdateBool)
     }
     
     func tapTHeAddNewTimerVc() {
@@ -93,7 +92,7 @@ final class MainViewModell: MainViewModellProtocol {
     }
     
     func tapOnTheEditVc(timerModel: TimerModelData, index: Int) {
-        guard let predicate = predicateRepeat else { return }
+        guard let predicate = predicateRepeat, let editDayIndex = editDayIndex else { return }
         mainRouter?.showEditViewController(timerModel: timerModel, index: index, predicate: predicate, day: editDayIndex, col: collectionView!)
     }
     
@@ -124,10 +123,11 @@ final class MainViewModell: MainViewModellProtocol {
             tapWeekDayArray?[i] = false
         }
         tapWeekDayArray?[weekday] = true
-        let day = weekDayArray?[weekday - 1]
+        guard let day = weekDayArray?[weekday - 1] else { return }
+        predicateRepeat = NSPredicate(format: "\(day) = true")
         
-        predicateRepeat = NSPredicate(format: "\(day!) = true")
-        sentPredicate(predicate: predicateRepeat!)
+        guard let predicateRepeat = predicateRepeat else { return }
+        sentPredicate(predicate: predicateRepeat)
     }
     
     //MARK: - Timer Remove
@@ -167,10 +167,11 @@ final class MainViewModell: MainViewModellProtocol {
     //reload
     func remove(_ i: Int) {
         let indexPath = IndexPath(row: i, section: 0)
-        collectionView!.performBatchUpdates({
-            collectionView!.deleteItems(at: [indexPath])
-        }) { [self] (finished) in
-            collectionView!.reloadItems(at: collectionView!.indexPathsForVisibleItems)
+        guard let collectionView = collectionView else { return }
+        collectionView.performBatchUpdates({
+            collectionView.deleteItems(at: [indexPath])
+        }) { (finished) in
+            collectionView.reloadItems(at: collectionView.indexPathsForVisibleItems)
         }
     }
     
@@ -351,10 +352,10 @@ final class MainViewModell: MainViewModellProtocol {
     func ifTimerOnNextday() {
         dataStore?.timerArray = realm.objects(TimerModelData.self)
         //        let datee = cal.date(byAdding: .day, value: 2, to: Date())!
-        var modelIndex = dataStore?.timerArray?.count
+        guard var modelIndex = dataStore?.timerArray?.count else { return }
         if modelIndex != 0 {
-            modelIndex! -= 1
-            for i in 0...modelIndex! {
+            modelIndex -= 1
+            for i in 0...modelIndex {
                 let addTimeStatistic: Int?
                 if  dataStore?.timerArray?[i].timerCounting == true && dataStore?.timerArray?[i].todayDate != Date().getFormattedDate() {
                     guard let startTime = dataStore?.timerArray?[i].startTimer else { return }
