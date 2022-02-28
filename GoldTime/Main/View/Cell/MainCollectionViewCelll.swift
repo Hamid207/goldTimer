@@ -21,7 +21,8 @@ class MainCollectionViewCelll: UICollectionViewCell {
     weak var sentAlertActionDelegate: SentAlertActionDelegate?
     weak var showEditVcDelegate: TapOnTheEditVcDelegate?
     
-    
+    let region = Locale.current.regionCode
+
     var index: Int?
     var timerRemoveIndex: TimerModelData?
     
@@ -264,9 +265,9 @@ class MainCollectionViewCelll: UICollectionViewCell {
                 setTimeLabel(timerUpdateTime)
             }else {
                 if editTimerTime != nil {
-                    setTimeLabel(editTimerTime!)
+                    setTimeLabel(editTimerTime ?? 0)
                 }else {
-                    setTimeLabel(timerTime!)
+                    setTimeLabel(timerTime ?? 0)
                 }
             }
             //      if let start = startTime {
@@ -367,13 +368,13 @@ class MainCollectionViewCelll: UICollectionViewCell {
             let diff = start.timeIntervalSince(Date(timeIntervalSinceNow: TimeInterval(-timerTime)))
             //            let diff = Date().timeIntervalSince(start)
             
-            if self.toDay == self.weekDay {
-                self.setTimeLabel(Int(diff))
+            if toDay == weekDay {
+                setTimeLabel(Int(diff))
             }else {
-                if self.editTimerTime != nil {
-                    self.setTimeLabel(self.editTimerTime!)
+                if editTimerTime != nil {
+                    setTimeLabel(editTimerTime!)
                 }else {
-                    self.setTimeLabel(timerTime)
+                    setTimeLabel(timerTime)
                 }
             }
             setTimerUpdateTimeDeleagte?.setTimerNewTime(newTime: Int(diff), index: index!)
@@ -383,7 +384,7 @@ class MainCollectionViewCelll: UICollectionViewCell {
                     timerDone()
                 }
                 setTimerCounting(false)
-                setTimeLabel(self.timerTime!)
+                setTimeLabel(self.timerTime ?? 0)
                 setStartTime(date: nil)
                 setStopTime(date: nil)
                 animteBool = false
@@ -399,10 +400,10 @@ class MainCollectionViewCelll: UICollectionViewCell {
         startButton.backgroundColor = #colorLiteral(red: 0.921431005, green: 0.9214526415, blue: 0.9214410186, alpha: 1)
         startButton.setTitleColor(.white, for: .normal)
         
-        if self.editTimerTime != nil {
-            self.setTimeLabel(self.editTimerTime!)
+        if editTimerTime != nil {
+            setTimeLabel(editTimerTime ?? 0)
         }else {
-            self.setTimeLabel(timerTime!)
+            setTimeLabel(timerTime ?? 0)
         }
     }
     
@@ -524,7 +525,13 @@ class MainCollectionViewCelll: UICollectionViewCell {
     private func weekDayAdd() {
         let date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
         let today = Calendar.current.component(.weekday, from: date)
-        self.toDay = today
+        
+        if region == "US" || region == "CA" {
+            self.toDay = today + 1
+        }else {
+            self.toDay = today
+        }
+        
     }
     
     //MARK: - Setup Item

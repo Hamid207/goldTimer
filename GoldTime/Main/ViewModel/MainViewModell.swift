@@ -24,7 +24,9 @@ protocol MainViewModellProtocol {
     func timerRemove(modelIndex: TimerModelData, removeBool: Bool, index: Int, view: UIViewController, collectionView: UICollectionView)
     func pomdoroStartStopTime(index: Int?, pomdoroStartTime: Date?, pomdoroStopTime: Date?)
     func setIndex(index: Int?)
-    var weekDayArray: [String]? { get set }
+    var weekDayArrayEU: [String]? { get set }
+    var weekDayArrayUSA: [String]? { get set }
+    var calendarRegion: Bool { get set }
     var tapWeekDayArray: [Int : Bool]? { get set }
     func sentPredicate(predicate: NSPredicate)
     var predicateRepeat: NSPredicate? { get set }
@@ -54,7 +56,9 @@ final class MainViewModell: MainViewModellProtocol {
     var timerStatisticSaveTime: Int? = 0
     private let cal = Calendar.current
     var predicateRepeat: NSPredicate?
-    var weekDayArray: [String]? = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    var weekDayArrayEU: [String]? = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    var weekDayArrayUSA: [String]? = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    var calendarRegion: Bool = false
     var tapWeekDayArray: [Int : Bool]? = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
     var toDay: Int?
     var checkDay: Int?
@@ -68,6 +72,8 @@ final class MainViewModell: MainViewModellProtocol {
     var viewController: UIViewController?
     private var startScrolViewRect = false
     private var timerUpdateBool = false
+    private let region = Locale.current.regionCode
+
     
     init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?, timerNotifications: TimerNotificationsProtocol?, timerDoneAlert: TimerDoneAlertProtocol?, timerAlert: TimerAlertProtocol?) {
         self.mainRouter = mainRouter
@@ -117,14 +123,34 @@ final class MainViewModell: MainViewModellProtocol {
     func weekDay() {
         let datee = cal.date(byAdding: .day, value: -1, to: Date())!
         let weekday = Calendar.current.component(.weekday, from: datee)
-        toDay = weekday
-        checkDay = weekday
+        print(weekday)
         for i in 1...7 {
             tapWeekDayArray?[i] = false
         }
-        tapWeekDayArray?[weekday] = true
-        guard let day = weekDayArray?[weekday - 1] else { return }
-        predicateRepeat = NSPredicate(format: "\(day) = true")
+        
+        if region == "US" || region == "CA" {
+            calendarRegion = true
+            toDay = weekday + 1
+            checkDay = weekday + 1
+            if weekday == 7 {
+                tapWeekDayArray?[1] = true
+                guard let usaDay = weekDayArrayUSA?[1] else { return }
+                predicateRepeat = NSPredicate(format: "\(usaDay) = true")
+
+            }else {
+                tapWeekDayArray?[weekday + 1] = true
+                guard let usaDay = weekDayArrayUSA?[weekday] else { return }
+                predicateRepeat = NSPredicate(format: "\(usaDay) = true")
+            }
+            
+        }else {
+            toDay = weekday
+            checkDay = weekday
+            calendarRegion = false
+            tapWeekDayArray?[weekday] = true
+            guard let euDay = weekDayArrayEU?[weekday - 1] else { return }
+            predicateRepeat = NSPredicate(format: "\(euDay) = true")
+        }
         
         guard let predicateRepeat = predicateRepeat else { return }
         sentPredicate(predicate: predicateRepeat)
@@ -180,6 +206,7 @@ final class MainViewModell: MainViewModellProtocol {
         guard let index = index else { return }
         timerUpdateBool = true
         try! realm.write {
+           
             dataStore?.timerArray?[index].timerUpdateTime = timerTimeUpdate
         }
         

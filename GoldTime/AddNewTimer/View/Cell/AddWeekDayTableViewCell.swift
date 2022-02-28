@@ -11,8 +11,12 @@ class AddWeekDayTableViewCell: UITableViewCell {
     
     weak var saveWeekDayDelegate: SaveWeekDayDelegate?
     
-    private var weekDayArray: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    private lazy var tapWeekDayArray: [Int : Bool] = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
+    private let region = Locale.current.regionCode
+    private lazy var calendarRegion = false
+
+    private lazy var weekDayArrayEU = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    private lazy var weekDayArrayUSA = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    private lazy var tapWeekDayArray = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
     
     private lazy var isSeletedd = false
     
@@ -74,12 +78,12 @@ class AddWeekDayTableViewCell: UITableViewCell {
     @objc private func switchOnOffAction(switchParam: UISwitch) {
         if switchParam.isOn {
             print("ON")
-            for i in 1...weekDayArray.count {
+            for i in 1...weekDayArrayEU.count {
                 tapWeekDayArray[i] = true
             }
         }else {
             print("Off")
-            for i in 1...weekDayArray.count {
+            for i in 1...weekDayArrayEU.count {
                 tapWeekDayArray[i] = false
             }
         }
@@ -87,7 +91,8 @@ class AddWeekDayTableViewCell: UITableViewCell {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
-        saveWeekDayDelegate?.saveWeekDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
+        
+        saveWeekDaAdd(region: calendarRegion)
     }
     
     private func itemSetum() {
@@ -133,22 +138,45 @@ class AddWeekDayTableViewCell: UITableViewCell {
     private func weekDayAdd() {
         let date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
         let today = Calendar.current.component(.weekday, from: date)
-        tapWeekDayArray[today] = true
-        saveWeekDayDelegate?.saveWeekDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
+        if region == "US" || region == "CA" {
+            calendarRegion = true
+            if today == 7 {
+                tapWeekDayArray[1] = true
+            }else {
+                tapWeekDayArray[today + 1] = true
+            }
+            saveWeekDaAdd(region: calendarRegion)
+        }else {
+            tapWeekDayArray[today] = true
+            saveWeekDaAdd(region: calendarRegion)
+        }
+    }
+    
+    private func saveWeekDaAdd(region: Bool) {
+        if region {
+            saveWeekDayDelegate?.saveWeekDay(mon: tapWeekDayArray[2]!, tue: tapWeekDayArray[3]!, wed: tapWeekDayArray[4]!, thu: tapWeekDayArray[5]!, fri: tapWeekDayArray[6]!, sat: tapWeekDayArray[7]!, sun: tapWeekDayArray[1]!)
+        }else {
+            saveWeekDayDelegate?.saveWeekDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
+        }
     }
 }
 
 
 extension AddWeekDayTableViewCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return weekDayArray.count
+        return weekDayArrayEU.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! IconsCell
-        let item = weekDayArray[indexPath.item]
+        let item: String
+        if calendarRegion == true {
+            item = weekDayArrayUSA[indexPath.item]
+        } else {
+            item = weekDayArrayEU[indexPath.item]
+        }
         let item2 = tapWeekDayArray[indexPath.item + 1]
-        cell.update(name: item, isSelected: item2)
+        cell.update(name: item , isSelected: item2)
         return cell
     }
     
@@ -169,6 +197,7 @@ extension AddWeekDayTableViewCell: UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath.item + 1)
         if tapWeekDayArray[indexPath.item + 1] == false{
             tapWeekDayArray[indexPath.item + 1] = true
         }else if tapWeekDayArray[indexPath.item + 1] == true {
@@ -192,7 +221,7 @@ extension AddWeekDayTableViewCell: UICollectionViewDataSource, UICollectionViewD
             addAllWeekDaySwitch.isOn = false
         }
         
-        saveWeekDayDelegate?.saveWeekDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
+        saveWeekDaAdd(region: calendarRegion)
     }
 }
 

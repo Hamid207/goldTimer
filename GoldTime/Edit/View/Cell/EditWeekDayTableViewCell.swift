@@ -11,11 +11,15 @@ class EditWeekDayTableViewCell: UITableViewCell {
     
     weak var editWeekDayDelegate: EditWeekDayDelegate?
     
-    private var weekDayArray: [String] = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    private lazy var tapWeekDayArray: [Int : Bool] = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
+    private let region = Locale.current.regionCode
+    private lazy var calendarRegion = false
+    
+    private lazy var weekDayArrayEU = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    private lazy var weekDayArrayUSA = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    private lazy var tapWeekDayArray = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
     private lazy var dontTapWeekDayArray = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
     private var day: Int?
-//    private lazy var isSeletedd = false
+    //    private lazy var isSeletedd = false
     private lazy var timerStartToDay = false
     
     private let addAllWeekDayView: UIView = {
@@ -34,7 +38,7 @@ class EditWeekDayTableViewCell: UITableViewCell {
     }()
     
     private let addAllWeekDaySwitch: UISwitch = {
-       let addAllWeekDaySwitch = UISwitch()
+        let addAllWeekDaySwitch = UISwitch()
         addAllWeekDaySwitch.translatesAutoresizingMaskIntoConstraints = false
         addAllWeekDaySwitch.isOn = false
         addAllWeekDaySwitch.onTintColor = .black
@@ -55,7 +59,7 @@ class EditWeekDayTableViewCell: UITableViewCell {
         cv.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         return cv
     }()
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         itemSetum()
@@ -75,11 +79,11 @@ class EditWeekDayTableViewCell: UITableViewCell {
     
     @objc private func switchOnOffAction(switchParam: UISwitch) {
         if switchParam.isOn {
-            for i in 1...weekDayArray.count {
+            for i in 1...weekDayArrayEU.count {
                 tapWeekDayArray[i] = true
             }
         }else {
-            for i in 1...weekDayArray.count {
+            for i in 1...weekDayArrayEU.count {
                 tapWeekDayArray[i] = false
             }
         }
@@ -92,30 +96,55 @@ class EditWeekDayTableViewCell: UITableViewCell {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }
-//        saveWeekDayDelegate?.saveWeekDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
+        
+        editWeekdaySave(region: calendarRegion)
     }
-
+    
     func update(mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool, sun: Bool, timerStartToday: Bool) {
-        if mon == true {
-            tapWeekDayArray[1] = true
-        }
-        if tue == true {
-            tapWeekDayArray[2] = true
-        }
-        if wed == true {
-            tapWeekDayArray[3] = true
-        }
-        if thu == true {
-            tapWeekDayArray[4] = true
-        }
-        if fri == true {
-            tapWeekDayArray[5] = true
-        }
-        if sat == true {
-            tapWeekDayArray[6] = true
-        }
-        if sun == true {
-            tapWeekDayArray[7] = true
+        if calendarRegion == true {
+            if mon == true {
+                tapWeekDayArray[2] = true
+            }
+            if tue == true {
+                tapWeekDayArray[3] = true
+            }
+            if wed == true {
+                tapWeekDayArray[4] = true
+            }
+            if thu == true {
+                tapWeekDayArray[5] = true
+            }
+            if fri == true {
+                tapWeekDayArray[6] = true
+            }
+            if sat == true {
+                tapWeekDayArray[7] = true
+            }
+            if sun == true {
+                tapWeekDayArray[1] = true
+            }
+        }else {
+            if mon == true {
+                tapWeekDayArray[1] = true
+            }
+            if tue == true {
+                tapWeekDayArray[2] = true
+            }
+            if wed == true {
+                tapWeekDayArray[3] = true
+            }
+            if thu == true {
+                tapWeekDayArray[4] = true
+            }
+            if fri == true {
+                tapWeekDayArray[5] = true
+            }
+            if sat == true {
+                tapWeekDayArray[6] = true
+            }
+            if sun == true {
+                tapWeekDayArray[7] = true
+            }
         }
         
         timerStartToDay = timerStartToday
@@ -127,18 +156,18 @@ class EditWeekDayTableViewCell: UITableViewCell {
     }
     
     private func weekOnOfSwitch() {
-            var intt = 0
-            for i in 1...tapWeekDayArray.count {
-                if tapWeekDayArray[i] == true {
-                    intt += 1
-                }
+        var intt = 0
+        for i in 1...tapWeekDayArray.count {
+            if tapWeekDayArray[i] == true {
+                intt += 1
             }
-            
-            if intt == 7 {
-                addAllWeekDaySwitch.isOn = true
-            }else {
-                addAllWeekDaySwitch.isOn = false
-            }
+        }
+        
+        if intt == 7 {
+            addAllWeekDaySwitch.isOn = true
+        }else {
+            addAllWeekDaySwitch.isOn = false
+        }
     }
     
     private func itemSetum() {
@@ -153,12 +182,12 @@ class EditWeekDayTableViewCell: UITableViewCell {
         
         addAllWeekDayView.addSubview(addAllWeekDayLabel)
         addAllWeekDayLabel.centerYAnchor.constraint(equalTo: addAllWeekDayView.centerYAnchor).isActive = true
-//        addAllWeekDayLabel.topAnchor.constraint(equalTo: addAllWeekDayView.topAnchor, constant: 15).isActive = true
+        //        addAllWeekDayLabel.topAnchor.constraint(equalTo: addAllWeekDayView.topAnchor, constant: 15).isActive = true
         addAllWeekDayLabel.leadingAnchor.constraint(equalTo: addAllWeekDayView.leadingAnchor, constant: 15).isActive = true
         
         addAllWeekDayView.addSubview(addAllWeekDaySwitch)
         addAllWeekDaySwitch.centerYAnchor.constraint(equalTo: addAllWeekDayView.centerYAnchor).isActive = true
-//        addAllWeekDaySwitch.topAnchor.constraint(equalTo: addAllWeekDayView.topAnchor, constant: 15).isActive = true
+        //        addAllWeekDaySwitch.topAnchor.constraint(equalTo: addAllWeekDayView.topAnchor, constant: 15).isActive = true
         addAllWeekDaySwitch.trailingAnchor.constraint(equalTo: addAllWeekDayView.trailingAnchor, constant: -15).isActive = true
         addAllWeekDaySwitch.addTarget(self, action: #selector(switchOnOffAction(switchParam:)), for: .valueChanged)
         
@@ -167,7 +196,7 @@ class EditWeekDayTableViewCell: UITableViewCell {
         weekDayView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
         weekDayView.trailingAnchor.constraint(equalTo: trailingAnchor,constant: -10).isActive = true
         weekDayView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-
+        
         weekDayView.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -184,21 +213,44 @@ class EditWeekDayTableViewCell: UITableViewCell {
     private func weekDayAdd() {
         let date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
         let today = Calendar.current.component(.weekday, from: date)
-        day = today
-        dontTapWeekDayArray[today] = true
-        editWeekDayDelegate?.sentNewDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
+        if region == "US" || region == "CA" {
+            calendarRegion = true
+            if today == 7 {
+                dontTapWeekDayArray[1] = true
+                day = 1
+            }else {
+                day = today + 1
+                dontTapWeekDayArray[today + 1] = true
+            }
+        }else {
+            day = today
+            dontTapWeekDayArray[today] = true
+        }
+    }
+    
+    private func editWeekdaySave(region: Bool) {
+        if region {
+            editWeekDayDelegate?.sentNewDay(mon: tapWeekDayArray[2]!, tue: tapWeekDayArray[3]!, wed: tapWeekDayArray[4]!, thu: tapWeekDayArray[5]!, fri: tapWeekDayArray[6]!, sat: tapWeekDayArray[7]!, sun: tapWeekDayArray[1]!)
+        }else {
+            editWeekDayDelegate?.sentNewDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
+        }
     }
 }
 
 
 extension EditWeekDayTableViewCell: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return weekDayArray.count
+        return weekDayArrayEU.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! IconsCell
-        let item = weekDayArray[indexPath.item]
+        let item: String
+        if calendarRegion == true {
+            item = weekDayArrayUSA[indexPath.item]
+        }else {
+            item = weekDayArrayEU[indexPath.item]
+        }
         let item2 = tapWeekDayArray[indexPath.item + 1]
         guard let dontTapITem = dontTapWeekDayArray[indexPath.item + 1] else { return cell}
         cell.update(name: item, isSelected: item2, dontTapIsSelected: dontTapITem, timerStartToDay: timerStartToDay)
@@ -227,7 +279,7 @@ extension EditWeekDayTableViewCell: UICollectionViewDataSource, UICollectionView
                 tapWeekDayArray[indexPath.item + 1] = true
             }else if tapWeekDayArray[indexPath.item + 1] == true{
                 tapWeekDayArray[indexPath.item + 1] = false
-    //            isSeletedd = false
+                //            isSeletedd = false
             }
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
@@ -237,7 +289,7 @@ extension EditWeekDayTableViewCell: UICollectionViewDataSource, UICollectionView
                 tapWeekDayArray[indexPath.item + 1] = true
             }else if tapWeekDayArray[indexPath.item + 1] == true && day != indexPath.item + 1{
                 tapWeekDayArray[indexPath.item + 1] = false
-    //            isSeletedd = false
+                //            isSeletedd = false
             }
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
@@ -246,19 +298,7 @@ extension EditWeekDayTableViewCell: UICollectionViewDataSource, UICollectionView
         
         weekOnOfSwitch()
         
-        editWeekDayDelegate?.sentNewDay(mon: tapWeekDayArray[1]!, tue: tapWeekDayArray[2]!, wed: tapWeekDayArray[3]!, thu: tapWeekDayArray[4]!, fri: tapWeekDayArray[5]!, sat: tapWeekDayArray[6]!, sun: tapWeekDayArray[7]!)
-    }
-    
-    func tapWeekDay(index: Int) {
-        if tapWeekDayArray[index] == false{
-            tapWeekDayArray[index] = true
-        }else if tapWeekDayArray[index] == true{
-            tapWeekDayArray[index] = false
-//            isSeletedd = false
-        }
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
-        }
+        editWeekdaySave(region: calendarRegion)
     }
 }
 
@@ -288,19 +328,15 @@ private class IconsCell: UICollectionViewCell  {
         if isSelected! && dontTapIsSelected == true && timerStartToDay == true{
             nameLabel.textColor = .white
             self.contentView.layer.backgroundColor = UIColor.red.cgColor
-//            print("1111111")
         }else if isSelected! && dontTapIsSelected == false {
             nameLabel.textColor = .white
             self.contentView.layer.backgroundColor = UIColor.black.cgColor
-//            print("22222")
         } else if isSelected! && dontTapIsSelected == true && timerStartToDay == false {
             nameLabel.textColor = .white
-//            print("33333")
             self.contentView.layer.backgroundColor = UIColor.black.cgColor
         }else {
             nameLabel.textColor = .black
             self.contentView.layer.backgroundColor = UIColor.white.cgColor
-//            print("44444")
         }
     }
     

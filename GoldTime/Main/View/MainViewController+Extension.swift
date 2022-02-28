@@ -123,7 +123,6 @@ extension MainViewController: SetTimerUpdateTimeDelegate, SetPomdoroTimerUpdateT
         if viewModell?.toDay == viewModell?.checkDay {
             viewModell?.timerTimeUpdate(timerTimeUpdate: newTime, index: index)
         }
-        //
     }
     
     func setPomodoroNewTime(newTime: Int, pomdoroTimerBreakOrWork: Bool, index: Int) {
@@ -143,7 +142,7 @@ extension MainViewController: PomodoroTimerStartStopDelegate {
 extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == weekDayCollectionView {
-            return viewModell?.weekDayArray?.count ?? 0
+            return viewModell?.weekDayArrayEU?.count ?? 0
         }else {
             return viewModell?.model?.count ?? 0
         }
@@ -152,12 +151,15 @@ extension MainViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == weekDayCollectionView {
             let weekDayCell = collectionView.dequeueReusableCell(withReuseIdentifier: "weekDayCell", for: indexPath) as? WeekDayCollectionViewCell
-            let item = viewModell?.weekDayArray?[indexPath.item]
+            let item: String?
+            if viewModell?.calendarRegion == true {
+                item = viewModell?.weekDayArrayUSA?[indexPath.item]
+            }else {
+                item = viewModell?.weekDayArrayEU?[indexPath.item]
+            }
+            let weekDayindex = indexPath.item + 1 == viewModell?.toDay // bu if else di bool qaytarir
             let item2 = viewModell?.tapWeekDayArray?[indexPath.item + 1]
-            let datee = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
-            let weekday = Calendar.current.component(.weekday, from: datee)
-            let index = indexPath.item + 1 == weekday // bu if else di bool qaytarir
-            weekDayCell?.update(name: item!, isSelected: index, isBlackSelected: item2 ?? false)
+            weekDayCell?.update(name: item ?? "", isSelected: weekDayindex, isBlackSelected: item2 ?? false)
             return weekDayCell ?? UICollectionViewCell()
         }else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? MainCollectionViewCelll
@@ -196,9 +198,15 @@ extension MainViewController: UICollectionViewDelegate {
                 }
                 viewModell?.tapWeekDayArray?[indexPath.item + 1] = true
                 viewModell?.checkDay = indexPath.item + 1
-                let day = viewModell?.weekDayArray?[indexPath.item]
-                let predicateRepeat = NSPredicate(format: "\(day!) = true")
-                viewModell?.sentPredicate(predicate: predicateRepeat)
+                if viewModell?.calendarRegion == true {
+                    let usaDay = viewModell?.weekDayArrayUSA?[indexPath.item]
+                    let predicateRepeat = NSPredicate(format: "\(usaDay ?? "") = true")
+                    viewModell?.sentPredicate(predicate: predicateRepeat)
+                }else {
+                    let euDay = viewModell?.weekDayArrayEU?[indexPath.item]
+                    let predicateRepeat = NSPredicate(format: "\(euDay ?? "") = true")
+                    viewModell?.sentPredicate(predicate: predicateRepeat)
+                }
                 viewModell?.editDayIndex = indexPath.item + 1
                 DispatchQueue.main.async {
                     self.weekDayCollectionView.reloadData()
