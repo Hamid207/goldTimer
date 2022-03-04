@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HeaderTableviewCell: UITableViewHeaderFooterView {
+final class HeaderTableviewCell: UITableViewHeaderFooterView {
     
     var headerNameArray = ["","","Add day","Color",""]
     

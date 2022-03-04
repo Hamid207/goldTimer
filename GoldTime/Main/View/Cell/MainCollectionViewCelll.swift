@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainCollectionViewCelll: UICollectionViewCell {
+final class MainCollectionViewCelll: UICollectionViewCell {
     
     var progressBar: ProgressBar!
     
@@ -129,7 +129,8 @@ class MainCollectionViewCelll: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 28, weight: .regular)
+//        label.font = UIFont.systemFont(ofSize: 28, weight: .regular)
+        label.font = UIFont.init(name: "Hiragino Maru Gothic ProN", size: 28)
         return label
     }()
     
@@ -144,7 +145,8 @@ class MainCollectionViewCelll: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.font = UIFont.monospacedDigitSystemFont(ofSize: 60, weight: .regular)
+//        label.font = UIFont.monospacedDigitSystemFont(ofSize: 60, weight: .regular)
+        label.font = UIFont.init(name: "Hiragino Maru Gothic ProN", size: 60)
         return label
     }()
     
@@ -161,9 +163,9 @@ class MainCollectionViewCelll: UICollectionViewCell {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Start", for: .normal)
-        //        button.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .regular)
+//        button.titleLabel?.font = UIFont.systemFont(ofSize: 23, weight: .regular)
+        button.titleLabel?.font = UIFont.init(name: "Hiragino Maru Gothic ProN", size: 23)
         return button
     }()
     
@@ -326,13 +328,14 @@ class MainCollectionViewCelll: UICollectionViewCell {
     
     //MARK: - Start timer
     func startTimer() {
-        let timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(refreshValue), userInfo: nil, repeats: true)
+        let timer = Timer(timeInterval: 0.1, target: self, selector: #selector(refreshValue), userInfo: nil, repeats: true)
         RunLoop.current.add(timer, forMode: .common)
         timer.tolerance = 0.1
         self.timer = timer
         removeBool = true
         if toDay == weekDay {
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                guard let self = self else { return }
                 self.timerLabel.textColor = .white
                 self.startButton.setTitle("Pause", for: .normal)
                 self.startButton.backgroundColor = .white
@@ -367,7 +370,6 @@ class MainCollectionViewCelll: UICollectionViewCell {
         if let start = startTime, let timerTime = timerTime {
             let diff = start.timeIntervalSince(Date(timeIntervalSinceNow: TimeInterval(-timerTime)))
             //            let diff = Date().timeIntervalSince(start)
-            
             if toDay == weekDay {
                 setTimeLabel(Int(diff))
             }else {
@@ -416,7 +418,8 @@ class MainCollectionViewCelll: UICollectionViewCell {
         }
         removeBool = false
         if toDay == weekDay {
-            UIView.animate(withDuration: 0.3) {
+            UIView.animate(withDuration: 0.3) { [weak self] in
+                guard let self = self else { return }
                 self.startButton.setTitle("Start", for: .normal)
                 self.startButton.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
                 self.startButton.setTitleColor(.white, for: .normal)
@@ -470,7 +473,9 @@ class MainCollectionViewCelll: UICollectionViewCell {
     private func setTimeLabel(_ val: Int) {
         let time = secondsToHoursMinutesSeconds(val)
         let timeString = makeTimeString(hour: time.0, min: time.1, sec: time.2)
-        timerLabel.text = timeString
+        DispatchQueue.main.async { [weak self] in // UI da nese problem olsa ola bilsin bu DispatchQueue olduguna gore olsun
+            self?.timerLabel.text = timeString
+        }
     }
     
     private func secondsToHoursMinutesSeconds(_ ms: Int) -> (Int, Int, Int) {

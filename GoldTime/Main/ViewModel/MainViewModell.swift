@@ -87,6 +87,9 @@ final class MainViewModell: MainViewModellProtocol {
         model = dataStore?.timerArray
         endOFTheDayViewUpdate()
         editDayIndex = toDay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            print(self.index)
+        }
     }
     
     func tapTHeAddNewTimerVc() {
@@ -123,7 +126,6 @@ final class MainViewModell: MainViewModellProtocol {
     func weekDay() {
         let datee = cal.date(byAdding: .day, value: -1, to: Date())!
         let weekday = Calendar.current.component(.weekday, from: datee)
-        print(weekday)
         for i in 1...7 {
             tapWeekDayArray?[i] = false
         }
@@ -136,13 +138,11 @@ final class MainViewModell: MainViewModellProtocol {
                 tapWeekDayArray?[1] = true
                 guard let usaDay = weekDayArrayUSA?[1] else { return }
                 predicateRepeat = NSPredicate(format: "\(usaDay) = true")
-
             }else {
                 tapWeekDayArray?[weekday + 1] = true
                 guard let usaDay = weekDayArrayUSA?[weekday] else { return }
                 predicateRepeat = NSPredicate(format: "\(usaDay) = true")
             }
-            
         }else {
             toDay = weekday
             checkDay = weekday
@@ -180,8 +180,8 @@ final class MainViewModell: MainViewModellProtocol {
                 self.dataStore?.deleteObject(modelIndex)
                 self.index = nil
             }
-            DispatchQueue.main.async {
-                self.remove(index)
+            DispatchQueue.main.async { [weak self] in
+                self?.remove(index)
             }
         }
         let actionBack = UIAlertAction(title: "Back", style: .cancel, handler: nil)
@@ -206,18 +206,16 @@ final class MainViewModell: MainViewModellProtocol {
         guard let index = index else { return }
         timerUpdateBool = true
         try! realm.write {
-           
             dataStore?.timerArray?[index].timerUpdateTime = timerTimeUpdate
         }
         
         //timer statistics add
-        let timerTimeeee = (dataStore?.timerArray?[index].timerTime)! - timerTimeUpdate
-        dataStore?.saveTimerStatistics(key: Date().getFormattedDate(), value: timerTimeeee, index: index)
+        let timerTime = (dataStore?.timerArray?[index].timerTime)! - timerTimeUpdate
+        dataStore?.saveTimerStatistics(key: Date().getFormattedDate(), value: timerTime, index: index)
         
         //Timer Time == 0 olsa
         if timerTimeUpdate <= 0{
-            //auto screen lock
-            UIApplication.shared.isIdleTimerDisabled = false
+            UIApplication.shared.isIdleTimerDisabled = false  //auto screen lock
             timerReset(index: index)
             timerCounting = false
             dataStore?.saveTimerStatistics(key: Date().getFormattedDate(), value: (dataStore?.timerArray?[index].timerTime)!, index: index)
@@ -234,6 +232,9 @@ final class MainViewModell: MainViewModellProtocol {
         
         //Timer ishdiye ishdiye eger saat 00:00 olursa onda bu funcciya ishe dushur
         if dataStore?.timerArray?[index].todayDate != Date().getFormattedDate() {
+            try! realm.write {
+                dataStore?.timerArray?[index].timerStatistics[Date().getFormattedDate()] = 0
+            }
             ifTimerOnNextday()
             weekDay()
             DispatchQueue.main.async { [weak self] in
@@ -270,12 +271,13 @@ final class MainViewModell: MainViewModellProtocol {
             timerAlert?.secondTimerStart(viewController: viewController, completionHandler: { bool in
                 if bool {
                     guard let selfIndex = self.index else { return }
-                    DispatchQueue.main.async {
-                        self.scrollToIndex(index: selfIndex)
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            self.stopTimerViewModel(timerCounting: false, index: selfIndex, stopTime: Date())
+                    DispatchQueue.main.async { [weak self] in
+                        self?.scrollToIndex(index: selfIndex)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                            self?.stopTimerViewModel(timerCounting: false, index: selfIndex, stopTime: Date())
                         }
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                            guard let self = self else { return }
                             self.scrollToIndex(index: index)
                             self.collectionView?.reloadData()
                             if let stopTime = self.dataStore?.timerArray?[index].stopTimer {
@@ -313,14 +315,15 @@ final class MainViewModell: MainViewModellProtocol {
     private func stopTimerViewModel(timerCounting: Bool, index: Int, stopTime: Date?) {
         self.timerCounting = timerCounting
         self.index = nil
+        if let cell = collectionView?.cellForItem(at: [0,index]) as? MainCollectionViewCelll {
+            cell.stopTimer()
+        }
         try! realm.write {
             dataStore?.timerArray?[index].bugFixBool = timerCounting
             dataStore?.timerArray?[index].timerCounting = timerCounting
             dataStore?.timerArray?[index].stopTimer = stopTime
         }
-        if let cell = collectionView?.cellForItem(at: [0,index]) as? MainCollectionViewCelll {
-            cell.stopTimer()
-        }
+    
         timerNotifications?.removeNotifications(withIdentifires: ["MyUniqueIdentifire"])
         endOFTheDayViewUpdate()
         dataStore?.deleteLastIndex()
@@ -379,10 +382,10 @@ final class MainViewModell: MainViewModellProtocol {
     func ifTimerOnNextday() {
         dataStore?.timerArray = realm.objects(TimerModelData.self)
         //        let datee = cal.date(byAdding: .day, value: 2, to: Date())!
-        guard var modelIndex = dataStore?.timerArray?.count else { return }
+        var modelIndex = dataStore?.timerArray?.count
         if modelIndex != 0 {
-            modelIndex -= 1
-            for i in 0...modelIndex {
+            modelIndex! -= 1
+            for i in 0...modelIndex! {
                 let addTimeStatistic: Int?
                 if  dataStore?.timerArray?[i].timerCounting == true && dataStore?.timerArray?[i].todayDate != Date().getFormattedDate() {
                     guard let startTime = dataStore?.timerArray?[i].startTimer else { return }
@@ -395,7 +398,7 @@ final class MainViewModell: MainViewModellProtocol {
                     }
                     try! realm.write {
                         dataStore?.timerArray?[i].timerDone = false
-                        dataStore?.timerArray?[i].timerStatistics[Date().yesterdayEndOfDayNeedFormat.getFormattedDate()]! += addTimeStatistic!
+                        dataStore?.timerArray?[i].timerStatistics[Date().yesterdayEndOfDayNeedFormat.getFormattedDate()]? += addTimeStatistic ?? 0
                         dataStore?.timerArray?[i].timerStatistics[Date().getFormattedDate()] = 0
                     }
                 }
@@ -440,11 +443,11 @@ final class MainViewModell: MainViewModellProtocol {
     }
     
     //MARK: - End OF The Day View update
-    //Eger app aciqdisa ve timer qoshulu deyilse onda her 5 saniyeden bir bu kod isdeyir
+    //Eger app aciqdisa ve timer qoshulu deyilse onda her 3 saniyeden bir bu kod isdeyir
     private func endOFTheDayViewUpdate() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             if self.index == nil {
-                let timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.refreshValue), userInfo: nil, repeats: true)
+                let timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(self.refreshValue), userInfo: nil, repeats: true)
                 self.endOFTheDayTimer = timer
                 
                 if UIApplication.shared.isIdleTimerDisabled == true {

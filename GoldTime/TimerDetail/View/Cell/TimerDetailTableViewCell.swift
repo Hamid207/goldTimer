@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TimerDetailTableView: UITableViewCell {
+final class TimerDetailTableView: UITableViewCell {
   
   weak var pushhDelegate: PushTimerDetailVCDelegate?
   weak var timerStatisticsDelegate: SentTimerStatisticDelegate?
@@ -59,8 +59,9 @@ class TimerDetailTableView: UITableViewCell {
     label.translatesAutoresizingMaskIntoConstraints = false
     label.textColor = .black
     label.textAlignment = .left
-    label.font = UIFont.systemFont(ofSize: 55, weight: .heavy)
-//            label.text = "12h 25m 30s"
+//    label.font = UIFont.systemFont(ofSize: 50, weight: .heavy)
+    label.font = UIFont.init(name: "Hiragino Maru Gothic ProN", size: 45)
+//            label.text = "123h 25m 30s"
     return label
   }()
   
@@ -90,7 +91,7 @@ class TimerDetailTableView: UITableViewCell {
   override func layoutSubviews() {
     super.layoutSubviews()
     statisticTargetUIView .layer.cornerRadius = 10.0
-    statisticTargetUIView.setupShadow(opacity: 0.4, radius: 10, offset: .init(width: 0, height: 0), color: .black)
+    statisticTargetUIView.setupShadow(opacity: 0.2, radius: 10, offset: .init(width: 0, height: 0), color: .black)
   }
   
   

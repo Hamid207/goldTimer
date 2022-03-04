@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TimerPickerTableViewCell: UITableViewCell {
+final class TimerPickerTableViewCell: UITableViewCell {
     
     weak var sentTimerTimeDelegate: SentTimerTimeDelegate?
     

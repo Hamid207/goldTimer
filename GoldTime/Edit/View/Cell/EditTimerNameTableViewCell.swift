@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EditTimerNameTableViewCell: UITableViewCell {
+final class EditTimerNameTableViewCell: UITableViewCell {
         
     weak var sentNewTimerNameDelegate: EditTimerNameDelegate?
     
@@ -61,6 +61,7 @@ class EditTimerNameTableViewCell: UITableViewCell {
     
     private func setup() {
         contentView.addSubview(nameTextField)
+        nameTextField.delegate = self
         nameTextField.topAnchor.constraint(equalTo: topAnchor).isActive = true
         nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
         nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true

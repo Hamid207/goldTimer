@@ -43,6 +43,8 @@ final class EditViewModel: EditViewModelProtocol {
     private lazy var day = Int()
     var col: UICollectionView!
     var timerStartToDay: Bool! = false
+    private let region = Locale.current.regionCode
+    private lazy var calendarRegion = false
     init(mainRouter: MainRouterProtocol?,dataStore: DataStoreProtocol?, timerModel: TimerModelData?, index: Int, predicate: NSPredicate, day: Int, col: UICollectionView) {
         self.mainRouter = mainRouter
         self.dataStore = dataStore
@@ -126,90 +128,101 @@ final class EditViewModel: EditViewModelProtocol {
         }
         
         //gunleri edit edende eger bu gun MONday idise sende MONdayden girib MONdayi false eliyende crash olurdu - realm osaniye updaye elediyi birde Realm filter olundugu ucun index nil verirdi - helli helki beledi sora duzelt
-        if day != 1 {
+        if region == "US" || region == "CA" {
+            calendarRegion = true
+        }
+        
+        let monDay = calendarRegion ? 2 : 1
+        let tueDay = calendarRegion ? 3 : 2
+        let wedDay = calendarRegion ? 4 : 3
+        let thuday = calendarRegion ? 5 : 4
+        let friDay = calendarRegion ? 6 : 5
+        let satDay = calendarRegion ? 7 : 6
+        let sunDay = calendarRegion ? 1 : 7
+        
+        if day != monDay {
             try! realm.write {
                 dataStore?.timerArray?[index].Mon = mon
             }
         }else {
-            editWeekDay = 1
+            editWeekDay = monDay
         }
-        if day != 2 {
+        if day != tueDay {
             try! realm.write {
                 dataStore?.timerArray?[index].Tue = tue
             }
         }else {
-            editWeekDay = 2
+            editWeekDay = tueDay
         }
-        if day != 3 {
+        if day != wedDay {
             try! realm.write {
                 dataStore?.timerArray?[index].Wed = wed
             }
         }else {
-            editWeekDay = 3
+            editWeekDay = wedDay
         }
-        if day != 4 {
+        if day != thuday {
             try! realm.write {
                 dataStore?.timerArray?[index].Thu = thu
             }
         }else {
-            editWeekDay = 4
+            editWeekDay = thuday
         }
-        if day != 5 {
+        if day != friDay {
             try! realm.write {
                 dataStore?.timerArray?[index].Fri = fri
             }
         }else {
-            editWeekDay = 5
+            editWeekDay = friDay
         }
-        if day != 6 {
+        if day != satDay {
             try! realm.write {
                 dataStore?.timerArray?[index].Sat = sat
             }
         }else {
-            editWeekDay = 6
+            editWeekDay = satDay
         }
-        if day != 7 {
+        if day != sunDay {
             try! realm.write {
                 dataStore?.timerArray?[index].Sun = sun
             }
         }else {
-            editWeekDay = 7
+            editWeekDay = sunDay
         }
         
 
         switch editWeekDay {
-            case 1:
+            case monDay:
                 try! realm.write {
                     dataStore?.timerArray?[index].Mon = mon
                 }
-            case 2:
+            case tueDay:
                 try! realm.write {
                     dataStore?.timerArray?[index].Tue = tue
                 }
-            case 3:
+            case wedDay:
                 try! realm.write {
                     dataStore?.timerArray?[index].Wed = wed
                 }
-            case 4:
+            case thuday:
                 try! realm.write {
                     dataStore?.timerArray?[index].Thu = thu
                 }
-            case 5:
+            case friDay:
                 try! realm.write {
                     dataStore?.timerArray?[index].Fri = fri
                 }
-            case 6:
+            case satDay:
                 try! realm.write {
                     dataStore?.timerArray?[index].Sat = sat
                 }
-            case 7:
+            case sunDay:
                 try! realm.write {
                     dataStore?.timerArray?[index].Sun = sun
                 }
             default:
                 break
         }
-        
         popVC()
     }
     

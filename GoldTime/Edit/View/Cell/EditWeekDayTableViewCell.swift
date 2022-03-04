@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EditWeekDayTableViewCell: UITableViewCell {
+final class EditWeekDayTableViewCell: UITableViewCell {
     
     weak var editWeekDayDelegate: EditWeekDayDelegate?
     
@@ -101,51 +101,37 @@ class EditWeekDayTableViewCell: UITableViewCell {
     }
     
     func update(mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool, sun: Bool, timerStartToday: Bool) {
-        if calendarRegion == true {
-            if mon == true {
-                tapWeekDayArray[2] = true
-            }
-            if tue == true {
-                tapWeekDayArray[3] = true
-            }
-            if wed == true {
-                tapWeekDayArray[4] = true
-            }
-            if thu == true {
-                tapWeekDayArray[5] = true
-            }
-            if fri == true {
-                tapWeekDayArray[6] = true
-            }
-            if sat == true {
-                tapWeekDayArray[7] = true
-            }
-            if sun == true {
-                tapWeekDayArray[1] = true
-            }
-        }else {
-            if mon == true {
-                tapWeekDayArray[1] = true
-            }
-            if tue == true {
-                tapWeekDayArray[2] = true
-            }
-            if wed == true {
-                tapWeekDayArray[3] = true
-            }
-            if thu == true {
-                tapWeekDayArray[4] = true
-            }
-            if fri == true {
-                tapWeekDayArray[5] = true
-            }
-            if sat == true {
-                tapWeekDayArray[6] = true
-            }
-            if sun == true {
-                tapWeekDayArray[7] = true
-            }
+    
+        let monDay = calendarRegion ? 2 : 1
+        let tueDay = calendarRegion ? 3 : 2
+        let wedDay = calendarRegion ? 4 : 3
+        let thuday = calendarRegion ? 5 : 4
+        let friDay = calendarRegion ? 6 : 5
+        let satDay = calendarRegion ? 7 : 6
+        let sunDay = calendarRegion ? 1 : 7
+        
+        if mon == true {
+            tapWeekDayArray[monDay] = true
         }
+        if tue == true {
+            tapWeekDayArray[tueDay] = true
+        }
+        if wed == true {
+            tapWeekDayArray[wedDay] = true
+        }
+        if thu == true {
+            tapWeekDayArray[thuday] = true
+        }
+        if fri == true {
+            tapWeekDayArray[friDay] = true
+        }
+        if sat == true {
+            tapWeekDayArray[satDay] = true
+        }
+        if sun == true {
+            tapWeekDayArray[sunDay] = true
+        }
+        
         
         timerStartToDay = timerStartToday
         weekOnOfSwitch()
@@ -222,9 +208,11 @@ class EditWeekDayTableViewCell: UITableViewCell {
                 day = today + 1
                 dontTapWeekDayArray[today + 1] = true
             }
+            editWeekdaySave(region: calendarRegion)
         }else {
             day = today
             dontTapWeekDayArray[today] = true
+            editWeekdaySave(region: calendarRegion)
         }
     }
     
@@ -302,7 +290,7 @@ extension EditWeekDayTableViewCell: UICollectionViewDataSource, UICollectionView
     }
 }
 
-private class IconsCell: UICollectionViewCell  {
+private final class IconsCell: UICollectionViewCell  {
     
     private let nameLabel: UILabel = {
         let label = UILabel()

@@ -13,7 +13,7 @@ protocol TimerNotificationsProtocol {
     func removeNotifications(withIdentifires identifires: [String])
 }
 
-class TimerNotifications: TimerNotificationsProtocol {
+final class TimerNotifications: TimerNotificationsProtocol {
     private let notificationCenter = UNUserNotificationCenter.current()
     
     func scheduleNotification(inSeconds seconds: TimeInterval, timerName name: String) {

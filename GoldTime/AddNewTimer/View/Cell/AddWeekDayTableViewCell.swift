@@ -7,13 +7,13 @@
 
 import UIKit
 
-class AddWeekDayTableViewCell: UITableViewCell {
+final class AddWeekDayTableViewCell: UITableViewCell {
     
     weak var saveWeekDayDelegate: SaveWeekDayDelegate?
     
     private let region = Locale.current.regionCode
     private lazy var calendarRegion = false
-
+    
     private lazy var weekDayArrayEU = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     private lazy var weekDayArrayUSA = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     private lazy var tapWeekDayArray = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
@@ -36,7 +36,7 @@ class AddWeekDayTableViewCell: UITableViewCell {
     }()
     
     private let addAllWeekDaySwitch: UISwitch = {
-       let addAllWeekDaySwitch = UISwitch()
+        let addAllWeekDaySwitch = UISwitch()
         addAllWeekDaySwitch.translatesAutoresizingMaskIntoConstraints = false
         addAllWeekDaySwitch.isOn = false
         addAllWeekDaySwitch.onTintColor = .black
@@ -57,7 +57,7 @@ class AddWeekDayTableViewCell: UITableViewCell {
         cv.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         return cv
     }()
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         itemSetum()
@@ -107,12 +107,12 @@ class AddWeekDayTableViewCell: UITableViewCell {
         
         addAllWeekDayView.addSubview(addAllWeekDayLabel)
         addAllWeekDayLabel.centerYAnchor.constraint(equalTo: addAllWeekDayView.centerYAnchor).isActive = true
-//        addAllWeekDayLabel.topAnchor.constraint(equalTo: addAllWeekDayView.topAnchor, constant: 15).isActive = true
+        //        addAllWeekDayLabel.topAnchor.constraint(equalTo: addAllWeekDayView.topAnchor, constant: 15).isActive = true
         addAllWeekDayLabel.leadingAnchor.constraint(equalTo: addAllWeekDayView.leadingAnchor, constant: 15).isActive = true
         
         addAllWeekDayView.addSubview(addAllWeekDaySwitch)
         addAllWeekDaySwitch.centerYAnchor.constraint(equalTo: addAllWeekDayView.centerYAnchor).isActive = true
-//        addAllWeekDaySwitch.topAnchor.constraint(equalTo: addAllWeekDayView.topAnchor, constant: 15).isActive = true
+        //        addAllWeekDaySwitch.topAnchor.constraint(equalTo: addAllWeekDayView.topAnchor, constant: 15).isActive = true
         addAllWeekDaySwitch.trailingAnchor.constraint(equalTo: addAllWeekDayView.trailingAnchor, constant: -15).isActive = true
         addAllWeekDaySwitch.addTarget(self, action: #selector(switchOnOffAction(switchParam:)), for: .valueChanged)
         
@@ -121,7 +121,7 @@ class AddWeekDayTableViewCell: UITableViewCell {
         weekDayView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
         weekDayView.trailingAnchor.constraint(equalTo: trailingAnchor,constant: -10).isActive = true
         weekDayView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-
+        
         weekDayView.addSubview(collectionView)
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -202,7 +202,7 @@ extension AddWeekDayTableViewCell: UICollectionViewDataSource, UICollectionViewD
             tapWeekDayArray[indexPath.item + 1] = true
         }else if tapWeekDayArray[indexPath.item + 1] == true {
             tapWeekDayArray[indexPath.item + 1] = false
-//            isSeletedd = false
+            //            isSeletedd = false
         }
         DispatchQueue.main.async {
             self.collectionView.reloadData()
@@ -227,7 +227,7 @@ extension AddWeekDayTableViewCell: UICollectionViewDataSource, UICollectionViewD
 
 
 
-private class IconsCell: UICollectionViewCell  {
+private final class IconsCell: UICollectionViewCell  {
     
     private let nameLabel: UILabel = {
         let label = UILabel()

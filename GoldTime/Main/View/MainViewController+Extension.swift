@@ -213,9 +213,9 @@ extension MainViewController: UICollectionViewDelegate {
                     self.mainCollectionView.reloadData()
                 }
                 
-                if indexPath.item + 1 != viewModell?.toDay {
-                    viewModell?.scrollToIndex(index: 0)
-                }
+//                if indexPath.item + 1 != viewModell?.toDay {
+//                    viewModell?.scrollToIndex(index: 0)
+//                }
             }
             
         }

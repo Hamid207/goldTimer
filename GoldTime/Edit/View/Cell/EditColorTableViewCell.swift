@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EditColorTableViewCell: UITableViewCell {
+final class EditColorTableViewCell: UITableViewCell {
     
     weak var editColorDelegate: EditColorDelegate?
         
@@ -152,7 +152,7 @@ extension EditColorTableViewCell: UICollectionViewDataSource, UICollectionViewDe
     }
 }
 
-private class IconsCell: UICollectionViewCell  {
+private final class IconsCell: UICollectionViewCell  {
         
     private let colorView: UIView = {
         let view = UIView()

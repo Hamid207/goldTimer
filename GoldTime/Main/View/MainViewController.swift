@@ -65,8 +65,8 @@ final class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.navigationController?.navigationBar.prefersLargeTitles = false
-        DispatchQueue.main.async {
-            self.mainCollectionView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.mainCollectionView.reloadData()
         }
         
         //        viewModel?.timerModel()
@@ -80,13 +80,13 @@ final class MainViewController: UIViewController {
             if index.index != 0, index.index != 1 {
                 if viewModell?.model?.count == index.index + 1{
                     viewModell?.scrollToIndex(index: index.index)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.startScrolViewRect = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                        self?.startScrolViewRect = true
                     }
                 }else {
                     viewModell?.scrollToIndex(index: index.index + 1)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        self.startScrolViewRect = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+                        self?.startScrolViewRect = true
                     }
                 }
             }

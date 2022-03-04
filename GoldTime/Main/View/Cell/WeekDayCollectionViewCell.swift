@@ -7,7 +7,7 @@
 
 import UIKit
 
-class WeekDayCollectionViewCell: UICollectionViewCell {
+final class WeekDayCollectionViewCell: UICollectionViewCell {
     
     let weekDayLabel: UILabel = {
         let label = UILabel()

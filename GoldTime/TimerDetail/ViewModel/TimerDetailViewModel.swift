@@ -43,6 +43,7 @@ final class TimerDetailViewModel: TimerDetailViewModelProtocol {
         model = dataStore?.timerArray
         timerTime = model?[index].timerTime
         self.dataStore?.timerArray = realm.objects(TimerModelData.self).filter(predicate)
+        print("DetailVIEWMODel === \(dataStore?.timerArray?[index].timerStatistics)")
     }
    
     func statisticsStart() {

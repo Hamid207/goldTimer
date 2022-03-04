@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EditSaveButtonTableViewCell: UITableViewCell {
+final class EditSaveButtonTableViewCell: UITableViewCell {
     
     weak var editSaveButtonDelegate: EditSaveButtonDelegate?
     

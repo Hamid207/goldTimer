@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddNewTimerTableViewCell: UITableViewCell {
+final class AddNewTimerTableViewCell: UITableViewCell {
         
     weak var sentTimerNameDelegate: SentTimerNameDelegate?
     
