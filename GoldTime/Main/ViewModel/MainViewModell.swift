@@ -8,37 +8,6 @@
 import Foundation
 import RealmSwift
 //main
-protocol MainViewModellProtocol {
-    func tapTHeAddNewTimerVc()
-    func tapOnTheTimerDetailVc(index: Int)
-    func tapOnTheEditVc(timerModel: TimerModelData, index: Int)
-    var index: Int? { get set }
-    var timerCounting: Bool? { get set }
-    var model: Results<TimerModelData>? { get set }
-    var collectionView: UICollectionView? { get set }
-    var weekDayCollectionView: UICollectionView? { get set }
-    func timerStartStop(timerCounting: Bool, index: Int?, startTime: Date?, stopTime: Date?)
-    func remiveTest()
-    func timerTimeUpdate(timerTimeUpdate: Int, index: Int?)
-    func pomodoroTimeUpdate(newTime: Int, pomdoroTimerBreakOrWork: Bool, index: Int)
-    func timerRemove(modelIndex: TimerModelData, removeBool: Bool, index: Int, view: UIViewController, collectionView: UICollectionView)
-    func pomdoroStartStopTime(index: Int?, pomdoroStartTime: Date?, pomdoroStopTime: Date?)
-    func setIndex(index: Int?)
-    var weekDayArrayEU: [String]? { get set }
-    var weekDayArrayUSA: [String]? { get set }
-    var calendarRegion: Bool { get set }
-    var tapWeekDayArray: [Int : Bool]? { get set }
-    func sentPredicate(predicate: NSPredicate)
-    var predicateRepeat: NSPredicate? { get set }
-    var dataStore: DataStoreProtocol? { get set }
-    var toDay: Int? { get set }
-    var checkDay: Int? { get set }
-    var editDayIndex: Int? { get set }
-    var viewController: UIViewController? { get set }
-    func scrollToIndex(index:Int)
-    var timerDoneAlert: TimerDoneAlertProtocol? { get }
-    init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?, timerNotifications: TimerNotificationsProtocol?, timerDoneAlert: TimerDoneAlertProtocol?, timerAlert: TimerAlertProtocol?)
-}
 
 final class MainViewModell: MainViewModellProtocol {
     private let mainRouter: MainRouterProtocol?
@@ -73,7 +42,6 @@ final class MainViewModell: MainViewModellProtocol {
     private var startScrolViewRect = false
     private var timerUpdateBool = false
     private let region = Locale.current.regionCode
-
     
     init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?, timerNotifications: TimerNotificationsProtocol?, timerDoneAlert: TimerDoneAlertProtocol?, timerAlert: TimerAlertProtocol?) {
         self.mainRouter = mainRouter
@@ -87,9 +55,6 @@ final class MainViewModell: MainViewModellProtocol {
         model = dataStore?.timerArray
         endOFTheDayViewUpdate()
         editDayIndex = toDay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            print(self.index)
-        }
     }
     
     func tapTHeAddNewTimerVc() {
@@ -123,7 +88,7 @@ final class MainViewModell: MainViewModellProtocol {
     }
     
     //MARK: - weekDay
-    func weekDay() {
+    private func weekDay() {
         let datee = cal.date(byAdding: .day, value: -1, to: Date())!
         let weekday = Calendar.current.component(.weekday, from: datee)
         for i in 1...7 {
@@ -157,41 +122,40 @@ final class MainViewModell: MainViewModellProtocol {
     }
     
     //MARK: - Timer Remove
-    func timerRemove(modelIndex: TimerModelData, removeBool: Bool, index: Int, view: UIViewController, collectionView: UICollectionView) {
-        let alert = UIAlertController(title: "100% ?", message: nil, preferredStyle: .alert)
-        let actionDelete = UIAlertAction(title: "Delete", style: .destructive) { action in
-            if let selfIndex = self.index {
-                if let cell = collectionView.cellForItem(at: [0,selfIndex]) as? MainCollectionViewCelll {
-                    cell.stopTimer()
+     func timerRemove(modelIndex: TimerModelData, removeBool: Bool, index: Int, view: UIViewController, collectionView: UICollectionView) {
+        guard let viewController = viewController else { return }
+        //Your data will be deleted.
+        timerAlert?.alert(viewController: viewController, alertEnum: .Delete, alertTitle: "Are you sure you want to delete \(model?[index].name ?? "")?", alertMessage: nil, preferredStyle: .destructive, completionHandler: { bool in
+            if bool {
+                if let selfIndex = self.index {
+                    if let cell = collectionView.cellForItem(at: [0,selfIndex]) as? MainCollectionViewCelll {
+                        cell.stopTimer()
+                    }
+                }
+                if let cell = self.collectionView?.cellForItem(at: [0, index]) as? MainCollectionViewCelll {
+                    cell.timerIsRemove()
+                }
+                try! realm.write {
+                    self.dataStore?.timerArray?[index].startTimer = nil
+                    self.dataStore?.timerArray?[index].stopTimer = nil
+                }
+                if removeBool == true {
+                    self.dataStore?.deleteObject(modelIndex)
+                    self.timerCounting = true//bu sef ola biler
+                    self.index = nil
+                }else {
+                    self.dataStore?.deleteObject(modelIndex)
+                    self.index = nil
+                }
+                DispatchQueue.main.async { [weak self] in
+                    self?.remove(index)
                 }
             }
-            if let cell = self.collectionView?.cellForItem(at: [0, index]) as? MainCollectionViewCelll {
-                cell.timerIsRemove()
-            }
-            try! realm.write {
-                self.dataStore?.timerArray?[index].startTimer = nil
-                self.dataStore?.timerArray?[index].stopTimer = nil
-            }
-            if removeBool == true {
-                self.dataStore?.deleteObject(modelIndex)
-                self.timerCounting = true//bu sef ola biler
-                self.index = nil
-            }else {
-                self.dataStore?.deleteObject(modelIndex)
-                self.index = nil
-            }
-            DispatchQueue.main.async { [weak self] in
-                self?.remove(index)
-            }
-        }
-        let actionBack = UIAlertAction(title: "Back", style: .cancel, handler: nil)
-        alert.addAction(actionDelete)
-        alert.addAction(actionBack)
-        view.present(alert, animated: true, completion: nil)
+        })
     }
     
     //reload
-    func remove(_ i: Int) {
+   private func remove(_ i: Int) {
         let indexPath = IndexPath(row: i, section: 0)
         guard let collectionView = collectionView else { return }
         collectionView.performBatchUpdates({
@@ -233,15 +197,13 @@ final class MainViewModell: MainViewModellProtocol {
         //Timer ishdiye ishdiye eger saat 00:00 olursa onda bu funcciya ishe dushur
         if dataStore?.timerArray?[index].todayDate != Date().getFormattedDate() {
             try! realm.write {
+                dataStore?.timerArray?[index].timerDone = false
                 dataStore?.timerArray?[index].timerStatistics[Date().getFormattedDate()] = 0
             }
-            ifTimerOnNextday()
+            timerDayOff(index: index)
+//            ifTimerOnNextday()
             weekDay()
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.collectionView?.reloadData()
-                self.weekDayCollectionView?.reloadData()
-            }
+            collectionViewReload()
         }
     }
     
@@ -267,10 +229,10 @@ final class MainViewModell: MainViewModellProtocol {
             
         }else if timerCounting == true && self.index != nil {
             guard let viewController = viewController else { return }
-            
-            timerAlert?.secondTimerStart(viewController: viewController, completionHandler: { bool in
+            guard let selfIndex = self.index else { return }
+
+            timerAlert?.alert(viewController: viewController, alertEnum: .OK, alertTitle: "The \(model?[selfIndex].name ?? "") timer is running. Switch to \(model?[index].name ?? "new") timer?", alertMessage: nil, preferredStyle: .default, completionHandler: { [weak self] bool in
                 if bool {
-                    guard let selfIndex = self.index else { return }
                     DispatchQueue.main.async { [weak self] in
                         self?.scrollToIndex(index: selfIndex)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
@@ -292,7 +254,7 @@ final class MainViewModell: MainViewModellProtocol {
                         }
                     }
                 }else {
-                    if let cell = self.collectionView?.cellForItem(at: [0,index]) as? MainCollectionViewCelll {
+                    if let cell = self?.collectionView?.cellForItem(at: [0,index]) as? MainCollectionViewCelll {
                         cell.missTimer()
                     }
                 }
@@ -356,7 +318,11 @@ final class MainViewModell: MainViewModellProtocol {
         dataStore?.saveLastIndex(lastIndex)
         timerNotifications?.scheduleNotification(inSeconds: TimeInterval((dataStore?.timerArray?[index].timerUpdateTime)!), timerName: (dataStore?.timerArray?[index].name)!)
         //auto screen lock
-        UIApplication.shared.isIdleTimerDisabled = true
+        if model?[index].timerTime ?? 0 <= 1500 {
+            UIApplication.shared.isIdleTimerDisabled = true
+        }else {
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
         print("VIEWMODEL START")
     }
     
@@ -379,7 +345,7 @@ final class MainViewModell: MainViewModellProtocol {
     
     //MARK: - IfTimerOnNextday
     //Gun sona catandan sora timere girende eger isdeyen timer qalibsa onun bugunku vaxdi sifirlanir, dunenki saat 00:00 qeder isleyen vaxt dunenin statistikasina elave olnur
-    func ifTimerOnNextday() {
+    private func ifTimerOnNextday() {
         dataStore?.timerArray = realm.objects(TimerModelData.self)
         //        let datee = cal.date(byAdding: .day, value: 2, to: Date())!
         var modelIndex = dataStore?.timerArray?.count
@@ -404,6 +370,7 @@ final class MainViewModell: MainViewModellProtocol {
                 }
             }
             timer24hourseOn()
+            collectionViewReload()
         }
     }
     
@@ -433,11 +400,11 @@ final class MainViewModell: MainViewModellProtocol {
             newDay = true
             timerReset(index: index)
             
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.collectionView?.reloadData()
-                self.weekDayCollectionView?.reloadData()
-            }
+//            DispatchQueue.main.async { [weak self] in
+//                guard let self = self else { return }
+//                self.collectionView?.reloadData()
+//                self.weekDayCollectionView?.reloadData()
+//            }
             //            timerReset(index: index)
         }
     }
@@ -468,12 +435,16 @@ final class MainViewModell: MainViewModellProtocol {
         }
         if newDay {
             weekDay()
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                self.collectionView?.reloadData()
-                self.weekDayCollectionView?.reloadData()
-            }
+            collectionViewReload()
             newDay = false
+        }
+    }
+    
+    private func collectionViewReload() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.collectionView?.reloadData()
+            self.weekDayCollectionView?.reloadData()
         }
     }
     
@@ -493,12 +464,11 @@ final class MainViewModell: MainViewModellProtocol {
     //=================================================
     //MARK: - Pomodoro Timer
     func pomdoroStartStopTime(index: Int?, pomdoroStartTime: Date?, pomdoroStopTime: Date?) {
-        try! realm.write {
-            guard let index = index else { return }
-            dataStore?.timerArray?[index].pomdoroStartTime = pomdoroStartTime
-            dataStore?.timerArray?[index].pomdoroStopTime = pomdoroStopTime
-        }
-        
+//        try! realm.write {
+//            guard let index = index else { return }
+//            dataStore?.timerArray?[index].pomdoroStartTime = pomdoroStartTime
+//            dataStore?.timerArray?[index].pomdoroStopTime = pomdoroStopTime
+//        }
     }
     
     func pomodoroTimeUpdate(newTime: Int, pomdoroTimerBreakOrWork: Bool, index: Int) {

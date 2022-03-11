@@ -7,22 +7,27 @@
 
 import UIKit
 
+enum AlertEnum: String {
+    case OK
+    case Delete
+}
+
 protocol TimerAlertProtocol {
-  func secondTimerStart(viewController: UIViewController, completionHandler: @escaping (Bool) -> Void)
+    func alert(viewController: UIViewController, alertEnum: AlertEnum, alertTitle: String?, alertMessage: String?, preferredStyle: UIAlertAction.Style, completionHandler: @escaping (Bool) -> Void)
 }
 
 final class TimerAlert: TimerAlertProtocol {
-  
-  func secondTimerStart(viewController: UIViewController, completionHandler: @escaping (Bool) -> Void) {
-    let alert = UIAlertController(title: nil, message: "Sizde artiq timer isdeyir ", preferredStyle: .alert)
-    let action = UIAlertAction(title: "OK", style: .default) { action in
-      completionHandler(true)
+    
+    func alert(viewController: UIViewController, alertEnum: AlertEnum, alertTitle: String?, alertMessage: String?, preferredStyle: UIAlertAction.Style, completionHandler: @escaping (Bool) -> Void) {
+        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+        let action = UIAlertAction(title: alertEnum.rawValue, style: preferredStyle) { action in
+            completionHandler(true)
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { cancel in
+            completionHandler(false)
+        }
+        alert.addAction(action)
+        alert.addAction(cancel)
+        viewController.present(alert, animated: true, completion: nil)
     }
-    let cancel = UIAlertAction(title: "Cancel", style: .cancel) { cancel in
-      completionHandler(false)
-    }
-    alert.addAction(action)
-    alert.addAction(cancel)
-    viewController.present(alert, animated: true, completion: nil)
-  }
 }

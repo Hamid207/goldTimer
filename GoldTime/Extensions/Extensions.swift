@@ -5,8 +5,8 @@
 //  Created by Hamid Manafov on 21.01.22.
 //
 
-import Foundation
 import UIKit
+
 extension Date {
    func getFormattedDate() -> String {
         let dateformat = DateFormatter()
@@ -123,3 +123,23 @@ extension String {
     }
 }
 
+
+extension Thread {
+    
+    var threadName: String {
+        if let currentOperationQueue = OperationQueue.current?.name {
+            return "OperationQueue: \(currentOperationQueue)"
+        } else if let underlyingDispatchQueue = OperationQueue.current?.underlyingQueue?.label {
+            return "DispatchQueue: \(underlyingDispatchQueue)"
+        } else {
+            let name = __dispatch_queue_get_label(nil)
+            return String(cString: name, encoding: .utf8) ?? Thread.current.description
+        }
+    }
+}
+
+extension Thread {
+    class func printCurrent() {
+        print("\r⚡️: \(Thread.current)\r" + ": \(OperationQueue.current?.underlyingQueue?.label ?? "None")\r")
+    }
+}

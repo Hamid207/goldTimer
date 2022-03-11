@@ -41,7 +41,8 @@ final class TimerDoneAlert: TimerDoneAlertProtocol {
             messsageLabel.font = UIFont.systemFont(ofSize: 17, weight: .medium)
             alertView.addSubview(messsageLabel)
             
-            UIView.animate(withDuration: 0.3, animations: {
+            UIView.animate(withDuration: 0.3, animations: { [weak self] in
+                guard let self = self else { return }
                 self.alertViewIsSelected = true
             }, completion: { done in
                 if done {
@@ -51,14 +52,15 @@ final class TimerDoneAlert: TimerDoneAlertProtocol {
                 }
             })
             
-            
             if alertViewIsSelected == true {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                     
-                    UIView.animate(withDuration: 0.3, animations: {
+                    UIView.animate(withDuration: 0.3, animations: { [weak self] in
+                        guard let self = self else { return }
                         self.alertView.frame = CGRect(x: 25, y: -targetView.frame.height, width: targetView.frame.width - 50, height: 60)
-                    }, completion: { done in
+                    }, completion: { [weak self] done in
                         if done {
+                            guard let self = self else { return }
                             self.alertView.removeFromSuperview()
                             self.messsageLabel.removeFromSuperview()
                             self.alertViewIsSelected = false

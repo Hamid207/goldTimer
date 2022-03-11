@@ -226,14 +226,6 @@ final class EditViewModel: EditViewModelProtocol {
         popVC()
     }
     
-//    private func stopTimer() {
-////        guard let index = index else { return }
-////        if dataStore?.timerArray?[index].timerCounting == true {
-////            let cell = col.cellForItem(at: [0,index]) as! MainCollectionViewCelll
-////            cell.stopInEdit()
-////        }
-//    }
-    
     func popVC() {
         mainRouter?.popVC()
     }
@@ -251,10 +243,4 @@ final class EditViewModel: EditViewModelProtocol {
             //            print("Falsee AddNEWTIMER ViewMODEl 120")
         }
     }
-    
-//    private func weekDay() {
-//        let date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
-//        let today = Calendar.current.component(.weekday, from: date)
-//        day = today
-//    }
 }
