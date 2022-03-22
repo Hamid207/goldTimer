@@ -17,6 +17,9 @@ protocol AddNewTimerViewModelProtocol {
     func saveTimerColor(color: String?, colorIndex: Int)
     func saveTimerButton()
     var saveButtonIsSelected: Bool! { get set }
+    var pickerTime: [Int]? { get set }
+    var steppervalue: Int? { get set }
+    func saveStepperValue(_ value: Int)
     init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?)
 }
 
@@ -24,7 +27,7 @@ final class AddNewTimerViewModel: AddNewTimerViewModelProtocol {
     private let mainRouter: MainRouterProtocol?
     private let dataStore: DataStoreProtocol?
     var tableView: UITableView?
-//    private let timerName: String?
+    //    private let timerName: String?
     private lazy var mon = false
     private lazy var tue = false
     private lazy var wed = false
@@ -38,6 +41,8 @@ final class AddNewTimerViewModel: AddNewTimerViewModelProtocol {
     private var timerColorIndex: Int?
     private var timerAllWeekDayFalse = false
     var saveButtonIsSelected: Bool! = false
+    var pickerTime: [Int]? = []
+    var steppervalue: Int?
     init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?) {
         self.mainRouter = mainRouter
         self.dataStore = dataStore
@@ -57,12 +62,24 @@ final class AddNewTimerViewModel: AddNewTimerViewModelProtocol {
         }
     }
     
+    func saveStepperValue(_ value: Int) {
+        steppervalue = value
+        let indexPosition = IndexPath(row: 0, section: 2)
+        tableView?.reloadRows(at: [indexPosition], with: .none)
+    }
+    
     func saveTimerTime(hourse: Int?, minute: Int?){
         if hourse == 0 && minute == 0 {
             timerTime = nil
             checkNill()
         }else {
-            let timeee = hourse! * 3600 + minute! * 60
+            guard let h = hourse, let m = minute else { return }
+            let timeee = h * 3600 + m * 60
+            pickerTime?.removeAll()
+            pickerTime?.append(h)
+            pickerTime?.append(m)
+            let indexPosition = IndexPath(row: 0, section: 2)
+            tableView?.reloadRows(at: [indexPosition], with: .none)
             timerTime = timeee
             checkNill()
         }
@@ -96,11 +113,11 @@ final class AddNewTimerViewModel: AddNewTimerViewModelProtocol {
     }
     
     func saveTimerButton() {
-                let date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
-                let weekday = Calendar.current.component(.weekday, from: date)
-                guard let time = timerTime else { return }
-        let model = TimerModelData(name: timerName, timerTime: time, timerColor: timerColor, hourse: 0, minute: 0, seconds: 0, statick: time, pomodoroTime: nil, pomodoroTimerOnOff: nil, pomodorTimerWorkOrBreak: nil, startFix: false, bugFixBool: false, userTimerstatistics: 0, startTimer: nil, stopTimer: nil, timerCounting: false, timerUpdateTime: time, pomodoroTimerUpdateTime: 0, pomdoroStartTime: nil, pomdoroStopTime: nil, todayDate: Date().getFormattedDate(), weekDay: weekday, timer24houresResetOnOff: false, mon: mon, tue: tue, wed: wed, thu: thu, fri: fri, sat: sat, sun: sun, timerDone: false, timerColorIndex: timerColorIndex)
-                dataStore?.saveObject(model)
+        let date = Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+        let weekday = Calendar.current.component(.weekday, from: date)
+        guard let time = timerTime else { return }
+        let model = TimerModelData(name: timerName, timerTime: time, timerColor: timerColor, hourse: 0, minute: 0, seconds: 0, statick: time, pomodoroTime: nil, pomodoroTimerOnOff: nil, pomodorTimerWorkOrBreak: nil, startFix: false, bugFixBool: false, userTimerstatistics: 0, startTimer: nil, stopTimer: nil, timerCounting: false, timerUpdateTime: time, pomodoroTimerUpdateTime: 0, pomdoroStartTime: nil, pomdoroStopTime: nil, todayDate: Date().getFormattedDate(), weekDay: weekday, timer24houresResetOnOff: false, mon: mon, tue: tue, wed: wed, thu: thu, fri: fri, sat: sat, sun: sun, timerDone: false, timerColorIndex: timerColorIndex, userTarget: steppervalue)
+        dataStore?.saveObject(model)
         popVC()
     }
     
@@ -111,12 +128,12 @@ final class AddNewTimerViewModel: AddNewTimerViewModelProtocol {
     private func checkNill() {
         if timerTime != nil && timerName != nil && timerAllWeekDayFalse != true {
             saveButtonIsSelected = true
-            let indexPosition = IndexPath(row: 0, section: 4)
+            let indexPosition = IndexPath(row: 0, section: 5)
             tableView?.reloadRows(at: [indexPosition], with: .none)
 //            print("TRUEE AddNEWTIMER ViewMODEl 120")
         }else {
             saveButtonIsSelected = false
-            let indexPosition = IndexPath(row: 0, section: 4)
+            let indexPosition = IndexPath(row: 0, section: 5)
             tableView?.reloadRows(at: [indexPosition], with: .none)
 //            print("Falsee AddNEWTIMER ViewMODEl 120")
         }

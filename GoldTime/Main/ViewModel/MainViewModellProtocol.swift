@@ -33,6 +33,7 @@ protocol MainViewModellProtocol {
     var dataStore: DataStoreProtocol? { get set }
     var toDay: Int? { get set }
     var checkDay: Int? { get set }
+    var trueDay: Int? { get set }
     var editDayIndex: Int? { get set }
     var viewController: UIViewController? { get set }
     func scrollToIndex(index:Int)

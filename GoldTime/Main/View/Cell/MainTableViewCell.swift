@@ -11,7 +11,6 @@ class MainTableViewCell: UITableViewCell {
     
     weak var pushhDelegate: PushTimerDetailVCDelegate?
 
-    
     private var timer = Timer()
     var index: Int?
     

@@ -627,9 +627,9 @@ final class MainCollectionViewCelll: UICollectionViewCell {
     
     private func layoutSub() {
         self.backgroundColor = UIColor().hexStringToUIColor(hex: timerCellColor)
-        self.layer.cornerRadius = 10
+        self.layer.cornerRadius = 5
         self.clipsToBounds = true
-        startButton.layer.cornerRadius = 10
+        startButton.layer.cornerRadius = 5
         startButton.clipsToBounds = true
     }
     

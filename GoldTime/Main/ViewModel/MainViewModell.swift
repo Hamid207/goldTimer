@@ -31,6 +31,7 @@ final class MainViewModell: MainViewModellProtocol {
     var tapWeekDayArray: [Int : Bool]? = [1 : false, 2 : false, 3 : false, 4 : false, 5 : false, 6 : false, 7 : false]
     var toDay: Int?
     var checkDay: Int?
+    var trueDay: Int?
     var endOFTheDayTimer: Timer? {
         willSet {
             endOFTheDayTimer?.invalidate()
@@ -91,19 +92,23 @@ final class MainViewModell: MainViewModellProtocol {
     private func weekDay() {
         let datee = cal.date(byAdding: .day, value: -1, to: Date())!
         let weekday = Calendar.current.component(.weekday, from: datee)
+        trueDay = weekday
         for i in 1...7 {
             tapWeekDayArray?[i] = false
         }
         
         if region == "US" || region == "CA" {
             calendarRegion = true
-            toDay = weekday + 1
-            checkDay = weekday + 1
+            
             if weekday == 7 {
+                toDay = 1
+                checkDay = weekday + 1
                 tapWeekDayArray?[1] = true
                 guard let usaDay = weekDayArrayUSA?[1] else { return }
                 predicateRepeat = NSPredicate(format: "\(usaDay) = true")
             }else {
+                toDay = weekday + 1
+                checkDay = weekday + 1
                 tapWeekDayArray?[weekday + 1] = true
                 guard let usaDay = weekDayArrayUSA?[weekday] else { return }
                 predicateRepeat = NSPredicate(format: "\(usaDay) = true")
@@ -192,6 +197,11 @@ final class MainViewModell: MainViewModellProtocol {
                 }
             }
             dataStore?.deleteLastIndex()
+            //User hedefe catanda alert
+            if dataStore?.timerArray?[index].theTimerIsFinishedHowManyTimes == dataStore?.timerArray?[index].userTarget {
+                guard let viewController = viewController else { return }
+                timerAlert?.alertOk(viewController: viewController, alertTitle: "Siz hedefe catdiz", alertMessage: nil, preferredStyle: .default)
+            }
         }
         
         //Timer ishdiye ishdiye eger saat 00:00 olursa onda bu funcciya ishe dushur

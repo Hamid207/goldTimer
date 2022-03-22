@@ -10,7 +10,7 @@ import UIKit
 extension TimerDetailViewController {
     func navItems() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .done, target: self, action: #selector(popVC))
-        navigationItem.leftBarButtonItem?.tintColor = .lightGray
+        navigationItem.leftBarButtonItem?.tintColor = .black
     }
     
     @objc private func popVC() {
@@ -67,7 +67,7 @@ extension TimerDetailViewController: UITableViewDataSource {
         cell.index = indexPath.row
 //        let index = (viewModel?.index)!
 //        let item = viewModel?.model?[index]
-        cell.update(statisticsTime: viewModel?.statisticsTime, timeArray: (viewModel?.timeDayArray)!, timerTime: (viewModel?.timerTime)!)
+        cell.update(statisticsTime: viewModel?.statisticsTime, timeArray: (viewModel?.timeDayArray)!, timerTime: viewModel?.timerTime ?? 0, userTarget: viewModel?.userTagret ?? 0, timerDone: viewModel?.timerDone ?? 0)
         return cell
     }
 }

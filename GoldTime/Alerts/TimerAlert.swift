@@ -14,6 +14,7 @@ enum AlertEnum: String {
 
 protocol TimerAlertProtocol {
     func alert(viewController: UIViewController, alertEnum: AlertEnum, alertTitle: String?, alertMessage: String?, preferredStyle: UIAlertAction.Style, completionHandler: @escaping (Bool) -> Void)
+    func alertOk(viewController: UIViewController, alertTitle: String?, alertMessage: String?, preferredStyle: UIAlertAction.Style)
 }
 
 final class TimerAlert: TimerAlertProtocol {
@@ -28,6 +29,13 @@ final class TimerAlert: TimerAlertProtocol {
         }
         alert.addAction(action)
         alert.addAction(cancel)
+        viewController.present(alert, animated: true, completion: nil)
+    }
+    
+    func alertOk(viewController: UIViewController, alertTitle: String?, alertMessage: String?, preferredStyle: UIAlertAction.Style) {
+        let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+        let action = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alert.addAction(action)
         viewController.present(alert, animated: true, completion: nil)
     }
 }

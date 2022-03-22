@@ -16,7 +16,7 @@ final class MainViewController: UIViewController {
     
     var viewModel: MainViewModelProtocol?
     var viewModell: MainViewModellProtocol?
-        
+
     let weekDayView = UIView()
     
     private var startScrolViewRect = false

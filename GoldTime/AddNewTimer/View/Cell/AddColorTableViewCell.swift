@@ -47,7 +47,7 @@ final class AddColorTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         self.backgroundColor = .clear
-        colorView.layer.cornerRadius = 10
+        colorView.layer.cornerRadius = 5
     }
     
     private func setupGradient() {
@@ -99,11 +99,11 @@ extension AddColorTableViewCell: UICollectionViewDataSource, UICollectionViewDel
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 2
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 2
+        return 4
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -172,22 +172,24 @@ private final class IconsCell: UICollectionViewCell  {
     override func prepareForReuse() {
         super.prepareForReuse()
         checkMarkImageView.isHidden = true
+//        colorView.layer.borderWidth = 0
+//        colorView.layer.borderColor = UIColor.clear.cgColor
+        
     }
     
     func update(color: UIColor, isSelected: Bool) {
         colorView.backgroundColor = color
         if isSelected == true {
             checkMarkImageView.isHidden = false
+//            colorView.layer.borderWidth = 2.5
+//            colorView.layer.borderColor = UIColor.black.cgColor
         }
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
         itemSetup()
-//        self.contentView.layer.borderWidth = 1
-//        self.contentView.layer.borderColor = UIColor.black.cgColor
-//        colorView.layer.cornerRadius = self.frame.height / 2
-        colorView.layer.cornerRadius = 10
+        colorView.layer.cornerRadius = 5
     }
     
     private func itemSetup() {

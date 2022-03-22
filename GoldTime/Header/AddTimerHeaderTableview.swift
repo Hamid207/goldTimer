@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class HeaderTableviewCell: UITableViewHeaderFooterView {
+final class AddTimerHeaderTableview: UITableViewHeaderFooterView {
     
-    var headerNameArray = ["","","Add day","Color",""]
+    var headerNameArray = ["", "", "Add target", "Add day", "Color", ""]
     
     private let headerLabel: UILabel = {
         let label = UILabel()

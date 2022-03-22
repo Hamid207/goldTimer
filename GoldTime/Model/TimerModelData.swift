@@ -49,10 +49,11 @@ class TimerModelData: Object {
     @Persisted var Sat: Bool
     @Persisted var Sun: Bool
     @Persisted var timerStartToDay: Bool = false
+    @Persisted var userTarget: Int?
     
 //    @Persisted var test = List<tests>()
         
-    convenience init(name: String?, timerTime: Int, timerColor: String?, hourse: Int, minute: Int, seconds: Int, statick: Int, pomodoroTime: Int?, pomodoroTimerOnOff: Bool?, pomodorTimerWorkOrBreak: Bool?, startFix: Bool, bugFixBool: Bool?, userTimerstatistics: Int?, startTimer: Date?, stopTimer: Date?, timerCounting: Bool, timerUpdateTime: Int, pomodoroTimerUpdateTime: Int, pomdoroStartTime: Date?, pomdoroStopTime: Date?, todayDate: String?, weekDay: Int?, timer24houresResetOnOff: Bool, mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool, sun: Bool, timerDone: Bool, timerColorIndex: Int?) {
+    convenience init(name: String?, timerTime: Int, timerColor: String?, hourse: Int, minute: Int, seconds: Int, statick: Int, pomodoroTime: Int?, pomodoroTimerOnOff: Bool?, pomodorTimerWorkOrBreak: Bool?, startFix: Bool, bugFixBool: Bool?, userTimerstatistics: Int?, startTimer: Date?, stopTimer: Date?, timerCounting: Bool, timerUpdateTime: Int, pomodoroTimerUpdateTime: Int, pomdoroStartTime: Date?, pomdoroStopTime: Date?, todayDate: String?, weekDay: Int?, timer24houresResetOnOff: Bool, mon: Bool, tue: Bool, wed: Bool, thu: Bool, fri: Bool, sat: Bool, sun: Bool, timerDone: Bool, timerColorIndex: Int?, userTarget: Int?) {
         self.init()
         self.name = name
         self.timerTime = timerTime
@@ -86,6 +87,7 @@ class TimerModelData: Object {
         self.Sun = sun
         self.timerDone = timerDone
         self.timerColorIndex = timerColorIndex
+        self.userTarget = userTarget
     }
 }
 

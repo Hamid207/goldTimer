@@ -39,7 +39,7 @@ final class SaveButtonTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         self.backgroundColor = .clear
-        saveButton.layer.cornerRadius = 10
+        saveButton.layer.cornerRadius = 5
     }
     
     func update(isSelected: Bool, indexPathSection: IndexPath) {

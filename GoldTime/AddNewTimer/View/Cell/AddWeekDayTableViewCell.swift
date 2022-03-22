@@ -70,9 +70,9 @@ final class AddWeekDayTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         self.backgroundColor = .clear
-        addAllWeekDayView.layer.cornerRadius = 10
-        weekDayView.layer.cornerRadius = 10
-        collectionView.layer.cornerRadius = 10
+        addAllWeekDayView.layer.cornerRadius = 5
+        weekDayView.layer.cornerRadius = 5
+        collectionView.layer.cornerRadius = 5
     }
     
     @objc private func switchOnOffAction(switchParam: UISwitch) {
@@ -263,7 +263,7 @@ private final class IconsCell: UICollectionViewCell  {
         super.layoutSubviews()
         self.contentView.layer.borderWidth = 1
         self.contentView.layer.borderColor = UIColor.black.cgColor
-        self.contentView.layer.cornerRadius = 10
+        self.contentView.layer.cornerRadius = 5
     }
     
     private func itemSetup() {

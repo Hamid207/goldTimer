@@ -46,7 +46,7 @@ extension MainViewController {
         weekDayView.addSubview(weekDayCollectionView)
         weekDayCollectionView.layer.borderWidth = 1
         weekDayCollectionView.layer.borderColor = UIColor.black.cgColor
-        weekDayCollectionView.layer.cornerRadius = 10
+        weekDayCollectionView.layer.cornerRadius = 5
         weekDayCollectionView.delegate = self
         weekDayCollectionView.dataSource = self
         weekDayCollectionView.backgroundColor = .white
@@ -197,12 +197,17 @@ extension MainViewController: UICollectionViewDelegate {
                     viewModell?.tapWeekDayArray?[i] = false
                 }
                 viewModell?.tapWeekDayArray?[indexPath.item + 1] = true
-                viewModell?.checkDay = indexPath.item + 1
                 if viewModell?.calendarRegion == true {
+                    if viewModell?.trueDay == 7 && indexPath.item == 0 {
+                        viewModell?.checkDay = 8
+                    }else {
+                        viewModell?.checkDay = indexPath.item + 1
+                    }
                     let usaDay = viewModell?.weekDayArrayUSA?[indexPath.item]
                     let predicateRepeat = NSPredicate(format: "\(usaDay ?? "") = true")
                     viewModell?.sentPredicate(predicate: predicateRepeat)
                 }else {
+                    viewModell?.checkDay = indexPath.item + 1
                     let euDay = viewModell?.weekDayArrayEU?[indexPath.item]
                     let predicateRepeat = NSPredicate(format: "\(euDay ?? "") = true")
                     viewModell?.sentPredicate(predicate: predicateRepeat)

@@ -53,7 +53,7 @@ final class AddNewTimerTableViewCell: UITableViewCell {
     private func subView() {
         self.backgroundColor = .clear
         nameTextField.backgroundColor = .white
-        nameTextField.layer.cornerRadius = 10
+        nameTextField.layer.cornerRadius = 5
     }
     
     @objc private func sentNameAction() {

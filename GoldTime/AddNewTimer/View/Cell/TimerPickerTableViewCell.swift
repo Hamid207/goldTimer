@@ -43,7 +43,7 @@ final class TimerPickerTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         self.backgroundColor = .clear
         viewPicker.backgroundColor = .white
-        viewPicker.layer.cornerRadius = 10
+        viewPicker.layer.cornerRadius = 5
     }
     
     private func itemSetup() {
@@ -119,10 +119,15 @@ extension TimerPickerTableViewCell: UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-//        hourse = (pickerView.selectedRow(inComponent: 0))
+        if pickerView.selectedRow(inComponent: 2) == 0 && pickerView.selectedRow(inComponent: 4) == 0 {
+            pickerView.selectRow(1, inComponent: 4, animated: true)
+        }
+        
         hourse = (pickerView.selectedRow(inComponent: 2))
         minute = (pickerView.selectedRow(inComponent: 4))
+    
         sentTimerTimeDelegate?.sentTimerTime(h: hourse, m: minute)
+        
     }
 }
 

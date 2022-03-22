@@ -11,7 +11,7 @@ extension EditViewController {
     func nav() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward")
                                                            , style: .done, target: self, action: #selector(popVC))
-        navigationItem.leftBarButtonItem?.tintColor = .lightGray
+        navigationItem.leftBarButtonItem?.tintColor = .black
     }
     
     @objc func popVC() {
@@ -26,7 +26,7 @@ extension EditViewController {
         editTimertableView.register(EditWeekDayTableViewCell.self, forCellReuseIdentifier: "EditWeekDayTableViewCellId")
         editTimertableView.register(EditColorTableViewCell.self, forCellReuseIdentifier: "EditColorTableViewCellId")
         editTimertableView.register(EditSaveButtonTableViewCell.self, forCellReuseIdentifier: "EditSaveButtonTableViewCellId")
-        editTimertableView.register(HeaderTableviewCell.self, forHeaderFooterViewReuseIdentifier: "header")
+        editTimertableView.register(EditTimerHeaderTableview.self, forHeaderFooterViewReuseIdentifier: "header")
         editTimertableView.allowsSelection = false // tableViewnu basmaq olmur
         editTimertableView.backgroundColor = .clear
         //        tableView.tableHeaderView = UIView()
@@ -136,7 +136,7 @@ extension EditViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as! HeaderTableviewCell
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as! EditTimerHeaderTableview
         header.headerConfigure(section: section)
         return header
     }

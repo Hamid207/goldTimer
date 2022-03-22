@@ -11,7 +11,7 @@ extension AddNewTimerViewController {
     func nav() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward")
                                                             , style: .done, target: self, action: #selector(popVC))
-        navigationItem.leftBarButtonItem?.tintColor = .lightGray
+        navigationItem.leftBarButtonItem?.tintColor = .black
     }
     
     @objc private func popVC() {
@@ -23,10 +23,11 @@ extension AddNewTimerViewController {
         addNewTimertableView.dataSource = self
         addNewTimertableView.register(AddNewTimerTableViewCell.self, forCellReuseIdentifier: "AddNewTimerTableViewCellId")
         addNewTimertableView.register(TimerPickerTableViewCell.self, forCellReuseIdentifier: "TimerPickerTableViewCellId")
+        addNewTimertableView.register(AddTargetTableViewCell.self, forCellReuseIdentifier: "AddTargetTableViewCellCellId")
         addNewTimertableView.register(AddWeekDayTableViewCell.self, forCellReuseIdentifier: "AddWeekDayTableViewCellId")
         addNewTimertableView.register(AddColorTableViewCell.self, forCellReuseIdentifier: "AddColorTableViewCellId")
         addNewTimertableView.register(SaveButtonTableViewCell.self, forCellReuseIdentifier: "SaveButtonTableViewCellId")
-        addNewTimertableView.register(HeaderTableviewCell.self, forHeaderFooterViewReuseIdentifier: "header")
+        addNewTimertableView.register(AddTimerHeaderTableview.self, forHeaderFooterViewReuseIdentifier: "header")
         addNewTimertableView.allowsSelection = false // tableViewnu basmaq olmur
         addNewTimertableView.backgroundColor = .clear
 //        tableView.tableHeaderView = UIView()
@@ -41,7 +42,11 @@ extension AddNewTimerViewController {
     }
 }
 
-extension AddNewTimerViewController: SentTimerNameDelegate, SaveWeekDayDelegate, SentColorDelegate, SentTimerTimeDelegate, SaveButtonDelegate {
+extension AddNewTimerViewController: SentTimerNameDelegate, SaveWeekDayDelegate, SentColorDelegate, SentTimerTimeDelegate, SaveButtonDelegate, AddTagetValuesender {
+    func addTargetsenderValueDelegate(_ value: Int) {
+        viewModel?.saveStepperValue(value)
+    }
+    
     func sentTimerName(name: String?) {
         viewModel?.saveTimerName(name: name)
     }
@@ -65,7 +70,7 @@ extension AddNewTimerViewController: SentTimerNameDelegate, SaveWeekDayDelegate,
 
 extension AddNewTimerViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 5
+        return 6
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -74,6 +79,7 @@ extension AddNewTimerViewController: UITableViewDataSource {
             case 1: return 1
             case 2: return 1
             case 3: return 1
+            case 4: return 1
             default:
                 return 1
         }
@@ -91,14 +97,23 @@ extension AddNewTimerViewController: UITableViewDataSource {
                 timerPickerCell.sentTimerTimeDelegate = self
                 return timerPickerCell
             case 2:
+                let addTargetCell = tableView.dequeueReusableCell(withIdentifier: "AddTargetTableViewCellCellId", for: indexPath) as! AddTargetTableViewCell
+                addTargetCell.sendeValueDelegate = self
+                if let time = viewModel?.pickerTime {
+                    addTargetCell.update(time: time, stepperValue: viewModel?.steppervalue ?? 0)
+                }
+                return addTargetCell
+            case 3:
                 let addWeekCell = tableView.dequeueReusableCell(withIdentifier: "AddWeekDayTableViewCellId", for: indexPath) as! AddWeekDayTableViewCell
                 addWeekCell.saveWeekDayDelegate = self
                 return addWeekCell
-            case 3:
+          
+            case 4:
                 let addColorCell = tableView.dequeueReusableCell(withIdentifier: "AddColorTableViewCellId", for: indexPath) as! AddColorTableViewCell
                 addColorCell.sentColorDelegate = self
                 return addColorCell
-            case 4:
+          
+            case 5:
                 let saveButtonCell = tableView.dequeueReusableCell(withIdentifier: "SaveButtonTableViewCellId", for: indexPath) as! SaveButtonTableViewCell
                 saveButtonCell.saveButtonDelegate = self
                 let item = viewModel?.saveButtonIsSelected
@@ -115,27 +130,29 @@ extension AddNewTimerViewController: UITableViewDelegate {
         switch indexPath.section {
             case 0: return 44
             case 1: return CGFloat(view.frame.height / 4)
-            case 2: return CGFloat(view.frame.height / 7)
-            case 3: return CGFloat(view.frame.height / 13)
+            case 2: return CGFloat(view.frame.height / 17)
+            case 3: return CGFloat(view.frame.height / 7)
+            case 4: return CGFloat(view.frame.height / 13)
             default:
                 return  CGFloat(view.frame.height / 8)
         }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as! HeaderTableviewCell
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as! AddTimerHeaderTableview
         header.headerConfigure(section: section)
         return header
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         switch section {
-            case 0: return 25
-            case 1: return 25
-            case 2: return 40
+            case 0: return 20
+            case 1: return 20
+            case 2: return 35
             case 3: return 35
+            case 4: return 30
             default:
-                return 40
+                return 35
         }    }
 }
 
