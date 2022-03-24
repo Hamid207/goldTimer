@@ -43,7 +43,7 @@ final class EditTimerPickerTableViewCell: UITableViewCell {
     override func layoutSubviews() {
         self.backgroundColor = .clear
         viewPicker.backgroundColor = .white
-        viewPicker.layer.cornerRadius = 10
+        viewPicker.layer.cornerRadius = 5
     }
     
     func update(timerTime: Int) {

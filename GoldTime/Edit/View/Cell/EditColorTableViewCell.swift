@@ -47,7 +47,7 @@ final class EditColorTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         self.backgroundColor = .clear
-        colorView.layer.cornerRadius = 10
+        colorView.layer.cornerRadius = 5
     }
     
     private func setupGradient() {
@@ -196,7 +196,7 @@ private final class IconsCell: UICollectionViewCell  {
 //        self.contentView.layer.borderWidth = 1
 //        self.contentView.layer.borderColor = UIColor.black.cgColor
 //        colorView.layer.cornerRadius = self.frame.height / 2
-        colorView.layer.cornerRadius = 10
+        colorView.layer.cornerRadius = 5
     }
     
     private func itemSetup() {

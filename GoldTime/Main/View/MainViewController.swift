@@ -19,6 +19,9 @@ final class MainViewController: UIViewController {
 
     let weekDayView = UIView()
     
+    var scrollIndex = CGFloat()
+    var scrollInToday = true
+    
     private var startScrolViewRect = false
     
     let weekDayCollectionView: UICollectionView = {
@@ -59,8 +62,9 @@ final class MainViewController: UIViewController {
         //    viewModel?.collectionView = mainCollectionView
         viewModell?.collectionView = mainCollectionView
         viewModell?.weekDayCollectionView = weekDayCollectionView
-        
+
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -90,7 +94,6 @@ final class MainViewController: UIViewController {
                     }
                 }
             }
-            
         }
     }
 }

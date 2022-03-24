@@ -90,10 +90,13 @@ extension MainViewController: PushTimerDetailVCDelegate {
 //MARK: - TimerStartStopDelegate, SetIndexDelegate, AddModelIndexDelegate, SentAlertActionDelegate
 extension MainViewController: TimerStartStopDelegate, SetIndexDelegate, AddModelIndexDelegate, SentAlertActionDelegate {
     func timerStartStop(index: Int?, timerCounting: Bool, startTime: Date?, stopStime: Date?) {
+//        scrollIndex = index!
+        print("111 \(index)")
         viewModell?.timerStartStop(timerCounting: timerCounting, index: index, startTime: startTime, stopTime: stopStime)
     }
     
     func setIndex(index: Int?) {
+      
         viewModell?.index = index
     }
     
@@ -164,7 +167,6 @@ extension MainViewController: UICollectionViewDataSource {
         }else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? MainCollectionViewCelll
             //        cell.pushhDelegate = self
-            //            print("CELLL INDEX == \(indexPath.item)")
             cell?.timerStartStopDelegate = self
             cell?.removeTimerDelegate = self
             cell?.setIndexDeleagte = self
@@ -213,16 +215,33 @@ extension MainViewController: UICollectionViewDelegate {
                     viewModell?.sentPredicate(predicate: predicateRepeat)
                 }
                 viewModell?.editDayIndex = indexPath.item + 1
-                DispatchQueue.main.async {
-                    self.weekDayCollectionView.reloadData()
-                    self.mainCollectionView.reloadData()
+                
+                DispatchQueue.main.async { [weak self] in
+                    self?.weekDayCollectionView.reloadData()
+                    self?.mainCollectionView.reloadData()
                 }
                 
-//                if indexPath.item + 1 != viewModell?.toDay {
-//                    viewModell?.scrollToIndex(index: 0)
-//                }
+                DispatchQueue.main.async {
+                    if indexPath.item + 1 != self.viewModell?.toDay {
+                        self.scrollInToday = false
+    //                    viewModell?.scrollToIndex(index: 0)
+                        let indexPosition = IndexPath(row: 0, section: 0)
+                        self.mainCollectionView.selectItem(at: indexPosition, animated: false, scrollPosition: .bottom)
+                    }else {
+                        self.scrollInToday = true
+                        self.mainCollectionView.setContentOffset(CGPoint(x: 0, y: self.scrollIndex), animated: false)
+//                        self.mainCollectionView.scrollRectToVisible(CGRect(x: 0, y: self.scrollIndex, width: self.mainCollectionView.frame.size.width, height: self.view.frame.size.height), animated: true)
+//                        self.viewModell?.scrollToIndex(index: self.scrollIndex + 1)
+                    }
+                }
             }
             
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollInToday == true {
+            scrollIndex = scrollView.contentOffset.y
         }
     }
 }
