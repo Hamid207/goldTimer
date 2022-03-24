@@ -15,6 +15,8 @@ final class TimerDetailTableView: UITableViewCell {
     var index: Int?
     private var statistics = 7
     private var userTimerStatistic: Int?
+    private var progressBar: HorizontalProgressBar!
+    private var timerColor: String = "#15C08E"
     //  private let barChartView = BarChartView()
     
     private let staticsLabel: UILabel = {
@@ -110,21 +112,42 @@ final class TimerDetailTableView: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        statisticTargetUIView.layer.cornerRadius = 10.0
+        statisticTargetUIView.layer.cornerRadius = 5.0
         statisticTargetUIView.setupShadow(opacity: 0.2, radius: 10, offset: .init(width: 0, height: 0), color: .black)
     }
     
     
-    func update(statisticsTime: Int?, timeArray: [Int], timerTime: Int, userTarget: Int, timerDone: Int){
+    func update(statisticsTime: Int?, timeArray: [Int], timerTime: Int, userTarget: Int, timerDone: Int, timerColor: String){
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             guard let time = statisticsTime else { return }
             self.statisticTargetlabel.text = self.timeString(time: TimeInterval(time))
             self.targetDoneLabel.text = "\(timerDone)/\(userTarget)"
+            self.timerColor = timerColor
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            formatter.maximumFractionDigits = 2
+            formatter.decimalSeparator = ""
+            formatter.groupingSeparator = ""
+            let number = NSNumber(value: self.calculatePercentage(value: Double(timerDone), percentageVal: 100, timerTime: Double(userTarget)))
+            let formatt = formatter.string(from: number)
+            let progresResult = Float(String(formatt!).PadLeft(totalWidth: 2, byString: ".0")) ?? 0.0
+            self.progressBar.updateColor(newColor: timerColor)
+            if timerDone == userTarget {
+                self.progressBar.progress = 1.0
+            }else {
+                self.progressBar.progress = CGFloat(progresResult)
+            }
+            
             let timerTime = userTarget * timerTime
             self.targetHourseLabel.text = self.timeStringTarget(time: TimeInterval(timerTime))
             //            self.barChartView.update(timeArray: timeArray, days: self.statistics, timerTime: timerTime)
         }
+    }
+    
+    public func calculatePercentage(value:Double,percentageVal:Double, timerTime: Double)->Double {
+        let val = value * percentageVal
+        return val / timerTime
     }
     
     private func timeStringTarget(time: TimeInterval) -> String {
@@ -175,7 +198,7 @@ final class TimerDetailTableView: UITableViewCell {
         statisticTargetUIView.topAnchor.constraint(equalTo: statisticsSegmetControll.bottomAnchor, constant: 20).isActive = true
         statisticTargetUIView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         statisticTargetUIView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        statisticTargetUIView.heightAnchor.constraint(equalToConstant: 170).isActive = true
+        statisticTargetUIView.heightAnchor.constraint(equalToConstant: 200).isActive = true
         
         statisticTargetUIView.addSubview(statisticTargetlabel)
         statisticTargetlabel.topAnchor.constraint(equalTo: statisticTargetUIView.topAnchor, constant: 20).isActive = true
@@ -184,11 +207,19 @@ final class TimerDetailTableView: UITableViewCell {
         
         statisticTargetUIView.addSubview(targetDoneLabel)
         targetDoneLabel.topAnchor.constraint(equalTo: statisticTargetlabel.bottomAnchor, constant: 50).isActive = true
-        targetDoneLabel.leadingAnchor.constraint(equalTo: statisticTargetUIView.leadingAnchor, constant: 25).isActive = true
+        targetDoneLabel.leadingAnchor.constraint(equalTo: statisticTargetUIView.leadingAnchor, constant: 15).isActive = true
         
         
         statisticTargetUIView.addSubview(targetHourseLabel)
         targetHourseLabel.centerYAnchor.constraint(equalTo: targetDoneLabel.centerYAnchor).isActive = true
-        targetHourseLabel.trailingAnchor.constraint(equalTo: statisticTargetUIView.trailingAnchor, constant: -25).isActive = true
+        targetHourseLabel.trailingAnchor.constraint(equalTo: statisticTargetUIView.trailingAnchor, constant: -15).isActive = true
+        
+        progressBar = HorizontalProgressBar()
+        statisticTargetUIView.addSubview(progressBar)
+        progressBar.translatesAutoresizingMaskIntoConstraints = false
+        progressBar.topAnchor.constraint(equalTo: targetDoneLabel.bottomAnchor, constant: 10).isActive = true
+        progressBar.leadingAnchor.constraint(equalTo: statisticTargetUIView.leadingAnchor, constant: 15).isActive = true
+        progressBar.trailingAnchor.constraint(equalTo: statisticTargetUIView.trailingAnchor, constant: -15).isActive = true
+        progressBar.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
 }

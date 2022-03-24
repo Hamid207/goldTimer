@@ -21,6 +21,7 @@
 		613ED38827D2398C00D50C04 /* MainViewModellProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 613ED38727D2398C00D50C04 /* MainViewModellProtocol.swift */; };
 		61412DBD27BE8FC30080D86F /* LastIndex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61412DBC27BE8FC30080D86F /* LastIndex.swift */; };
 		615E667D27A9624E00446FF8 /* TimerNotifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 615E667C27A9624E00446FF8 /* TimerNotifications.swift */; };
+		617FC13327ECC22A007135C8 /* HorizontalProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 617FC13227ECC22A007135C8 /* HorizontalProgressBar.swift */; };
 		619210B427BD2E170098F455 /* TimerDoneAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619210B327BD2E170098F455 /* TimerDoneAlert.swift */; };
 		619210B827BD60370098F455 /* TimerAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619210B727BD60370098F455 /* TimerAlert.swift */; };
 		6199AB6D279B2918000CFB82 /* TabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199AB6C279B2918000CFB82 /* TabbarController.swift */; };
@@ -117,6 +118,7 @@
 		613ED38727D2398C00D50C04 /* MainViewModellProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModellProtocol.swift; sourceTree = "<group>"; };
 		61412DBC27BE8FC30080D86F /* LastIndex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastIndex.swift; sourceTree = "<group>"; };
 		615E667C27A9624E00446FF8 /* TimerNotifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerNotifications.swift; sourceTree = "<group>"; };
+		617FC13227ECC22A007135C8 /* HorizontalProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalProgressBar.swift; sourceTree = "<group>"; };
 		619210B327BD2E170098F455 /* TimerDoneAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerDoneAlert.swift; sourceTree = "<group>"; };
 		619210B727BD60370098F455 /* TimerAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerAlert.swift; sourceTree = "<group>"; };
 		6199AB6C279B2918000CFB82 /* TabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarController.swift; sourceTree = "<group>"; };
@@ -431,6 +433,7 @@
 			children = (
 				6199ABC0279B2E3F000CFB82 /* TimerDetailTableViewCell.swift */,
 				61E5DB5227B69B9500B21E7C /* GenericCell.swift */,
+				617FC13227ECC22A007135C8 /* HorizontalProgressBar.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -744,6 +747,7 @@
 				6199AB98279B2B95000CFB82 /* MainViewController.swift in Sources */,
 				6199AB79279B2A1D000CFB82 /* DataStore.swift in Sources */,
 				61C15D3E27A6E04800A721B8 /* EditWeekDayTableViewCell.swift in Sources */,
+				617FC13327ECC22A007135C8 /* HorizontalProgressBar.swift in Sources */,
 				6199ABC6279B2F1B000CFB82 /* EditViewController.swift in Sources */,
 				6199AB8B279B2ADF000CFB82 /* SentTimerStatisticDelegate.swift in Sources */,
 				6199ABC1279B2E3F000CFB82 /* TimerDetailTableViewCell.swift in Sources */,

@@ -224,7 +224,6 @@ extension MainViewController: UICollectionViewDelegate {
                 DispatchQueue.main.async {
                     if indexPath.item + 1 != self.viewModell?.toDay {
                         self.scrollInToday = false
-    //                    viewModell?.scrollToIndex(index: 0)
                         let indexPosition = IndexPath(row: 0, section: 0)
                         self.mainCollectionView.selectItem(at: indexPosition, animated: false, scrollPosition: .bottom)
                     }else {

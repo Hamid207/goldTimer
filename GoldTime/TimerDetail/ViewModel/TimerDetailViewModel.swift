@@ -22,6 +22,7 @@ protocol TimerDetailViewModelProtocol {
     var timerTime: Int? { get set }
     var userTagret: Int? { get set }
     var timerDone: Int? { get set }
+    var timerColor: String? { get set }
     init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, index: Int, predicate: NSPredicate, timerStatistics: TimerStatistics?)
 }
 
@@ -38,18 +39,19 @@ final class TimerDetailViewModel: TimerDetailViewModelProtocol {
     var timerTime: Int?
     var userTagret: Int?
     var timerDone: Int?
+    var timerColor: String?
     init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, index: Int, predicate: NSPredicate, timerStatistics: TimerStatistics?) {
         self.mainRouter = mainRouter
         self.dataStore = dataStore
         self.index = index
         self.timerStatistics = timerStatistics
         self.predicate = predicate
+        self.dataStore?.timerArray = realm.objects(TimerModelData.self).filter(predicate)
         model = dataStore?.timerArray
         timerTime = model?[index].timerTime
         timerDone = model?[index].theTimerIsFinishedHowManyTimes
-        self.dataStore?.timerArray = realm.objects(TimerModelData.self).filter(predicate)
         userTagret = model?[index].userTarget
-//        print("\(model?[index].userTarget * model?[index].timerTime)")
+        timerColor = model?[index].timerColor
     }
    
     func statisticsStart() {
