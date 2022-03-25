@@ -39,12 +39,19 @@ extension TimerDetailViewController {
     }
 }
 
-extension TimerDetailViewController: PushTimerDetailVCDelegate {
-    func timerStartDelegate(index: Int?, startPauseBool: Bool, bugFixBool: Bool?, secondTimerDontStart: Bool?) {
+extension TimerDetailViewController: PushTimerDetailVCDelegate, RestartUserTargetDelegate {
+    func restartTarget() {
         DispatchQueue.main.async {
-            self.viewModel?.startPauseBool = startPauseBool
+            self.viewModel?.restartUserTarget()
+            self.timerDetailTableView.reloadData()
+        }
+    }
+    
+    func timerStartDelegate(index: Int?, startPauseBool: Bool, bugFixBool: Bool?, secondTimerDontStart: Bool?) {
+        DispatchQueue.main.async { [weak  self] in
+            self?.viewModel?.startPauseBool = startPauseBool
     //        viewModel?.index = index
-            self.viewModel?.sendAction(startPauseBool: startPauseBool)
+            self?.viewModel?.sendAction(startPauseBool: startPauseBool)
         }
     }
 }
@@ -64,6 +71,7 @@ extension TimerDetailViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TimerDetailTableViewId", for: indexPath) as! TimerDetailTableView
         cell.pushhDelegate = self
         cell.timerStatisticsDelegate = self
+        cell.restartUserTargetDelegate = self
         cell.index = indexPath.row
 //        let index = (viewModel?.index)!
 //        let item = viewModel?.model?[index]

@@ -196,6 +196,7 @@ final class MainViewModell: MainViewModellProtocol {
                     dataStore?.timerArray?[index].timerDoneDate = Date().getFormattedDate()
                 }
             }
+            NotificationCenter.default.post(name: Notification.Name("timerDone"), object: nil)
             dataStore?.deleteLastIndex()
             //User hedefe catanda alert
             if dataStore?.timerArray?[index].theTimerIsFinishedHowManyTimes == dataStore?.timerArray?[index].userTarget {

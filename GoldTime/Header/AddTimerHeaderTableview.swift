@@ -9,7 +9,7 @@ import UIKit
 
 final class AddTimerHeaderTableview: UITableViewHeaderFooterView {
     
-    var headerNameArray = ["", "", "Add target", "Add day", "Color", ""]
+    var headerNameArray = ["", "", "Add a goal", "Add day", "Color", ""]
     
     private let headerLabel: UILabel = {
         let label = UILabel()
@@ -17,7 +17,6 @@ final class AddTimerHeaderTableview: UITableViewHeaderFooterView {
         label.font = UIFont.systemFont(ofSize: 15, weight: .medium)
         label.textAlignment = .left
         label.textColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
-//        label.text = "Header"
         return label
     }()
     

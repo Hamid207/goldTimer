@@ -23,6 +23,8 @@ protocol TimerDetailViewModelProtocol {
     var userTagret: Int? { get set }
     var timerDone: Int? { get set }
     var timerColor: String? { get set }
+    func restartUserTarget()
+    var tableView: UITableView? { get set }
     init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, index: Int, predicate: NSPredicate, timerStatistics: TimerStatistics?)
 }
 
@@ -40,6 +42,8 @@ final class TimerDetailViewModel: TimerDetailViewModelProtocol {
     var userTagret: Int?
     var timerDone: Int?
     var timerColor: String?
+    var tableView: UITableView?
+    
     init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, index: Int, predicate: NSPredicate, timerStatistics: TimerStatistics?) {
         self.mainRouter = mainRouter
         self.dataStore = dataStore
@@ -48,10 +52,27 @@ final class TimerDetailViewModel: TimerDetailViewModelProtocol {
         self.predicate = predicate
         self.dataStore?.timerArray = realm.objects(TimerModelData.self).filter(predicate)
         model = dataStore?.timerArray
-        timerTime = model?[index].timerTime
-        timerDone = model?[index].theTimerIsFinishedHowManyTimes
-        userTagret = model?[index].userTarget
-        timerColor = model?[index].timerColor
+//        timerTime = model?[index].timerTime
+//        timerDone = model?[index].theTimerIsFinishedHowManyTimes
+//        userTagret = model?[index].userTarget
+//        timerColor = model?[index].timerColor
+        reload()
+        NotificationCenter.default.addObserver(self, selector: #selector(reload), name: Notification.Name("timerDone"), object: nil)
+
+    }
+    
+    @objc private func reload() {
+        DispatchQueue.main.async { [ weak self ] in
+            guard let self = self else { return }
+            guard let index = self.index else { return }
+            self.model = self.dataStore?.timerArray
+            self.timerTime = self.model?[index].timerTime
+            self.timerDone = self.model?[index].theTimerIsFinishedHowManyTimes
+            self.userTagret = self.model?[index].userTarget
+            self.timerColor = self.model?[index].timerColor
+            self.statisticsStart()
+            self.tableView?.reloadData()
+        }
     }
    
     func statisticsStart() {
@@ -62,6 +83,14 @@ final class TimerDetailViewModel: TimerDetailViewModelProtocol {
     func sendAction(startPauseBool: Bool?) {
 //        self.dataStore?.timerStart(index: self.index!, startPauseBool: startPauseBool, completion: { booll in
 //        })
+    }
+    
+    func restartUserTarget() {
+        guard let index = index else { return }
+        try! realm.write {
+            dataStore?.timerArray?[index].theTimerIsFinishedHowManyTimes = 0
+            timerDone = 0
+        }
     }
     
     func popVC() {

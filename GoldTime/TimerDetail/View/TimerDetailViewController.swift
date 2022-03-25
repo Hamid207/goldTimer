@@ -19,9 +19,11 @@ final class TimerDetailViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         guard let name = viewModel?.dataStore?.timerArray?[(viewModel?.index)!].name else { return }
         navigationItem.title = String(describing: name)
+        viewModel?.tableView = timerDetailTableView
         self.navItems()
         self.itemSetup()
         viewModel?.statisticsStart()
     }
+    
 
 }

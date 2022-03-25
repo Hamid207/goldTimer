@@ -11,6 +11,7 @@ final class TimerDetailTableView: UITableViewCell {
     
     weak var pushhDelegate: PushTimerDetailVCDelegate?
     weak var timerStatisticsDelegate: SentTimerStatisticDelegate?
+    weak var restartUserTargetDelegate: RestartUserTargetDelegate?
     
     var index: Int?
     private var statistics = 7
@@ -72,8 +73,7 @@ final class TimerDetailTableView: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.textAlignment = .center
-        label.font = UIFont.init(name: "Hiragino Maru Gothic ProN", size: 30)
-        label.text = "1/15"
+        label.font = UIFont.init(name: "Hiragino Maru Gothic ProN", size: 25)
         return label
     }()
     
@@ -82,11 +82,17 @@ final class TimerDetailTableView: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
         label.textAlignment = .center
-        label.font = UIFont.init(name: "Hiragino Maru Gothic ProN", size: 30)
-        label.text = "3h 25m"
+        label.font = UIFont.init(name: "Hiragino Maru Gothic ProN", size: 25)
         return label
     }()
     
+    private let resetTargetButton: UIButton = {
+        let button = UIButton(type: .roundedRect)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Restart the target", for: .normal)
+        //        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .light)
+        return button
+    }()
     
     private func timeString(time: TimeInterval) -> String {
         let hour = Int(time) / 3600
@@ -122,22 +128,36 @@ final class TimerDetailTableView: UITableViewCell {
             guard let self = self else { return }
             guard let time = statisticsTime else { return }
             self.statisticTargetlabel.text = self.timeString(time: TimeInterval(time))
-            self.targetDoneLabel.text = "\(timerDone)/\(userTarget)"
             self.timerColor = timerColor
+            
             let formatter = NumberFormatter()
             formatter.numberStyle = .decimal
             formatter.maximumFractionDigits = 2
             formatter.decimalSeparator = ""
             formatter.groupingSeparator = ""
+            
             let number = NSNumber(value: self.calculatePercentage(value: Double(timerDone), percentageVal: 100, timerTime: Double(userTarget)))
             let formatt = formatter.string(from: number)
-            let progresResult = Float(String(formatt!).PadLeft(totalWidth: 2, byString: ".0")) ?? 0.0
+            let progresResult = Float(String(formatt ?? "0").PadLeft(totalWidth: 2, byString: ".0")) ?? 0.0
+            
             self.progressBar.updateColor(newColor: timerColor)
-            if timerDone == userTarget {
+            
+            if timerDone >= userTarget && userTarget != 0 {
+                self.targetDoneLabel.text = "\(userTarget)/\(userTarget)"
                 self.progressBar.progress = 1.0
+                self.resetTargetButton.isHidden = false
+            }else if userTarget == 0 {
+                self.statisticTargetlabel.centerYAnchor.constraint(equalTo: self.statisticTargetUIView.centerYAnchor).isActive = true
+                self.targetDoneLabel.text = ""
+                self.targetHourseLabel.isHidden = true
+                self.progressBar.isHidden = true
+                self.resetTargetButton.isHidden = true
             }else {
+                self.resetTargetButton.isHidden = true
+                self.targetDoneLabel.text = "\(timerDone)/\(userTarget)"
                 self.progressBar.progress = CGFloat(progresResult)
             }
+            
             
             let timerTime = userTarget * timerTime
             self.targetHourseLabel.text = self.timeStringTarget(time: TimeInterval(timerTime))
@@ -145,23 +165,23 @@ final class TimerDetailTableView: UITableViewCell {
         }
     }
     
-    public func calculatePercentage(value:Double,percentageVal:Double, timerTime: Double)->Double {
+    private func calculatePercentage(value:Double,percentageVal:Double, timerTime: Double)->Double {
         let val = value * percentageVal
         return val / timerTime
     }
     
     private func timeStringTarget(time: TimeInterval) -> String {
-      let hour = Int(time) / 3600
-      let minute = Int(time) / 60 % 60
-      // return formated string
-      if hour == 0 {
-        return String(format: "%2im", minute)
-      }else if minute == 0 {
-        return String(format: "%2ih", hour)
-      }else {
-        return String(format: "%2ih%2im", hour, minute)
-        
-      }
+        let hour = Int(time) / 3600
+        let minute = Int(time) / 60 % 60
+        // return formated string
+        if hour == 0 {
+            return String(format: "%2im", minute)
+        }else if minute == 0 {
+            return String(format: "%2ih", hour)
+        }else {
+            return String(format: "%2ih%2im", hour, minute)
+            
+        }
     }
     
     
@@ -179,6 +199,12 @@ final class TimerDetailTableView: UITableViewCell {
                 default: break
             }
         }
+    }
+    
+    @objc private func restartTargetButtonAction() {
+        
+        restartUserTargetDelegate?.restartTarget()
+        
     }
     
     private  func itemSetup() {
@@ -209,6 +235,11 @@ final class TimerDetailTableView: UITableViewCell {
         targetDoneLabel.topAnchor.constraint(equalTo: statisticTargetlabel.bottomAnchor, constant: 50).isActive = true
         targetDoneLabel.leadingAnchor.constraint(equalTo: statisticTargetUIView.leadingAnchor, constant: 15).isActive = true
         
+        statisticTargetUIView.addSubview(resetTargetButton)
+        resetTargetButton.centerYAnchor.constraint(equalTo: targetDoneLabel.centerYAnchor).isActive = true
+        resetTargetButton.leadingAnchor.constraint(equalTo: targetDoneLabel.trailingAnchor, constant: 10).isActive = true
+        resetTargetButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        resetTargetButton.addTarget(self, action: #selector(restartTargetButtonAction), for: .touchDown)
         
         statisticTargetUIView.addSubview(targetHourseLabel)
         targetHourseLabel.centerYAnchor.constraint(equalTo: targetDoneLabel.centerYAnchor).isActive = true

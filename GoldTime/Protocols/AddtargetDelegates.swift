@@ -11,6 +11,6 @@ protocol AddTagetValuesender: AnyObject {
     func addTargetsenderValueDelegate(_ value: Int)
 }
 
-protocol AddTargetDelegate: AnyObject {
-    
+protocol RestartUserTargetDelegate: AnyObject {
+    func restartTarget()
 }
