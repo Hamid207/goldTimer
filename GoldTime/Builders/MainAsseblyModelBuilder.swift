@@ -19,11 +19,10 @@ class MainAsseblyModelBuilder: MainAsseblyModelBuilderProtocol {
   func creatMainModule(mainRouter: MainRouterProtocol) -> UIViewController {
     let view = MainViewController()
     let dataStore = DataStore()
-    let timerStatistics = TimerStatistics()
     let timerNotifications = TimerNotifications()
     let timerDoneAlert = TimerDoneAlert()
     let timerAlert = TimerAlert()
-    let viewModel = MainViewModell(mainRouter: mainRouter, dataStore: dataStore, timerStatistics: timerStatistics, timerNotifications: timerNotifications, timerDoneAlert: timerDoneAlert, timerAlert: timerAlert)
+    let viewModel = MainViewModell(mainRouter: mainRouter, dataStore: dataStore, timerNotifications: timerNotifications, timerDoneAlert: timerDoneAlert, timerAlert: timerAlert)
     view.viewModell = viewModel
     return view
   }
@@ -41,8 +40,7 @@ class MainAsseblyModelBuilder: MainAsseblyModelBuilderProtocol {
   func creatTimerDetailModule(mainRouter: MainRouterProtocol, index: Int, predicate: NSPredicate) -> UIViewController {
     let view = TimerDetailViewController()
     let dataStore = DataStore()
-    let timerStatistics = TimerStatistics()
-    let viewModel = TimerDetailViewModel(mainRouter: mainRouter, dataStore: dataStore, index: index, predicate: predicate, timerStatistics: timerStatistics)
+    let viewModel = TimerDetailViewModel(mainRouter: mainRouter, dataStore: dataStore, index: index, predicate: predicate)
     view.viewModel = viewModel
     return view
   }

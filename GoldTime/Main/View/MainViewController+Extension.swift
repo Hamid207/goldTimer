@@ -16,19 +16,13 @@ extension MainViewController {
         //        navigationItem.leftBarButtonItem = UIBarButtonItem(image: .remove, style: .done, target: self, action: #selector(removeTest))
     }
     
-    @objc func addVC() {
+    @objc private func addVC() {
         viewModell?.tapTHeAddNewTimerVc()
     }
     
-    @objc func removeTest() {
-        DispatchQueue.main.async {
-            self.viewModell?.remiveTest()
-            self.mainCollectionView.reloadData()
-            //            var a = IndexPath(item: 0, section: 0)
-            //            self.mainCollectionView.deleteItems(at: [viewModel?.model?.last])
-            //            self.mainCollectionView.reloadData()
-            //            self.tableView.reloadData()
-            
+    @objc private func removeTest() {
+        DispatchQueue.main.async { [weak self] in
+            self?.mainCollectionView.reloadData()
         }
     }
     
@@ -81,8 +75,6 @@ extension MainViewController {
 //MARK: - PushTimerDetailVCDelegate
 extension MainViewController: PushTimerDetailVCDelegate {
     func timerStartDelegate(index: Int?, startPauseBool: Bool, bugFixBool: Bool?, secondTimerDontStart: Bool?) {
-        viewModel?.bugFixBool = bugFixBool
-        viewModel?.timerStart(index: index, secondTimerDontStart: secondTimerDontStart, bugFixBool: bugFixBool)
         //        print("startPauseBool = \(startPauseBool)  " + "  INDEX = \(index)  " + " secondTimerDontStart = \(secondTimerDontStart)  " + " bugFixBool = \(bugFixBool)")
     }
 }
@@ -91,7 +83,6 @@ extension MainViewController: PushTimerDetailVCDelegate {
 extension MainViewController: TimerStartStopDelegate, SetIndexDelegate, AddModelIndexDelegate, SentAlertActionDelegate {
     func timerStartStop(index: Int?, timerCounting: Bool, startTime: Date?, stopStime: Date?) {
 //        scrollIndex = index!
-        print("111 \(index)")
         viewModell?.timerStartStop(timerCounting: timerCounting, index: index, startTime: startTime, stopTime: stopStime)
     }
     
@@ -221,7 +212,8 @@ extension MainViewController: UICollectionViewDelegate {
                     self?.mainCollectionView.reloadData()
                 }
                 
-                DispatchQueue.main.async {
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
                     if indexPath.item + 1 != self.viewModell?.toDay {
                         self.scrollInToday = false
                         let indexPosition = IndexPath(row: 0, section: 0)
@@ -229,8 +221,6 @@ extension MainViewController: UICollectionViewDelegate {
                     }else {
                         self.scrollInToday = true
                         self.mainCollectionView.setContentOffset(CGPoint(x: 0, y: self.scrollIndex), animated: false)
-//                        self.mainCollectionView.scrollRectToVisible(CGRect(x: 0, y: self.scrollIndex, width: self.mainCollectionView.frame.size.width, height: self.view.frame.size.height), animated: true)
-//                        self.viewModell?.scrollToIndex(index: self.scrollIndex + 1)
                     }
                 }
             }
@@ -290,81 +280,9 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         // do whatever you want to do
         print("DARK MODE ")
-        weekDayCollectionView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.weekDayCollectionView.reloadData()
+
+        }
     }
 }
-
-////MARK: - UITableViewDataSource
-//extension MainViewController: UITableViewDataSource {
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return viewModel?.model?.count ?? 0
-//    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        if let cell = tableView.dequeueReusableCell(withIdentifier: "MainTableViewCell", for: indexPath) as? MainTableViewCell {
-//
-//            let item = viewModel?.model?[indexPath.row]
-//            cell.update(model: item!)
-//            cell.index = indexPath.row
-//            cell.pushhDelegate = self
-//            cell.accessoryType = .disclosureIndicator
-//            return cell
-//        }
-//        return UITableViewCell()
-//    }
-//}
-//
-//extension MainViewController: UITableViewDelegate {
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return 200
-//    }
-//}
-
-//extension MainViewController: UIScrollViewDelegate {
-//
-//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-//       lastContentOffset = scrollView.contentOffset.y
-//    }
-//
-//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-////        print(scrollView.contentOffset.y > scrollView.contentSize.height - scrollView.frame.size.height)
-//        let delta = scrollView.contentOffset.y - lastContentOffset
-//        if delta > 0 {
-////            topConstraint.constant = min (topConstraint.constant - delta, range.upperBound)
-//            UIView.animate(withDuration: 0.25, animations: { [weak self] in
-//                if self?.headerBool == true{
-//                    self?.weekDayView.center.y -= 100
-//                    self?.mainCollectionView.center.y -= 100
-////                      self?.collectionView.center.y -= 100
-////                      self?.headerView.alpha = 0.0
-////                      self?.mainCollectionView.alpha = 0.0
-////                    self?.headerView.transform = CGAffineTransform(scaleX: 2.3, y: 1.3)
-//                }
-//                self?.headerBool = false
-//            }, completion: nil)
-//
-//        } else {
-//            UIView.animate(withDuration: 0.25, animations: { [weak self] in
-//                if self?.headerBool == false{
-//                    self?.weekDayView.center.y += 100
-//                    self?.mainCollectionView.center.y += 100
-////                      self?.collectionView.center.y += 100
-////                      self?.headerView.alpha = 1.0
-////                      self?.collectionView.alpha = 1.0
-////                    self?.headerView.transform = CGAffineTransform(scaleX: 1.3, y: 1.0)
-//                }
-//                self?.headerBool = true
-//            }, completion: nil)
-//        }
-//        lastContentOffset = scrollView.contentOffset.y
-//    }
-//
-//
-//    func scrollViewDidBeginDragging(_ scrollView: UIScrollView) {
-//      // Where lastContentOffset is a class variable of type CGFloat
-//      lastContentOffset = scrollView.contentOffset.y
-//
-//    }
-//
-
-//}

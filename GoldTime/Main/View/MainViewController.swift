@@ -14,7 +14,6 @@ final class MainViewController: UIViewController {
     //        let range: Range<CGFloat> = (-100..<0)
     //        var lastContentOffset: CGFloat = 0
     
-    var viewModel: MainViewModelProtocol?
     var viewModell: MainViewModellProtocol?
 
     let weekDayView = UIView()

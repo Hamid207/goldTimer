@@ -15,7 +15,6 @@ final class MainViewModell: MainViewModellProtocol {
     var timerDoneAlert: TimerDoneAlertProtocol?
     private let timerAlert: TimerAlertProtocol?
     var dataStore: DataStoreProtocol?
-    private let timerStatistics: TimerStatistics?
     var model: Results<TimerModelData>?
     var index: Int?
     var timerCounting: Bool? = false
@@ -44,11 +43,10 @@ final class MainViewModell: MainViewModellProtocol {
     private var timerUpdateBool = false
     private let region = Locale.current.regionCode
     
-    init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?, timerNotifications: TimerNotificationsProtocol?, timerDoneAlert: TimerDoneAlertProtocol?, timerAlert: TimerAlertProtocol?) {
+    init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, timerNotifications: TimerNotificationsProtocol?, timerDoneAlert: TimerDoneAlertProtocol?, timerAlert: TimerAlertProtocol?) {
         self.mainRouter = mainRouter
         self.dataStore = dataStore
         self.timerNotifications = timerNotifications
-        self.timerStatistics = timerStatistics
         self.timerDoneAlert = timerDoneAlert
         self.timerAlert = timerAlert
         ifTimerOnNextday()
@@ -69,10 +67,6 @@ final class MainViewModell: MainViewModellProtocol {
     func tapOnTheEditVc(timerModel: TimerModelData, index: Int) {
         guard let predicate = predicateRepeat, let editDayIndex = editDayIndex else { return }
         mainRouter?.showEditViewController(timerModel: timerModel, index: index, predicate: predicate, day: editDayIndex, col: collectionView!)
-    }
-    
-    func remiveTest() {
-        dataStore?.deleteObjectAll()
     }
     
     func setIndex(index: Int?) {

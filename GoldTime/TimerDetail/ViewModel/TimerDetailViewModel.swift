@@ -25,13 +25,12 @@ protocol TimerDetailViewModelProtocol {
     var timerColor: String? { get set }
     func restartUserTarget()
     var tableView: UITableView? { get set }
-    init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, index: Int, predicate: NSPredicate, timerStatistics: TimerStatistics?)
+    init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, index: Int, predicate: NSPredicate)
 }
 
 final class TimerDetailViewModel: TimerDetailViewModelProtocol {
     private let mainRouter: MainRouterProtocol?
     var dataStore: DataStoreProtocol?
-    private let timerStatistics: TimerStatistics?
     var model: Results<TimerModelData>?
     var index: Int?
     var startPauseBool: Bool?
@@ -44,11 +43,10 @@ final class TimerDetailViewModel: TimerDetailViewModelProtocol {
     var timerColor: String?
     var tableView: UITableView?
     
-    init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, index: Int, predicate: NSPredicate, timerStatistics: TimerStatistics?) {
+    init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, index: Int, predicate: NSPredicate) {
         self.mainRouter = mainRouter
         self.dataStore = dataStore
         self.index = index
-        self.timerStatistics = timerStatistics
         self.predicate = predicate
         self.dataStore?.timerArray = realm.objects(TimerModelData.self).filter(predicate)
         model = dataStore?.timerArray

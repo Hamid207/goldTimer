@@ -18,7 +18,6 @@ protocol MainViewModellProtocol {
     var collectionView: UICollectionView? { get set }
     var weekDayCollectionView: UICollectionView? { get set }
     func timerStartStop(timerCounting: Bool, index: Int?, startTime: Date?, stopTime: Date?)
-    func remiveTest()
     func timerTimeUpdate(timerTimeUpdate: Int, index: Int?)
     func pomodoroTimeUpdate(newTime: Int, pomdoroTimerBreakOrWork: Bool, index: Int)
     func timerRemove(modelIndex: TimerModelData, removeBool: Bool, index: Int, view: UIViewController, collectionView: UICollectionView)
@@ -38,5 +37,5 @@ protocol MainViewModellProtocol {
     var viewController: UIViewController? { get set }
     func scrollToIndex(index:Int)
     var timerDoneAlert: TimerDoneAlertProtocol? { get }
-    init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, timerStatistics: TimerStatistics?, timerNotifications: TimerNotificationsProtocol?, timerDoneAlert: TimerDoneAlertProtocol?, timerAlert: TimerAlertProtocol?)
+    init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, timerNotifications: TimerNotificationsProtocol?, timerDoneAlert: TimerDoneAlertProtocol?, timerAlert: TimerAlertProtocol?)
 }

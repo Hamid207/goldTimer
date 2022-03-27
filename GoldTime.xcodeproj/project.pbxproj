@@ -28,7 +28,6 @@
 		6199AB70279B2938000CFB82 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199AB6F279B2938000CFB82 /* MainRouter.swift */; };
 		6199AB73279B2965000CFB82 /* MainAsseblyModelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199AB72279B2965000CFB82 /* MainAsseblyModelBuilder.swift */; };
 		6199AB79279B2A1D000CFB82 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199AB78279B2A1D000CFB82 /* DataStore.swift */; };
-		6199AB7B279B2A35000CFB82 /* TimerStatistics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199AB7A279B2A35000CFB82 /* TimerStatistics.swift */; };
 		6199AB7E279B2A68000CFB82 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199AB7D279B2A68000CFB82 /* Extensions.swift */; };
 		6199AB80279B2A85000CFB82 /* TimerStartStopProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199AB7F279B2A85000CFB82 /* TimerStartStopProtocol.swift */; };
 		6199AB83279B2AA4000CFB82 /* TimerAddProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199AB82279B2AA4000CFB82 /* TimerAddProtocol.swift */; };
@@ -43,12 +42,9 @@
 		6199AB96279B2B6F000CFB82 /* WeekDayData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199AB95279B2B6F000CFB82 /* WeekDayData.swift */; };
 		6199AB98279B2B95000CFB82 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199AB97279B2B95000CFB82 /* MainViewController.swift */; };
 		6199AB9B279B2BB8000CFB82 /* MainViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199AB9A279B2BB8000CFB82 /* MainViewController+Extension.swift */; };
-		6199AB9F279B2C02000CFB82 /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199AB9E279B2C02000CFB82 /* MainCollectionViewCell.swift */; };
 		6199ABA1279B2C24000CFB82 /* MainCollectionViewCelll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199ABA0279B2C24000CFB82 /* MainCollectionViewCelll.swift */; };
 		6199ABA3279B2C4C000CFB82 /* WeekDayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199ABA2279B2C4C000CFB82 /* WeekDayCollectionViewCell.swift */; };
-		6199ABA5279B2C68000CFB82 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199ABA4279B2C68000CFB82 /* MainTableViewCell.swift */; };
 		6199ABA7279B2C8D000CFB82 /* ProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199ABA6279B2C8D000CFB82 /* ProgressBar.swift */; };
-		6199ABAA279B2CCD000CFB82 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199ABA9279B2CCD000CFB82 /* MainViewModel.swift */; };
 		6199ABAC279B2CE1000CFB82 /* MainViewModell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199ABAB279B2CE1000CFB82 /* MainViewModell.swift */; };
 		6199ABAE279B2D10000CFB82 /* AddNewTimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199ABAD279B2D10000CFB82 /* AddNewTimerViewController.swift */; };
 		6199ABB0279B2D29000CFB82 /* AddNewTimerViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6199ABAF279B2D29000CFB82 /* AddNewTimerViewController+Extension.swift */; };
@@ -125,7 +121,6 @@
 		6199AB6F279B2938000CFB82 /* MainRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainRouter.swift; sourceTree = "<group>"; };
 		6199AB72279B2965000CFB82 /* MainAsseblyModelBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAsseblyModelBuilder.swift; sourceTree = "<group>"; };
 		6199AB78279B2A1D000CFB82 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
-		6199AB7A279B2A35000CFB82 /* TimerStatistics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerStatistics.swift; sourceTree = "<group>"; };
 		6199AB7D279B2A68000CFB82 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		6199AB7F279B2A85000CFB82 /* TimerStartStopProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerStartStopProtocol.swift; sourceTree = "<group>"; };
 		6199AB82279B2AA4000CFB82 /* TimerAddProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerAddProtocol.swift; sourceTree = "<group>"; };
@@ -140,12 +135,9 @@
 		6199AB95279B2B6F000CFB82 /* WeekDayData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayData.swift; sourceTree = "<group>"; };
 		6199AB97279B2B95000CFB82 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		6199AB9A279B2BB8000CFB82 /* MainViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainViewController+Extension.swift"; sourceTree = "<group>"; };
-		6199AB9E279B2C02000CFB82 /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
 		6199ABA0279B2C24000CFB82 /* MainCollectionViewCelll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCelll.swift; sourceTree = "<group>"; };
 		6199ABA2279B2C4C000CFB82 /* WeekDayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDayCollectionViewCell.swift; sourceTree = "<group>"; };
-		6199ABA4279B2C68000CFB82 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
 		6199ABA6279B2C8D000CFB82 /* ProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBar.swift; sourceTree = "<group>"; };
-		6199ABA9279B2CCD000CFB82 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		6199ABAB279B2CE1000CFB82 /* MainViewModell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModell.swift; sourceTree = "<group>"; };
 		6199ABAD279B2D10000CFB82 /* AddNewTimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewTimerViewController.swift; sourceTree = "<group>"; };
 		6199ABAF279B2D29000CFB82 /* AddNewTimerViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddNewTimerViewController+Extension.swift"; sourceTree = "<group>"; };
@@ -279,7 +271,6 @@
 			isa = PBXGroup;
 			children = (
 				6199AB78279B2A1D000CFB82 /* DataStore.swift */,
-				6199AB7A279B2A35000CFB82 /* TimerStatistics.swift */,
 				615E667C27A9624E00446FF8 /* TimerNotifications.swift */,
 			);
 			path = Service;
@@ -349,10 +340,8 @@
 		6199AB9D279B2BE3000CFB82 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				6199AB9E279B2C02000CFB82 /* MainCollectionViewCell.swift */,
 				6199ABA0279B2C24000CFB82 /* MainCollectionViewCelll.swift */,
 				6199ABA2279B2C4C000CFB82 /* WeekDayCollectionViewCell.swift */,
-				6199ABA4279B2C68000CFB82 /* MainTableViewCell.swift */,
 				6199ABA6279B2C8D000CFB82 /* ProgressBar.swift */,
 			);
 			path = Cell;
@@ -361,7 +350,6 @@
 		6199ABA8279B2CAA000CFB82 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				6199ABA9279B2CCD000CFB82 /* MainViewModel.swift */,
 				6199ABAB279B2CE1000CFB82 /* MainViewModell.swift */,
 				613ED38727D2398C00D50C04 /* MainViewModellProtocol.swift */,
 			);
@@ -743,7 +731,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6199ABC4279B2E6B000CFB82 /* TimerDetailViewModel.swift in Sources */,
-				6199ABA5279B2C68000CFB82 /* MainTableViewCell.swift in Sources */,
 				6199AB98279B2B95000CFB82 /* MainViewController.swift in Sources */,
 				6199AB79279B2A1D000CFB82 /* DataStore.swift in Sources */,
 				61C15D3E27A6E04800A721B8 /* EditWeekDayTableViewCell.swift in Sources */,
@@ -764,7 +751,6 @@
 				6199AB8D279B2AEE000CFB82 /* SentAlertActionDelegate.swift in Sources */,
 				6199AB73279B2965000CFB82 /* MainAsseblyModelBuilder.swift in Sources */,
 				619210B427BD2E170098F455 /* TimerDoneAlert.swift in Sources */,
-				6199ABAA279B2CCD000CFB82 /* MainViewModel.swift in Sources */,
 				619210B827BD60370098F455 /* TimerAlert.swift in Sources */,
 				6199ABAE279B2D10000CFB82 /* AddNewTimerViewController.swift in Sources */,
 				61EBEC3527EA2066009EC911 /* EditTimerHeaderTableview.swift in Sources */,
@@ -788,7 +774,6 @@
 				6199ABB5279B2D80000CFB82 /* AddNewTimerTableViewCell.swift in Sources */,
 				6121F8D927A47AF1000EB44B /* SaveButtonDelegate.swift in Sources */,
 				6199AB94279B2B59000CFB82 /* TimerStatisticsEnum..swift in Sources */,
-				6199AB7B279B2A35000CFB82 /* TimerStatistics.swift in Sources */,
 				6199AB96279B2B6F000CFB82 /* WeekDayData.swift in Sources */,
 				6199AB85279B2AB4000CFB82 /* TimerRemoveDelegate.swift in Sources */,
 				6199ABB0279B2D29000CFB82 /* AddNewTimerViewController+Extension.swift in Sources */,
@@ -800,7 +785,6 @@
 				6199AB6D279B2918000CFB82 /* TabbarController.swift in Sources */,
 				6121F8D527A46BC5000EB44B /* SentTimerTimeDelegate.swift in Sources */,
 				61C15D3C27A6E01D00A721B8 /* EditTimerPickerTableViewCell.swift in Sources */,
-				6199AB9F279B2C02000CFB82 /* MainCollectionViewCell.swift in Sources */,
 				6199ABB8279B2DB4000CFB82 /* AddNewTimerViewModel.swift in Sources */,
 				6199ABA7279B2C8D000CFB82 /* ProgressBar.swift in Sources */,
 				6199AB92279B2B2C000CFB82 /* UserStatisticsData.swift in Sources */,

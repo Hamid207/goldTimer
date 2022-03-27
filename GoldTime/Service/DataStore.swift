@@ -12,22 +12,12 @@ let realm = try! Realm()
 protocol DataStoreProtocol {
     var timerArray: Results<TimerModelData>? { get set }
     var lastIndex: Results<LastIndex>? { get set }
-    var timerArrayHelper: Results<TimerModelData>? { get set }
     var lastUseTimerIndex: Results<LastUseTimerIndex>? { get set }
-    var userStaticsArray: Results<UserStatisticsData>? { get set }
-    func startStop()
-    var startPauseBool: Bool? { get set }
-    func timerStart(index: Int, startPauseBool: Bool?, completion: @escaping (Bool) -> Void)
     func saveObject(_ timerModel: TimerModelData)
     func saveLastIndex(_ lastIndexModel: LastIndex)
     func deleteLastIndex()
     func deleteObject(_ timerModel: TimerModelData)
     func userStaticSaveObject(_ userStaticModel: UserStatisticsData)
-    func deleteObjectAll()
-    var index: Int? { get set }
-    var indexUserDefolts: UserDefaults? { get set }
-    var timerBoolUserDefolts: UserDefaults? { get set }
-    var timerBool: Bool? { get set }
     func predicateFilter(predicate: NSPredicate?)
     func saveTimerStatistics(key: String, value: Int, index: Int?)
     func findOutStatistics(days: TimerStatisticsEnum, index: Int?, predicate: NSPredicate) -> (Int, [Int])
@@ -39,26 +29,11 @@ final class DataStore: DataStoreProtocol {
     var timerArrayHelper: Results<TimerModelData>?
     var lastUseTimerIndex: Results<LastUseTimerIndex>?
     var userStaticsArray: Results<UserStatisticsData>?
-    private var timer = Timer()
-    var startPauseBool: Bool?
-    var index: Int?
-    var timerBoolUserDefolts: UserDefaults?
-    var timerBool: Bool?
-    var timerNonStart: Bool? = false
-    var indexUserDefolts: UserDefaults?
     private var predecate: NSPredicate!
     
     init() {
         timerArray = realm.objects(TimerModelData.self)
         lastIndex = realm.objects(LastIndex.self)
-        
-        timerArrayHelper = realm.objects(TimerModelData.self)//nil
-        userStaticsArray = realm.objects(UserStatisticsData.self)//nil
-        
-        indexUserDefolts = UserDefaults.standard
-        timerBoolUserDefolts = UserDefaults.standard
-        index = indexUserDefolts?.object(forKey: "index") as? Int ?? 0
-        timerBool = timerBoolUserDefolts?.object(forKey: "startBool") as? Bool ?? false
     }
     
     func predicateFilter(predicate: NSPredicate?) {
@@ -106,80 +81,6 @@ final class DataStore: DataStoreProtocol {
         return (time, timeArray)
     }
     
-    
-    
-    
-    func timerStart(index: Int, startPauseBool: Bool?, completion: @escaping (Bool) -> Void) {
-        self.index = index
-        timerBoolUserDefolts?.set(self.timerBool, forKey: "startBool")
-        indexUserDefolts?.set(self.index, forKey: "index")
-        //        for i in timerArray! {
-        //            if i.startFix == true{
-        //                completion(true)
-        //            }else {
-        //               completion(false)
-        //            }
-        //        }
-        //        print("DATASTORE VC startPauseBool -=-= \(startPauseBool )")
-        //        DispatchQueue.main.async { [weak self] in
-        ////            print("DaTA STORE THREAD === \(Thread.printCurrent())")
-        //            guard let self = self else { return }
-        //            self.index = index
-        //            if startPauseBool! == false {
-        //                print("ISDEMIRRR??")
-        ////                print("FALSEEEE ---DATASTOREEE")
-        //                self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.startStop), userInfo: nil, repeats: true)
-        //                self.timerNonStart = true
-        //                print("START1 = \(self.timerArray)")
-        //                try! realm.write {
-        //                    self.timerArray?[index].startFix = true
-        //    //                startFix = true
-        //                }
-        //                print("START2 = \(self.timerArray)")
-        //            }else if startPauseBool! == true {
-        ////                print("PAUSE=== \(Thread.printCurrent())")
-        //                print("ISDEYIRRR??")
-        //                self.timer.invalidate()
-        ////                print("TRUEEE +++ DATASTOREEE")
-        //                self.timerNonStart = false
-        //                print("PAUSE1 = \(self.timerArray)")
-        //                try! realm.write {
-        //                    self.timerArray?[index].startFix = false
-        ////                    print(self.timerArray)
-        //    //                startFix = true
-        //                }
-        //                print("PAUSE2 = \(self.timerArray)")
-        //            }
-        //        }
-    }
-    
-    @objc func timerStop() {
-        //        timer.invalidate()
-    }
-    
-    @objc func startStop() {
-        //        try! realm.write {
-        ////            print("INDEXXDatastore -=-=- \(index)")
-        //            timerArray?[index].seconds -= 1
-        //            if timerArray?[index].seconds == -1 {
-        //                timerArray?[index].minute -= 1
-        //                timerArray?[index].seconds = 59
-        //            }
-        //
-        //            if timerArray?[index].minute == -1 {
-        //                timerArray?[index].hourse -= 1
-        //                timerArray?[index].minute = 59
-        //            }
-        //
-        //            if timerArray?[index].hourse == 0 && timerArray?[index].minute == 0 && timerArray?[index].seconds == 0 {
-        //                timer.invalidate()
-        //                timerArray?[index].hourse = timerArray?[index].statickHourese ?? 0
-        //                timerArray?[index].minute = timerArray?[index].statickMinute ?? 0
-        //                timerArray?[index].seconds = timerArray?[index].statickSeconds ?? 0
-        //            }
-        //        }
-    }
-    
     //save object DB
     func saveObject(_ timerModel: TimerModelData) {
         try! realm.write {
@@ -198,12 +99,6 @@ final class DataStore: DataStoreProtocol {
         try! realm.write {
             realm.delete(timerModel)
         }
-    }
-    
-    func deleteObjectAll() {
-        //    try! realm.write {
-        //      realm.deleteAll()
-        //    }
     }
     
     //Save last timer use index
