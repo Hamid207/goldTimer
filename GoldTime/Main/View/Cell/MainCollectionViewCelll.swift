@@ -550,7 +550,7 @@ final class MainCollectionViewCelll: UICollectionViewCell {
         
         contentView.addSubview(editView)
         editView.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
-        editView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
+        editView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
         editView.heightAnchor.constraint(equalToConstant: 35).isActive = true
         editView.widthAnchor.constraint(equalToConstant: 35).isActive = true
         
@@ -565,7 +565,7 @@ final class MainCollectionViewCelll: UICollectionViewCell {
         
         addSubview(removeView)
         removeView.topAnchor.constraint(equalTo: topAnchor, constant: 15).isActive = true
-        removeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+        removeView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
         removeView.heightAnchor.constraint(equalToConstant: 35).isActive = true
         removeView.widthAnchor.constraint(equalToConstant: 35).isActive = true
         
@@ -612,9 +612,9 @@ final class MainCollectionViewCelll: UICollectionViewCell {
         timerLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5).isActive = true
         
         contentView.addSubview(startButton)
-        startButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15).isActive = true
-        startButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-        startButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+        startButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10).isActive = true
+        startButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
+        startButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
         //        startButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
         startButton.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 1/6).isActive = true
         startButton.addTarget(self, action: #selector(startStopButtonAction), for: .touchDown)

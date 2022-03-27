@@ -20,6 +20,19 @@ final class TimerDetailTableView: UITableViewCell {
     private var timerColor: String = "#15C08E"
     //  private let barChartView = BarChartView()
     
+    private let activityIndicator: UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .black
+        if #available(iOS 13.0, *) {
+            activityIndicator.style = .large
+        } else {
+            // Fallback on earlier versions
+        }
+        return activityIndicator
+    } ()
+    
     private let staticsLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +55,7 @@ final class TimerDetailTableView: UITableViewCell {
     
     //segmentControll
     private let statisticsSegmetControll: UISegmentedControl = {
-        var segmentControllArray = ["7 day", "30 day", "3 month", "6 month"]
+        var segmentControllArray = ["7 days", "30 days", "3 months", "6 months"]
         let segment = UISegmentedControl(items: segmentControllArray)
         segment.selectedSegmentIndex = 0
         segment.translatesAutoresizingMaskIntoConstraints = false
@@ -89,7 +102,7 @@ final class TimerDetailTableView: UITableViewCell {
     private let resetTargetButton: UIButton = {
         let button = UIButton(type: .roundedRect)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Restart the target", for: .normal)
+        button.setTitle("Restart the goal", for: .normal)
         //        button.titleLabel?.font = UIFont.systemFont(ofSize: 25, weight: .light)
         return button
     }()
@@ -129,7 +142,6 @@ final class TimerDetailTableView: UITableViewCell {
             guard let time = statisticsTime else { return }
             self.statisticTargetlabel.text = self.timeString(time: TimeInterval(time))
             self.timerColor = timerColor
-            
             let formatter = NumberFormatter()
             formatter.numberStyle = .decimal
             formatter.maximumFractionDigits = 2
@@ -161,6 +173,7 @@ final class TimerDetailTableView: UITableViewCell {
             
             let timerTime = userTarget * timerTime
             self.targetHourseLabel.text = self.timeStringTarget(time: TimeInterval(timerTime))
+        
             //            self.barChartView.update(timeArray: timeArray, days: self.statistics, timerTime: timerTime)
         }
     }
@@ -225,6 +238,10 @@ final class TimerDetailTableView: UITableViewCell {
         statisticTargetUIView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         statisticTargetUIView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
         statisticTargetUIView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+    
+        statisticTargetUIView.addSubview(activityIndicator)
+        activityIndicator.centerYAnchor.constraint(equalTo: statisticTargetUIView.centerYAnchor).isActive = true
+        activityIndicator.centerXAnchor.constraint(equalTo: statisticTargetUIView.centerXAnchor).isActive = true
         
         statisticTargetUIView.addSubview(statisticTargetlabel)
         statisticTargetlabel.topAnchor.constraint(equalTo: statisticTargetUIView.topAnchor, constant: 20).isActive = true

@@ -201,7 +201,7 @@ final class MainViewModell: MainViewModellProtocol {
             //User hedefe catanda alert
             if dataStore?.timerArray?[index].theTimerIsFinishedHowManyTimes == dataStore?.timerArray?[index].userTarget {
                 guard let viewController = viewController else { return }
-                timerAlert?.alertOk(viewController: viewController, alertTitle: "Siz hedefe catdiz", alertMessage: nil, preferredStyle: .default)
+                timerAlert?.alertOk(viewController: viewController, alertTitle: "You reached the goal!", alertMessage: nil, preferredStyle: .default)
             }
         }
         

@@ -31,7 +31,7 @@ final class AddWeekDayTableViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
-        label.text = "All week day"
+        label.text = "All days of the week"
         return label
     }()
     
