@@ -7,7 +7,7 @@
 
 import RealmSwift
 
-class LastIndex: Object {
+final class LastIndex: Object {
   @Persisted var index: Int
   
   convenience init(index: Int) {

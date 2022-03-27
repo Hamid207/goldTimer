@@ -9,11 +9,6 @@ import UIKit
 
 final class MainViewController: UIViewController {
     
-    //    var tableView = UITableView(frame: .zero, style: .plain)
-    //        var headerBool = true
-    //        let range: Range<CGFloat> = (-100..<0)
-    //        var lastContentOffset: CGFloat = 0
-    
     var viewModell: MainViewModellProtocol?
 
     let weekDayView = UIView()

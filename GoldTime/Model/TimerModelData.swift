@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class TimerModelData: Object {
+final class TimerModelData: Object {
     @Persisted var name: String?
     @Persisted var index: Int
     @Persisted var timerTime: Int

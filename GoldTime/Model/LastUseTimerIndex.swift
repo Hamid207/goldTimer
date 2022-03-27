@@ -7,6 +7,6 @@
 
 import RealmSwift
 
-class LastUseTimerIndex: Object {
+final class LastUseTimerIndex: Object {
     @Persisted var lastUseTimerIndex: Int?
 }

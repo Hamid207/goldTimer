@@ -12,7 +12,6 @@ let realm = try! Realm()
 protocol DataStoreProtocol {
     var timerArray: Results<TimerModelData>? { get set }
     var lastIndex: Results<LastIndex>? { get set }
-    var lastUseTimerIndex: Results<LastUseTimerIndex>? { get set }
     func saveObject(_ timerModel: TimerModelData)
     func saveLastIndex(_ lastIndexModel: LastIndex)
     func deleteLastIndex()
@@ -26,9 +25,6 @@ protocol DataStoreProtocol {
 final class DataStore: DataStoreProtocol {
     var timerArray: Results<TimerModelData>?
     var lastIndex: Results<LastIndex>?
-    var timerArrayHelper: Results<TimerModelData>?
-    var lastUseTimerIndex: Results<LastUseTimerIndex>?
-    var userStaticsArray: Results<UserStatisticsData>?
     private var predecate: NSPredicate!
     
     init() {

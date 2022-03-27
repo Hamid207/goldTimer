@@ -50,11 +50,10 @@ final class TimerDetailViewModel: TimerDetailViewModelProtocol {
         self.predicate = predicate
         self.dataStore?.timerArray = realm.objects(TimerModelData.self).filter(predicate)
         model = dataStore?.timerArray
-//        timerTime = model?[index].timerTime
-//        timerDone = model?[index].theTimerIsFinishedHowManyTimes
-//        userTagret = model?[index].userTarget
-//        timerColor = model?[index].timerColor
         reload()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            self?.tableView?.reloadData()
+        }
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: Notification.Name("timerDone"), object: nil)
 
     }

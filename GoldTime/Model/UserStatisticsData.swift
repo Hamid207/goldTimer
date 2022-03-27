@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class UserStatisticsData: Object {
+final class UserStatisticsData: Object {
     @Persisted var timerstatistic: String?
     
     convenience init(timerstatistic: String?) {
