@@ -146,7 +146,7 @@ final class MainCollectionViewCelll: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
 //        label.font = UIFont.monospacedDigitSystemFont(ofSize: 60, weight: .regular)
-        label.font = UIFont.init(name: "Hiragino Maru Gothic ProN", size: 60)
+        label.font = UIFont.init(name: "Hiragino Maru Gothic ProN", size: 55)
         return label
     }()
     

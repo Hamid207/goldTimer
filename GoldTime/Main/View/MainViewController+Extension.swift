@@ -38,8 +38,8 @@ extension MainViewController {
         weekDayView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1/14).isActive = true
         
         weekDayView.addSubview(weekDayCollectionView)
-        weekDayCollectionView.layer.borderWidth = 1
-        weekDayCollectionView.layer.borderColor = UIColor.black.cgColor
+//        weekDayCollectionView.layer.borderWidth = 1
+//        weekDayCollectionView.layer.borderColor = UIColor.black.cgColor
         weekDayCollectionView.layer.cornerRadius = 5
         weekDayCollectionView.delegate = self
         weekDayCollectionView.dataSource = self
