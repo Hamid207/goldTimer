@@ -159,7 +159,7 @@ final class TimerDetailTableView: UITableViewCell {
                 self.progressBar.progress = 1.0
                 self.resetTargetButton.isHidden = false
             }else if userTarget == 0 {
-                self.statisticTargetlabel.centerYAnchor.constraint(equalTo: self.statisticTargetUIView.centerYAnchor).isActive = true
+                self.statisticTargetlabel.centerYAnchor.constraint(equalTo:self.statisticTargetUIView.centerYAnchor).isActive = true
                 self.targetDoneLabel.text = ""
                 self.targetHourseLabel.isHidden = true
                 self.progressBar.isHidden = true

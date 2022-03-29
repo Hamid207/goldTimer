@@ -9,7 +9,7 @@ import UIKit
 
 class EditTimerHeaderTableview: UITableViewHeaderFooterView {
 
-    var headerNameArray = ["", "", "Add day", "Colors", ""]
+    var headerNameArray = ["", "", "TRACK GOALS ON WHICH DAYS?", "CHOOSE A COLOR", ""]
     
     private let headerLabel: UILabel = {
         let label = UILabel()

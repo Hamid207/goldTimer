@@ -12,6 +12,7 @@ let realm = try! Realm()
 protocol DataStoreProtocol {
     var timerArray: Results<TimerModelData>? { get set }
     var lastIndex: Results<LastIndex>? { get set }
+//    var firstRunApp: Results<FirstRunApp>? { get set } 
     func saveObject(_ timerModel: TimerModelData)
     func saveLastIndex(_ lastIndexModel: LastIndex)
     func deleteLastIndex()
@@ -25,11 +26,13 @@ protocol DataStoreProtocol {
 final class DataStore: DataStoreProtocol {
     var timerArray: Results<TimerModelData>?
     var lastIndex: Results<LastIndex>?
+//    var firstRunApp: Results<FirstRunApp>?
     private var predecate: NSPredicate!
     
     init() {
         timerArray = realm.objects(TimerModelData.self)
         lastIndex = realm.objects(LastIndex.self)
+//        firstRunApp = realm.objects(FirstRunApp.self)
     }
     
     func predicateFilter(predicate: NSPredicate?) {
@@ -110,6 +113,13 @@ final class DataStore: DataStoreProtocol {
             realm.delete(lastIndex!)
         }
     }
+    
+//    //FirstRunAPp
+//    func saveObject(_ firstRun: FirstRunApp) {
+//        try! realm.write {
+//            realm.add(firstRun)
+//        }
+//    }
     
 }
 
