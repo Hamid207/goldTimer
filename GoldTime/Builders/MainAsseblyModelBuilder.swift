@@ -14,7 +14,7 @@ protocol MainAsseblyModelBuilderProtocol {
   func creatEditModule(mainRouter: MainRouterProtocol, timerModel: TimerModelData, index: Int, predicate: NSPredicate, day: Int, col: UICollectionView) -> UIViewController
 }
 
-class MainAsseblyModelBuilder: MainAsseblyModelBuilderProtocol {
+final class MainAsseblyModelBuilder: MainAsseblyModelBuilderProtocol {
   //MARK: - MainViewController
   func creatMainModule(mainRouter: MainRouterProtocol) -> UIViewController {
     let view = MainViewController()

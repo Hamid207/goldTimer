@@ -75,7 +75,7 @@ extension TimerDetailViewController: UITableViewDataSource {
         cell.index = indexPath.row
 //        let index = (viewModel?.index)!
 //        let item = viewModel?.model?[index]
-        cell.update(statisticsTime: viewModel?.statisticsTime, timeArray: (viewModel?.timeDayArray)!, timerTime: viewModel?.timerTime ?? 0, userTarget: viewModel?.userTagret ?? 0, timerDone: viewModel?.timerDone ?? 0, timerColor: viewModel?.timerColor ??  "#15C08E")
+        cell.update(statisticsTime: viewModel?.statisticsTime, timeArray: viewModel?.timeDayArray ?? [0], timerTime: viewModel?.timerTime ?? 0, userTarget: viewModel?.userTagret ?? 0, timerDone: viewModel?.timerDone ?? 0, timerColor: viewModel?.timerColor ??  "#15C08E")
         return cell
     }
 }

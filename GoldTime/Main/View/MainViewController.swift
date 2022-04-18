@@ -56,7 +56,6 @@ final class MainViewController: UIViewController {
         //    viewModel?.collectionView = mainCollectionView
         viewModell?.collectionView = mainCollectionView
         viewModell?.weekDayCollectionView = weekDayCollectionView
-
     }
     
     

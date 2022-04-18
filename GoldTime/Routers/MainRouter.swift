@@ -20,7 +20,7 @@ protocol MainRouterProtocol: MainRouterNC{
     func popVC()
 }
 
-class MainRouter: MainRouterProtocol {
+final class MainRouter: MainRouterProtocol {
     var mainNaviGationController: UINavigationController?
     var mainAssemblyBuilder: MainAsseblyModelBuilderProtocol?
     

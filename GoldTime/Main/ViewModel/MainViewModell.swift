@@ -54,6 +54,7 @@ final class MainViewModell: MainViewModellProtocol {
         model = dataStore?.timerArray
         endOFTheDayViewUpdate()
         editDayIndex = toDay
+        print(dataStore?.timerArray?[1].timerStatistics)
     }
     
     func tapTHeAddNewTimerVc() {
@@ -147,6 +148,7 @@ final class MainViewModell: MainViewModellProtocol {
                     self.index = nil
                 }
                 DispatchQueue.main.async { [weak self] in
+                    self?.timerNotifications?.removeNotifications(withIdentifires: ["MyUniqueIdentifire"])
                     self?.remove(index)
                 }
             }
@@ -362,7 +364,7 @@ final class MainViewModell: MainViewModellProtocol {
                     guard let startTime = dataStore?.timerArray?[i].startTimer else { return }
                     let time = calcRestartTime(start: startTime, stop: Date().yesterdayEndOfDay)
                     let diff = Date().timeIntervalSince(time)//startdan gunun sonuna olan vaxt
-                    if (dataStore?.timerArray?[i].timerTime)! < Int(diff) {
+                    if (dataStore?.timerArray?[i].timerTime)! <= Int(diff) {
                         addTimeStatistic = dataStore?.timerArray?[i].timerTime
                     }else {
                         addTimeStatistic = Int(diff)
@@ -448,8 +450,8 @@ final class MainViewModell: MainViewModellProtocol {
     private func collectionViewReload() {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            self.collectionView?.reloadData()
             self.weekDayCollectionView?.reloadData()
+            self.collectionView?.reloadData()
         }
     }
     
