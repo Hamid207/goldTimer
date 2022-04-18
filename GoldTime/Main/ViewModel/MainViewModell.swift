@@ -54,7 +54,6 @@ final class MainViewModell: MainViewModellProtocol {
         model = dataStore?.timerArray
         endOFTheDayViewUpdate()
         editDayIndex = toDay
-        print(dataStore?.timerArray?[1].timerStatistics)
     }
     
     func tapTHeAddNewTimerVc() {

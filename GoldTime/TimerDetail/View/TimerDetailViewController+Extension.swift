@@ -27,6 +27,7 @@ extension TimerDetailViewController {
         timerDetailTableView.register(TimerDetailTableView.self, forCellReuseIdentifier: "TimerDetailTableViewId")
         timerDetailTableView.allowsSelection = false // tableViewnu basmaq olmur
         timerDetailTableView.backgroundColor = .white
+        timerDetailTableView.isScrollEnabled = false
 //        tableView.tableHeaderView = UIView()
         timerDetailTableView.tableFooterView = UIView()
         timerDetailTableView.separatorStyle = .none
