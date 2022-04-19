@@ -20,7 +20,9 @@ protocol DataStoreProtocol {
     func userStaticSaveObject(_ userStaticModel: UserStatisticsData)
     func predicateFilter(predicate: NSPredicate?)
     func saveTimerStatistics(key: String, value: Int, index: Int?)
+
     func findOutStatistics(days: TimerStatisticsEnum, index: Int?, predicate: NSPredicate) -> (Int, [Int])
+    func timerStatisticsNotNil(days: TimerStatisticsEnum, index: Int?, predicate: NSPredicate, completion: ([String], [Int]) -> Void)
 }
 
 final class DataStore: DataStoreProtocol {
@@ -49,6 +51,41 @@ final class DataStore: DataStoreProtocol {
         try! realm.write{
             guard let index = index else { return }
             timerArray?[index].timerStatistics[key] = value
+        }
+    }
+    
+ 
+    //MARK: - TimerStatisticsNotNil != 0
+    func timerStatisticsNotNil(days: TimerStatisticsEnum, index: Int?, predicate: NSPredicate, completion: ([String], [Int]) -> Void) {
+        var timeArray = [Int]()
+        var timerTime = [Int]()
+        var arrayDays = [String]()
+        if let index = index {
+            var dateArray = [String]()
+            var startDate = Calendar.current.date(byAdding: .day, value: days.rawValue, to: Date())! // first date
+            let endDate = Date() // last date
+            
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            
+            while startDate <= endDate {
+                dateArray.append(formatter.string(from: startDate))
+                startDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
+            }
+            
+            for days in dateArray {
+                timeArray.append((timerArray?[index].timerStatistics[days]) ?? 0)
+                timerTime = timeArray.filter{$0 != 0}
+                if timerArray?[index].timerStatistics[days] != nil {
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "yyyy-MM-dd"
+                    dateFormatter.timeZone = TimeZone(identifier: "UTC")
+                    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                    let date = dateFormatter.date(from: days)
+                    arrayDays.append(date?.getFormattedDatee(format: "MMM d") ?? "")
+                }
+            }
+            completion(arrayDays, timerTime)
         }
     }
     

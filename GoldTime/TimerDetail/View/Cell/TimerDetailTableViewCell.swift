@@ -13,6 +13,13 @@ final class TimerDetailTableView: UITableViewCell {
     weak var timerStatisticsDelegate: SentTimerStatisticDelegate?
     weak var restartUserTargetDelegate: RestartUserTargetDelegate?
     
+    private let daysStatisticsTableView = UITableView(frame: .zero, style:  .plain)
+    private var statisticsDateDays: [String]?
+    private var statisticsTimerTime: [Int]?
+    private var timerTime: Int?
+    private var timerDone: Bool?
+
+    
     var index: Int?
     private var statistics = 7
     private var userTimerStatistic: Int?
@@ -107,6 +114,12 @@ final class TimerDetailTableView: UITableViewCell {
         return button
     }()
     
+    private let tableViewUIview: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private func timeString(time: TimeInterval) -> String {
         let hour = Int(time) / 3600
         let minute = Int(time) / 60 % 60
@@ -133,6 +146,8 @@ final class TimerDetailTableView: UITableViewCell {
         super.layoutSubviews()
         statisticTargetUIView.layer.cornerRadius = 5.0
         statisticTargetUIView.setupShadow(opacity: 0.2, radius: 10, offset: .init(width: 0, height: 0), color: .black)
+        tableViewUIview.layer.cornerRadius = 5.0
+        tableViewUIview.setupShadow(opacity: 0.2, radius: 10, offset: .init(width: 0, height: 0), color: .black)
     }
     
     
@@ -140,6 +155,7 @@ final class TimerDetailTableView: UITableViewCell {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             guard let time = statisticsTime else { return }
+            self.timerTime = timerTime
             self.statisticTargetlabel.text = self.timeString(time: TimeInterval(time))
             self.timerColor = timerColor
             let formatter = NumberFormatter()
@@ -167,15 +183,23 @@ final class TimerDetailTableView: UITableViewCell {
             }else {
                 self.resetTargetButton.isHidden = true
                 self.targetDoneLabel.text = "\(timerDone)/\(userTarget)"
+                print("progress ===-=-=-=-=-=-=- \(progresResult)")
                 self.progressBar.progress = CGFloat(progresResult)
             }
             
             
             let timerTime = userTarget * timerTime
             self.targetHourseLabel.text = self.timeStringTarget(time: TimeInterval(timerTime))
-        
             //            self.barChartView.update(timeArray: timeArray, days: self.statistics, timerTime: timerTime)
+            
         }
+    }
+    
+    func daysStatisticsUpdate(statisticsDateDays: [String], timerTime: [Int]) {
+        self.statisticsDateDays = statisticsDateDays
+        self.statisticsTimerTime = timerTime
+        self.daysStatisticsTableView.reloadData()
+
     }
     
     private func calculatePercentage(value:Double,percentageVal:Double, timerTime: Double)->Double {
@@ -215,9 +239,7 @@ final class TimerDetailTableView: UITableViewCell {
     }
     
     @objc private func restartTargetButtonAction() {
-        
         restartUserTargetDelegate?.restartTarget()
-        
     }
     
     private  func itemSetup() {
@@ -269,5 +291,46 @@ final class TimerDetailTableView: UITableViewCell {
         progressBar.leadingAnchor.constraint(equalTo: statisticTargetUIView.leadingAnchor, constant: 15).isActive = true
         progressBar.trailingAnchor.constraint(equalTo: statisticTargetUIView.trailingAnchor, constant: -15).isActive = true
         progressBar.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        
+//        addSubview(tableViewUIview)
+//        tableViewUIview.topAnchor.constraint(equalTo: statisticTargetUIView.bottomAnchor, constant: 20).isActive = true
+//        tableViewUIview.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
+//        tableViewUIview.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor,constant: -15).isActive = true
+//        tableViewUIview.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
+        
+        contentView.addSubview(daysStatisticsTableView)
+        daysStatisticsTableView.delegate = self
+        daysStatisticsTableView.dataSource = self
+        daysStatisticsTableView.register(DasysStatisticsTableViewCell.self, forCellReuseIdentifier: "DasysStatisticsTablewViewCellID")
+        daysStatisticsTableView.allowsSelection = false // tableViewnu basmaq olmur
+        daysStatisticsTableView.backgroundColor = .white
+        daysStatisticsTableView.tableFooterView = UIView()
+//        daysStatisticsTableView.separatorStyle = .none
+        daysStatisticsTableView.translatesAutoresizingMaskIntoConstraints = false
+        daysStatisticsTableView.topAnchor.constraint(equalTo: statisticTargetUIView.bottomAnchor, constant: 10).isActive = true
+        daysStatisticsTableView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 15).isActive = true
+        daysStatisticsTableView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor,constant: -15).isActive = true
+        daysStatisticsTableView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0).isActive = true
     }
 }
+
+extension TimerDetailTableView: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return statisticsDateDays?.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "DasysStatisticsTablewViewCellID", for: indexPath) as! DasysStatisticsTableViewCell
+        let days = statisticsDateDays?[indexPath.row]
+        let time = statisticsTimerTime?[indexPath.row]
+        if timerTime == time {
+            timerDone = true
+        }else {
+            timerDone = false
+        }
+        cell.update(dateLabel: days!, timeLabel: time!, timerDone: timerDone ?? false)
+        return cell
+    }
+    
+}
+
