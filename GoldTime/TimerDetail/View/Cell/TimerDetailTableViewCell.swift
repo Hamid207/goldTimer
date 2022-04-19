@@ -136,6 +136,13 @@ final class TimerDetailTableView: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         itemSetup()
+        NotificationCenter.default.addObserver(self, selector: #selector(reload), name: Notification.Name("timerDone"), object: nil)
+    }
+    
+    @objc func reload() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
+            self.daysStatisticsTableView.reloadData()
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -158,13 +165,37 @@ final class TimerDetailTableView: UITableViewCell {
             self.timerTime = timerTime
             self.statisticTargetlabel.text = self.timeString(time: TimeInterval(time))
             self.timerColor = timerColor
+            var done = Double()
+            done = Double(timerDone)
             let formatter = NumberFormatter()
             formatter.numberStyle = .decimal
             formatter.maximumFractionDigits = 2
             formatter.decimalSeparator = ""
             formatter.groupingSeparator = ""
+            switch timerDone {
+                case 1:
+                    done = 0.1
+                case 2:
+                    done = 0.2
+                case 3:
+                    done = 0.3
+                case 4:
+                    done = 0.4
+                case 5:
+                    done = 0.5
+                case 6:
+                    done = 0.6
+                case 7:
+                    done = 0.7
+                case 8:
+                    done = 0.8
+                case 9:
+                    done = 0.9
+                default:
+                    break
+            }
             
-            let number = NSNumber(value: self.calculatePercentage(value: Double(timerDone), percentageVal: 100, timerTime: Double(userTarget)))
+            let number = NSNumber(value: self.calculatePercentage(value: Double(done), percentageVal: 100, timerTime: Double(userTarget)))
             let formatt = formatter.string(from: number)
             let progresResult = Float(String(formatt ?? "0").PadLeft(totalWidth: 2, byString: ".0")) ?? 0.0
             
@@ -183,15 +214,12 @@ final class TimerDetailTableView: UITableViewCell {
             }else {
                 self.resetTargetButton.isHidden = true
                 self.targetDoneLabel.text = "\(timerDone)/\(userTarget)"
-                print("progress ===-=-=-=-=-=-=- \(progresResult)")
                 self.progressBar.progress = CGFloat(progresResult)
             }
             
             
             let timerTime = userTarget * timerTime
             self.targetHourseLabel.text = self.timeStringTarget(time: TimeInterval(timerTime))
-            //            self.barChartView.update(timeArray: timeArray, days: self.statistics, timerTime: timerTime)
-            
         }
     }
     
@@ -199,7 +227,6 @@ final class TimerDetailTableView: UITableViewCell {
         self.statisticsDateDays = statisticsDateDays
         self.statisticsTimerTime = timerTime
         self.daysStatisticsTableView.reloadData()
-
     }
     
     private func calculatePercentage(value:Double,percentageVal:Double, timerTime: Double)->Double {

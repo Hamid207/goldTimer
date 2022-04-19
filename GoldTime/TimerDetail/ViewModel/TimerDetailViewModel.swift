@@ -45,7 +45,6 @@ final class TimerDetailViewModel: TimerDetailViewModelProtocol {
     var tableView: UITableView?
     private var statisticsDateDays: [String]?
     private var statisticsTimeDays: [Int]?
-    private var statisticsDays: [String: Int]?
     
     init(mainRouter: MainRouterProtocol?, dataStore: DataStoreProtocol?, index: Int, predicate: NSPredicate) {
         self.mainRouter = mainRouter
@@ -76,7 +75,11 @@ final class TimerDetailViewModel: TimerDetailViewModelProtocol {
             self.userTagret = self.model?[index].userTarget
             self.timerColor = self.model?[index].timerColor
             self.statisticsStart()
-            self.tableView?.reloadData()
+            self.dataStore?.timerStatisticsNotNil(days: .week, index: index, predicate: self.predicate, completion: { timerDays, timerTime in
+                self.statisticsDateDays = timerDays
+                self.statisticsTimeDays = timerTime
+            })
+//            self.tableView?.reloadData()
         }
     }
    

@@ -37,6 +37,20 @@ extension TimerDetailViewController {
         timerDetailTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
         timerDetailTableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         timerDetailTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reload), name: Notification.Name("timerDone"), object: nil)
+    }
+    
+    @objc func reload() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+            self?.viewModel?.sentDaysStatistics(completion: { [weak self] days, timerTIme in
+                guard let  self = self else { return }
+                self.statisticsDateDays?.removeAll()
+                self.statisticsDateDays = days
+                self.statisticsTimeDays = timerTIme
+                self.timerDetailTableView.reloadData()
+            })
+        }
     }
 }
 

@@ -16,7 +16,7 @@ final class AddNewTimerViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "New Timer"
+        navigationItem.title = "New"
         self.navigationController?.navigationBar.prefersLargeTitles = false
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.layoutIfNeeded()

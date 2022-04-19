@@ -19,7 +19,7 @@ final class AddNewTimerTableViewCell: UITableViewCell {
     private let nameTextField: UITextField = {
         let textField = UITextField()
         textField.font = UIFont.systemFont(ofSize: 22, weight: .medium)
-        textField.placeholder = "Timer name"
+        textField.placeholder = "Name"
         textField.textAlignment = .center
         textField.contentVerticalAlignment = .center
         textField.textContentType = .name

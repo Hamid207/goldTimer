@@ -33,6 +33,5 @@ final class TimerDetailViewController: UIViewController {
             self.statisticsTimeDays = timerTIme
         })
     }
-    
 
 }

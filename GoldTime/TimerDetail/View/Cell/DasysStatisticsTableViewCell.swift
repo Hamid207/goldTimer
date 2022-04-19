@@ -67,7 +67,6 @@ class DasysStatisticsTableViewCell: UITableViewCell {
             }
             self.dateLabel.text = dateLabel
             self.timeLabel.text = self.timeString(time: TimeInterval(timeLabel))
-            
         }
       
     }
