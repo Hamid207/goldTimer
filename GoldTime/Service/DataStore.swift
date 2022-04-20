@@ -85,7 +85,8 @@ final class DataStore: DataStoreProtocol {
                     arrayDays.append(date?.getFormattedDatee(format: "MMM d") ?? "")
                 }
             }
-            completion(arrayDays, timerTime)
+//            print(arrayDays, timerTime)
+            completion(arrayDays.reversed(), timerTime.reversed())
         }
     }
     

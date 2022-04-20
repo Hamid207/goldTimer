@@ -141,7 +141,7 @@ final class TimerDetailTableView: UITableViewCell {
     
     @objc func reload() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { [weak self] in
-            self.daysStatisticsTableView.reloadData()
+            self?.daysStatisticsTableView.reloadData()
         }
     }
     
@@ -172,29 +172,35 @@ final class TimerDetailTableView: UITableViewCell {
             formatter.maximumFractionDigits = 2
             formatter.decimalSeparator = ""
             formatter.groupingSeparator = ""
+//            switch timerDone {
+//                case 1:
+//                    done = 0.1
+//                case 2:
+//                    done = 0.2
+//                case 3:
+//                    done = 0.3
+//                case 4:
+//                    done = 0.4
+//                case 5:
+//                    done = 0.5
+//                case 6:
+//                    done = 0.6
+//                case 7:
+//                    done = 0.7
+//                case 8:
+//                    done = 0.8
+//                case 9:
+//                    done = 0.9
+//                default:
+//                    break
+//            }
+            
             switch timerDone {
-                case 1:
-                    done = 0.1
-                case 2:
-                    done = 0.2
-                case 3:
-                    done = 0.3
-                case 4:
-                    done = 0.4
-                case 5:
-                    done = 0.5
-                case 6:
-                    done = 0.6
-                case 7:
-                    done = 0.7
-                case 8:
-                    done = 0.8
-                case 9:
-                    done = 0.9
+                case 0...9:
+                    done = Double(String(timerDone ).PadLeft(totalWidth: 2, byString: ".0")) ?? 0.0
                 default:
                     break
             }
-            
             let number = NSNumber(value: self.calculatePercentage(value: Double(done), percentageVal: 100, timerTime: Double(userTarget)))
             let formatt = formatter.string(from: number)
             let progresResult = Float(String(formatt ?? "0").PadLeft(totalWidth: 2, byString: ".0")) ?? 0.0
