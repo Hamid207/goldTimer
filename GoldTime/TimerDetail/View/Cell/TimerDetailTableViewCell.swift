@@ -355,7 +355,9 @@ extension TimerDetailTableView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DasysStatisticsTablewViewCellID", for: indexPath) as! DasysStatisticsTableViewCell
         let days = statisticsDateDays?[indexPath.row]
+        print("days == \(days) --- time === \(statisticsTimerTime)")
         let time = statisticsTimerTime?[indexPath.row]
+        print("cell == \(time)")
         if timerTime == time {
             timerDone = true
         }else {

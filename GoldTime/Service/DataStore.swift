@@ -76,13 +76,13 @@ final class DataStore: DataStoreProtocol {
             for days in dateArray {
                 timeArray.append((timerArray?[index].timerStatistics[days]) ?? 0)
                 timerTime = timeArray.filter{$0 != 0}
-                if timerArray?[index].timerStatistics[days] != nil {
+                if timerArray?[index].timerStatistics[days] != nil && timerArray?[index].timerStatistics[days] != 0 {
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd"
                     dateFormatter.timeZone = TimeZone(identifier: "UTC")
                     dateFormatter.locale = Locale(identifier: "en_US_POSIX")
                     let date = dateFormatter.date(from: days)
-                    arrayDays.append(date?.getFormattedDatee(format: "MMM d") ?? "")
+                    arrayDays.append(date?.getFormattedDatee(format: "MMM d, E") ?? "")
                 }
             }
 //            print(arrayDays, timerTime)

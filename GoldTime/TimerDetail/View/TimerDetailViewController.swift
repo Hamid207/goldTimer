@@ -8,9 +8,8 @@
 import UIKit
 
 final class TimerDetailViewController: UIViewController {
-    
+ 
     var viewModel: TimerDetailViewModelProtocol?
-    
     var timerDetailTableView = UITableView(frame: .zero, style: .plain)
     
     var statisticsDateDays: [String]?
@@ -32,6 +31,9 @@ final class TimerDetailViewController: UIViewController {
             self.statisticsDateDays = days
             self.statisticsTimeDays = timerTIme
         })
+       
     }
 
 }
+
+
