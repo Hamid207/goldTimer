@@ -77,7 +77,7 @@ final class TimerDetailTableView: UITableViewCell {
     }()
     
     //statisticTargetlabel
-    private var statisticTargetlabel: UILabel = {
+    private var allUserStatisticsTime: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
@@ -163,8 +163,9 @@ final class TimerDetailTableView: UITableViewCell {
             guard let self = self else { return }
             guard let time = statisticsTime else { return }
             self.timerTime = timerTime
-            self.statisticTargetlabel.text = self.timeString(time: TimeInterval(time))
+            self.allUserStatisticsTime.text = self.timeString(time: TimeInterval(time))
             self.timerColor = timerColor
+            print(self.timeString(time: TimeInterval(time)), self.timeString(time: TimeInterval(timerTime)))
             var done = Double()
             done = Double(timerDone)
             let formatter = NumberFormatter()
@@ -172,28 +173,6 @@ final class TimerDetailTableView: UITableViewCell {
             formatter.maximumFractionDigits = 2
             formatter.decimalSeparator = ""
             formatter.groupingSeparator = ""
-//            switch timerDone {
-//                case 1:
-//                    done = 0.1
-//                case 2:
-//                    done = 0.2
-//                case 3:
-//                    done = 0.3
-//                case 4:
-//                    done = 0.4
-//                case 5:
-//                    done = 0.5
-//                case 6:
-//                    done = 0.6
-//                case 7:
-//                    done = 0.7
-//                case 8:
-//                    done = 0.8
-//                case 9:
-//                    done = 0.9
-//                default:
-//                    break
-//            }
             
             switch timerDone {
                 case 0...9:
@@ -201,6 +180,7 @@ final class TimerDetailTableView: UITableViewCell {
                 default:
                     break
             }
+            
             let number = NSNumber(value: self.calculatePercentage(value: Double(done), percentageVal: 100, timerTime: Double(userTarget)))
             let formatt = formatter.string(from: number)
             let progresResult = Float(String(formatt ?? "0").PadLeft(totalWidth: 2, byString: ".0")) ?? 0.0
@@ -212,7 +192,7 @@ final class TimerDetailTableView: UITableViewCell {
                 self.progressBar.progress = 1.0
                 self.resetTargetButton.isHidden = false
             }else if userTarget == 0 {
-                self.statisticTargetlabel.centerYAnchor.constraint(equalTo:self.statisticTargetUIView.centerYAnchor).isActive = true
+                self.allUserStatisticsTime.centerYAnchor.constraint(equalTo:self.statisticTargetUIView.centerYAnchor).isActive = true
                 self.targetDoneLabel.text = ""
                 self.targetHourseLabel.isHidden = true
                 self.progressBar.isHidden = true
@@ -298,13 +278,13 @@ final class TimerDetailTableView: UITableViewCell {
         activityIndicator.centerYAnchor.constraint(equalTo: statisticTargetUIView.centerYAnchor).isActive = true
         activityIndicator.centerXAnchor.constraint(equalTo: statisticTargetUIView.centerXAnchor).isActive = true
         
-        statisticTargetUIView.addSubview(statisticTargetlabel)
-        statisticTargetlabel.topAnchor.constraint(equalTo: statisticTargetUIView.topAnchor, constant: 20).isActive = true
+        statisticTargetUIView.addSubview(allUserStatisticsTime)
+        allUserStatisticsTime.topAnchor.constraint(equalTo: statisticTargetUIView.topAnchor, constant: 20).isActive = true
         //    statisticTargetlabel.centerYAnchor.constraint(equalTo: statisticTargetUIView.centerYAnchor).isActive = true
-        statisticTargetlabel.centerXAnchor.constraint(equalTo: statisticTargetUIView.centerXAnchor).isActive = true
+        allUserStatisticsTime.centerXAnchor.constraint(equalTo: statisticTargetUIView.centerXAnchor).isActive = true
         
         statisticTargetUIView.addSubview(targetDoneLabel)
-        targetDoneLabel.topAnchor.constraint(equalTo: statisticTargetlabel.bottomAnchor, constant: 50).isActive = true
+        targetDoneLabel.topAnchor.constraint(equalTo: allUserStatisticsTime.bottomAnchor, constant: 50).isActive = true
         targetDoneLabel.leadingAnchor.constraint(equalTo: statisticTargetUIView.leadingAnchor, constant: 15).isActive = true
         
         statisticTargetUIView.addSubview(resetTargetButton)
@@ -355,9 +335,7 @@ extension TimerDetailTableView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DasysStatisticsTablewViewCellID", for: indexPath) as! DasysStatisticsTableViewCell
         let days = statisticsDateDays?[indexPath.row]
-        print("days == \(days) --- time === \(statisticsTimerTime)")
         let time = statisticsTimerTime?[indexPath.row]
-        print("cell == \(time)")
         if timerTime == time {
             timerDone = true
         }else {

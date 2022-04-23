@@ -38,7 +38,7 @@ class DasysStatisticsTableViewCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.isHidden = true
+//        imageView.isHidden = true
         return imageView
     }()
 
@@ -59,11 +59,14 @@ class DasysStatisticsTableViewCell: UITableViewCell {
     func update(dateLabel: String, timeLabel: Int, timerDone: Bool) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            self.checkmarkImageView.image = UIImage(systemName: "checkmark.circle.fill")
             if timerDone {
-                self.checkmarkImageView.isHidden = false
+                self.checkmarkImageView.image = UIImage(systemName: "checkmark.circle.fill")
+                self.checkmarkImageView.tintColor = .systemBlue
+//                self.checkmarkImageView.isHidden = false
             }else {
-                self.checkmarkImageView.isHidden = true
+                self.checkmarkImageView.image = UIImage(systemName: "xmark.octagon.fill")
+                self.checkmarkImageView.tintColor = .systemRed
+//                self.checkmarkImageView.isHidden = true
             }
             self.dateLabel.text = dateLabel
             self.timeLabel.text = self.timeString(time: TimeInterval(timeLabel))
@@ -93,8 +96,8 @@ class DasysStatisticsTableViewCell: UITableViewCell {
         addSubview(checkmarkUIView)
         checkmarkUIView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -15).isActive = true
         checkmarkUIView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-        checkmarkUIView.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        checkmarkUIView.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        checkmarkUIView.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        checkmarkUIView.widthAnchor.constraint(equalToConstant: 22).isActive = true
         
         addSubview(checkmarkImageView)
         checkmarkImageView.topAnchor.constraint(equalTo: checkmarkUIView.topAnchor).isActive = true
